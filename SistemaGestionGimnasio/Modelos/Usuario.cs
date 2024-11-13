@@ -13,12 +13,17 @@ namespace SistemaGestionGimnasio.Modelos
         public string Correo { get; set; }
         public string Tipo {  get; set; }
 
+        // Nuevos atributos para los entrenadores
+        public List<string> Horarios { get; set; }
+        public string PuntosFuertes { get; set; }
         public Usuario(int id, string nombre, string correo, string tipo)
         {
             Id = id;
             Nombre = nombre;
             Correo = correo;
             Tipo = tipo;
+            Horarios = new List<string>();
+
         }
     }
 }

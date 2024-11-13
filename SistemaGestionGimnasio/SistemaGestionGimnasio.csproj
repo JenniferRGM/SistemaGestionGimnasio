@@ -52,6 +52,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormulariosUsuarios\AsignarHorariosPuntosFuertesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormulariosUsuarios\AsignarHorariosPuntosFuertesForm.Designer.cs">
+      <DependentUpon>AsignarHorariosPuntosFuertesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormulariosUsuarios\ConsultarUsuarioForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +91,9 @@
     <Compile Include="Vistas\UsuarioForm.Designer.cs">
       <DependentUpon>UsuarioForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="FormulariosUsuarios\AsignarHorariosPuntosFuertesForm.resx">
+      <DependentUpon>AsignarHorariosPuntosFuertesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormulariosUsuarios\ConsultarUsuarioForm.resx">
       <DependentUpon>ConsultarUsuarioForm.cs</DependentUpon>
     </EmbeddedResource>
