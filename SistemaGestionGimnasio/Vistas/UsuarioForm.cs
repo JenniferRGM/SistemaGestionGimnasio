@@ -55,6 +55,12 @@ namespace SistemaGestionGimnasio.Vistas
             EliminarUsuarioForm eliminarForm = new EliminarUsuarioForm();
             eliminarForm.Show(); // Abre el formulario de eliminación de usuario
         }
+
+        private void horariosPuntosFuertesEntrenadores_Click(object sender, EventArgs e)
+        {
+            AsignarHorariosPuntosFuertesForm asignarForm = new AsignarHorariosPuntosFuertesForm();
+            asignarForm.Show();
+        }
     }
 }
 

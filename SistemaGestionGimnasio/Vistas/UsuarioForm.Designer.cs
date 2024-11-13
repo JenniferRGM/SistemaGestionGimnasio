@@ -281,6 +281,7 @@
             this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Name = "horariosYPuntosFuertesEntrenadoresToolStripMenuItem";
             this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
             this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Text = "Horarios y Puntos Fuertes Entrenadores";
+            this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Click += new System.EventHandler(this.horariosPuntosFuertesEntrenadores_Click);
             // 
             // UsuarioForm
             // 

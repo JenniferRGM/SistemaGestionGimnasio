@@ -26,6 +26,8 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             CargarHorarios();
 
             CargarEntrenadores();
+            CargarPuntosFuertes();
+           
 
 
         }
@@ -79,6 +81,27 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             }
         }
 
+        private void CargarPuntosFuertes()
+        {
+            string rutaArchivo = "actividades.txt";
+
+            if (File.Exists(rutaArchivo))
+            {
+                using (StreamReader lector = new StreamReader(rutaArchivo))
+                {
+                    string linea;
+                    while ((linea = lector.ReadLine()) != null)
+                    {
+                        listBoxPuntosFuertes.Items.Add(linea);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("El archivo de actividades no existe.");
+            }
+        }
+
 
         private void BtnAgregar_Click(object sender, EventArgs e)
         {
@@ -97,26 +120,6 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             }
         }
 
-        private void listBoxPuntosFuertes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string rutaArchivo = "actividades.txt";
-
-            if (File.Exists(rutaArchivo))
-            {
-                using (StreamReader lector = new StreamReader(rutaArchivo))
-                {
-                    string linea;
-                    while ((linea = lector.ReadLine()) != null)
-                    {
-                        listBoxPuntosFuertes.Items.Add(linea);
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Archivo de actividades no encontrado.");
-            }
-        }
 
         private void BtnGuardar_Click(object sender, EventArgs e)
         {

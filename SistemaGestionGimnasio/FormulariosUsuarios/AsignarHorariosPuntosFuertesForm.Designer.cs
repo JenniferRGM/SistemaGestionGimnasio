@@ -128,7 +128,7 @@
             this.listBoxPuntosFuertes.Name = "listBoxPuntosFuertes";
             this.listBoxPuntosFuertes.Size = new System.Drawing.Size(120, 95);
             this.listBoxPuntosFuertes.TabIndex = 9;
-            this.listBoxPuntosFuertes.SelectedIndexChanged += new System.EventHandler(this.listBoxPuntosFuertes_SelectedIndexChanged);
+            
             // 
             // AsignarHorariosPuntosFuertesForm
             // 
