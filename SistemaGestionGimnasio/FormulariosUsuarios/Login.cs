@@ -1,4 +1,5 @@
-﻿using SistemaGestionGimnasio.Vistas;
+﻿using SistemaGestionGimnasio.Modelos;
+using SistemaGestionGimnasio.Vistas;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
@@ -33,20 +35,39 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void BtnIniciarSesion_Click(object sender, EventArgs e)
         {
-            string usuario =txtUsuario.Text;
+            string usuario = txtUsuario.Text;
             string contraseña = txtClave.Text;
 
             if (VerificarCredenciales(usuario, contraseña))
             {
-                MessageBox.Show("Bienvenido");
+                Membresia membresia = Membresia.ObtenerMembresia(usuario);
 
+                if (membresia != null)
+                {
+                    int diasRestantes = (membresia.FechaVencimiento - DateTime.Now).Days;
+                    if (diasRestantes <= 5)
+                    {
+                        MessageBox.Show($"Tu membresía vence en {diasRestantes} días. ¡Renueva pronto!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Bienvenido al sistema");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No se encontró membresía asociada al usuario.");
+                }
+
+                // Redirige a la página principal
                 UsuarioForm usuarioForm = new UsuarioForm();
                 usuarioForm.Show();
                 this.Hide();
+
             }
             else
             {
-                MessageBox.Show("Los datos introducidos no son correctos");
+                MessageBox.Show("Los datos introducidos no son correctos.");
             }
         }
 
