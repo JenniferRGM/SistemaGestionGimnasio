@@ -145,22 +145,25 @@
             // registrarClaseToolStripMenuItem
             // 
             this.registrarClaseToolStripMenuItem.Name = "registrarClaseToolStripMenuItem";
-            this.registrarClaseToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
+            this.registrarClaseToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.registrarClaseToolStripMenuItem.Text = "Consultar Clases";
             // 
             // consultarToolStripMenuItem
             // 
             this.consultarToolStripMenuItem.Name = "consultarToolStripMenuItem";
-            this.consultarToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
+            this.consultarToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.consultarToolStripMenuItem.Text = "Agregar Clases";
             // 
             // reservarClaseToolStripMenuItem
             // 
             this.reservarClaseToolStripMenuItem.Name = "reservarClaseToolStripMenuItem";
-            this.reservarClaseToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
+            this.reservarClaseToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.reservarClaseToolStripMenuItem.Text = "Actualizar Cupos";
             // 
             // consultarReservasToolStripMenuItem
             // 
             this.consultarReservasToolStripMenuItem.Name = "consultarReservasToolStripMenuItem";
-            this.consultarReservasToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
+            this.consultarReservasToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.consultarReservasToolStripMenuItem.Text = "Consultar Reservas";
             // 
             // membresíasToolStripMenuItem
