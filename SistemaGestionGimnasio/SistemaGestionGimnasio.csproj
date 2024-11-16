@@ -130,6 +130,7 @@
     </Compile>
     <Compile Include="Modelos\Cliente.cs" />
     <Compile Include="Modelos\Entrenador.cs" />
+    <Compile Include="Modelos\Membresia.cs" />
     <Compile Include="Modelos\Usuario.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
