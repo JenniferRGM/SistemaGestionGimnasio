@@ -39,28 +39,47 @@ namespace SistemaGestionGimnasio.Modelos
             {
                 MessageBox.Show("Archivo de membresías no encontrado.");
                 return null;
+
             }
 
             using (StreamReader lector = new StreamReader(rutaArchivo))
             {
                 string linea;
+                string formatoFecha = "dd/MM/yyyy";
+
                 while ((linea = lector.ReadLine()) != null)
                 {
                     string[] datos = linea.Split(',');
 
-                    if (datos.Length >= 3 && datos[0] == usuario)
+                    if (datos.Length >= 3 && datos[0].Trim().Equals(usuario.Trim(), StringComparison.OrdinalIgnoreCase))
                     {
-                        string formatoFecha = "dd/MM/yyyy";
-                        DateTime fechaInicio = DateTime.ParseExact(datos[1], formatoFecha, CultureInfo.InvariantCulture);
-                        DateTime fechaVencimiento = DateTime.ParseExact(datos[2], formatoFecha, CultureInfo.InvariantCulture);
+                        if (!DateTime.TryParseExact(datos[1], formatoFecha, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaInicio) ||
+                            !DateTime.TryParseExact(datos[2], formatoFecha, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaVencimiento))
+                        {
+                            MessageBox.Show($"Error al procesar las fechas para el usuario: {usuario}");
+                            return null;
+                        }
+
                         return new Membresia(fechaInicio, fechaVencimiento);
                     }
-                    
                 }
             }
 
-            
+
+            MessageBox.Show($"No se encontró membresía asociada al usuario.");
             return null;
         }
     }
 }
+                    
+                
+            
+
+            
+        
+
+
+
+
+
+

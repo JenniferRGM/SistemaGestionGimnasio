@@ -56,11 +56,24 @@ namespace SistemaGestionGimnasio.Vistas
             eliminarForm.Show(); // Abre el formulario de eliminación de usuario
         }
 
-        private void horariosPuntosFuertesEntrenadores_Click(object sender, EventArgs e)
+        private void HorariosPuntosFuertesEntrenadores_Click(object sender, EventArgs e)
         {
             AsignarHorariosPuntosFuertesForm asignarForm = new AsignarHorariosPuntosFuertesForm();
             asignarForm.Show();
         }
+
+        private void AdministrarMembresíasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AdministrarMembresiasForm adminForm = new AdministrarMembresiasForm();
+            adminForm.Show();
+        }
+
+        private void ConsultarMembresíasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConsultarMembresiasForm consultaForm = new ConsultarMembresiasForm();
+            consultaForm.Show();
+        }
+
     }
 }
 

@@ -42,8 +42,8 @@
             this.reservarClaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consultarReservasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.membresíasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.administrarMembresíasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.consultarMembresíasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AdministrarMembresíasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ConsultarMembresíasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inventarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.registrarEquipoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consultarInventarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,14 +74,14 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(973, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(973, 28);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // inicioToolStripMenuItem
             // 
             this.inicioToolStripMenuItem.Name = "inicioToolStripMenuItem";
-            this.inicioToolStripMenuItem.Size = new System.Drawing.Size(59, 26);
+            this.inicioToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
             this.inicioToolStripMenuItem.Text = "Inicio";
             // 
             // usuariosToolStripMenuItem
@@ -93,7 +93,7 @@
             this.EliminarUsuariosToolStripMenuItem,
             this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem});
             this.usuariosToolStripMenuItem.Name = "usuariosToolStripMenuItem";
-            this.usuariosToolStripMenuItem.Size = new System.Drawing.Size(79, 26);
+            this.usuariosToolStripMenuItem.Size = new System.Drawing.Size(79, 24);
             this.usuariosToolStripMenuItem.Text = "Usuarios";
             // 
             // RegistrarUsuarioToolStripMenuItem
@@ -129,7 +129,7 @@
             this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Name = "horariosYPuntosFuertesEntrenadoresToolStripMenuItem";
             this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Size = new System.Drawing.Size(350, 26);
             this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Text = "Horarios y Puntos Fuertes Entrenadores";
-            this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Click += new System.EventHandler(this.horariosPuntosFuertesEntrenadores_Click);
+            this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Click += new System.EventHandler(this.HorariosPuntosFuertesEntrenadores_Click);
             // 
             // clasesToolStripMenuItem
             // 
@@ -139,7 +139,7 @@
             this.reservarClaseToolStripMenuItem,
             this.consultarReservasToolStripMenuItem});
             this.clasesToolStripMenuItem.Name = "clasesToolStripMenuItem";
-            this.clasesToolStripMenuItem.Size = new System.Drawing.Size(64, 26);
+            this.clasesToolStripMenuItem.Size = new System.Drawing.Size(64, 24);
             this.clasesToolStripMenuItem.Text = "Clases";
             // 
             // registrarClaseToolStripMenuItem
@@ -166,23 +166,25 @@
             // membresíasToolStripMenuItem
             // 
             this.membresíasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.administrarMembresíasToolStripMenuItem,
-            this.consultarMembresíasToolStripMenuItem});
+            this.AdministrarMembresíasToolStripMenuItem,
+            this.ConsultarMembresíasToolStripMenuItem});
             this.membresíasToolStripMenuItem.Name = "membresíasToolStripMenuItem";
-            this.membresíasToolStripMenuItem.Size = new System.Drawing.Size(103, 26);
+            this.membresíasToolStripMenuItem.Size = new System.Drawing.Size(103, 24);
             this.membresíasToolStripMenuItem.Text = "Membresías";
             // 
-            // administrarMembresíasToolStripMenuItem
+            // AdministrarMembresíasToolStripMenuItem
             // 
-            this.administrarMembresíasToolStripMenuItem.Name = "administrarMembresíasToolStripMenuItem";
-            this.administrarMembresíasToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
-            this.administrarMembresíasToolStripMenuItem.Text = "Administrar Membresías";
+            this.AdministrarMembresíasToolStripMenuItem.Name = "AdministrarMembresíasToolStripMenuItem";
+            this.AdministrarMembresíasToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
+            this.AdministrarMembresíasToolStripMenuItem.Text = "Administrar Membresías";
+            this.AdministrarMembresíasToolStripMenuItem.Click += new System.EventHandler(this.AdministrarMembresíasToolStripMenuItem_Click);
             // 
-            // consultarMembresíasToolStripMenuItem
+            // ConsultarMembresíasToolStripMenuItem
             // 
-            this.consultarMembresíasToolStripMenuItem.Name = "consultarMembresíasToolStripMenuItem";
-            this.consultarMembresíasToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
-            this.consultarMembresíasToolStripMenuItem.Text = "Consultar Membresías";
+            this.ConsultarMembresíasToolStripMenuItem.Name = "ConsultarMembresíasToolStripMenuItem";
+            this.ConsultarMembresíasToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
+            this.ConsultarMembresíasToolStripMenuItem.Text = "Consultar Membresías";
+            this.ConsultarMembresíasToolStripMenuItem.Click += new System.EventHandler(this.ConsultarMembresíasToolStripMenuItem_Click);
             // 
             // inventarioToolStripMenuItem
             // 
@@ -191,7 +193,7 @@
             this.consultarInventarioToolStripMenuItem,
             this.notificacionesDeMantenimientoToolStripMenuItem});
             this.inventarioToolStripMenuItem.Name = "inventarioToolStripMenuItem";
-            this.inventarioToolStripMenuItem.Size = new System.Drawing.Size(89, 26);
+            this.inventarioToolStripMenuItem.Size = new System.Drawing.Size(89, 24);
             this.inventarioToolStripMenuItem.Text = "Inventario";
             // 
             // registrarEquipoToolStripMenuItem
@@ -219,7 +221,7 @@
             this.informeContableToolStripMenuItem,
             this.reporteDeClasesPopularesToolStripMenuItem});
             this.reportesToolStripMenuItem.Name = "reportesToolStripMenuItem";
-            this.reportesToolStripMenuItem.Size = new System.Drawing.Size(82, 26);
+            this.reportesToolStripMenuItem.Size = new System.Drawing.Size(82, 24);
             this.reportesToolStripMenuItem.Text = "Reportes";
             // 
             // reporteDeMatrículaToolStripMenuItem
@@ -243,7 +245,7 @@
             // salirToolStripMenuItem
             // 
             this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
-            this.salirToolStripMenuItem.Size = new System.Drawing.Size(52, 26);
+            this.salirToolStripMenuItem.Size = new System.Drawing.Size(52, 24);
             this.salirToolStripMenuItem.Text = "Salir";
             // 
             // panelInicio
@@ -314,8 +316,8 @@
         private System.Windows.Forms.ToolStripMenuItem consultarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reservarClaseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem consultarReservasToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem administrarMembresíasToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem consultarMembresíasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AdministrarMembresíasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ConsultarMembresíasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem registrarEquipoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem consultarInventarioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem notificacionesDeMantenimientoToolStripMenuItem;

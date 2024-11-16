@@ -18,7 +18,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             InitializeComponent();
         }
 
-        private void btnBuscar_Click(object sender, EventArgs e)
+        private void BtnBuscar_Click(object sender, EventArgs e)
         {
             string idBuscado = txtBuscarID.Text;
 
@@ -66,7 +66,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             return false; // Usuario no encontrado
         }
 
-        private void btnCerrar_Click(object sender, EventArgs e)
+        private void BtnCerrar_Click(object sender, EventArgs e)
         {
             this.Close();
         }
