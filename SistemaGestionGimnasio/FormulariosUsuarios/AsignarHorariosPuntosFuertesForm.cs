@@ -28,8 +28,6 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             CargarEntrenadores();
             CargarPuntosFuertes();
            
-
-
         }
 
         private void CargarHorarios()
@@ -110,8 +108,8 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
             if (entrenadorSeleccionado != null && horarioSeleccionado != null)
             {
-                var usuario = listUsuarios.Find(u => u.Nombre == entrenadorSeleccionado.ToString());
-                usuario?.Horarios.Add(horarioSeleccionado.ToString());
+                var entrenador = listUsuarios.OfType<Entrenador>().FirstOrDefault(u => u.Nombre == entrenadorSeleccionado.ToString());
+                entrenador?.Horarios.Add(horarioSeleccionado.ToString());
                 MessageBox.Show("Horario agregado exitosamente.");
             }
             else

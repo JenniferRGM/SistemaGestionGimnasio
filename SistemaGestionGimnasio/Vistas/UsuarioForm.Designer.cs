@@ -35,6 +35,7 @@
             this.ModificarUsuarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ConsultarUsuariosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EliminarUsuariosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clasesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.registrarClaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consultarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,7 +56,6 @@
             this.panelInicio = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panelInicio.SuspendLayout();
             this.SuspendLayout();
@@ -73,15 +73,15 @@
             this.salirToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(730, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(973, 30);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // inicioToolStripMenuItem
             // 
             this.inicioToolStripMenuItem.Name = "inicioToolStripMenuItem";
-            this.inicioToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.inicioToolStripMenuItem.Size = new System.Drawing.Size(59, 26);
             this.inicioToolStripMenuItem.Text = "Inicio";
             // 
             // usuariosToolStripMenuItem
@@ -93,36 +93,43 @@
             this.EliminarUsuariosToolStripMenuItem,
             this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem});
             this.usuariosToolStripMenuItem.Name = "usuariosToolStripMenuItem";
-            this.usuariosToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.usuariosToolStripMenuItem.Size = new System.Drawing.Size(79, 26);
             this.usuariosToolStripMenuItem.Text = "Usuarios";
             // 
             // RegistrarUsuarioToolStripMenuItem
             // 
             this.RegistrarUsuarioToolStripMenuItem.Name = "RegistrarUsuarioToolStripMenuItem";
-            this.RegistrarUsuarioToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
+            this.RegistrarUsuarioToolStripMenuItem.Size = new System.Drawing.Size(350, 26);
             this.RegistrarUsuarioToolStripMenuItem.Text = "Registrar Usuario";
             this.RegistrarUsuarioToolStripMenuItem.Click += new System.EventHandler(this.RegistrarUsuarioToolStripMenuItem_Click);
             // 
             // ModificarUsuarioToolStripMenuItem
             // 
             this.ModificarUsuarioToolStripMenuItem.Name = "ModificarUsuarioToolStripMenuItem";
-            this.ModificarUsuarioToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
+            this.ModificarUsuarioToolStripMenuItem.Size = new System.Drawing.Size(350, 26);
             this.ModificarUsuarioToolStripMenuItem.Text = "Modificar Usuario";
             this.ModificarUsuarioToolStripMenuItem.Click += new System.EventHandler(this.ModificarUsuarioToolStripMenuItem_Click);
             // 
             // ConsultarUsuariosToolStripMenuItem
             // 
             this.ConsultarUsuariosToolStripMenuItem.Name = "ConsultarUsuariosToolStripMenuItem";
-            this.ConsultarUsuariosToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
+            this.ConsultarUsuariosToolStripMenuItem.Size = new System.Drawing.Size(350, 26);
             this.ConsultarUsuariosToolStripMenuItem.Text = "Consultar Usuarios";
             this.ConsultarUsuariosToolStripMenuItem.Click += new System.EventHandler(this.ConsultarUsuariosToolStripMenuItem_Click);
             // 
             // EliminarUsuariosToolStripMenuItem
             // 
             this.EliminarUsuariosToolStripMenuItem.Name = "EliminarUsuariosToolStripMenuItem";
-            this.EliminarUsuariosToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
+            this.EliminarUsuariosToolStripMenuItem.Size = new System.Drawing.Size(350, 26);
             this.EliminarUsuariosToolStripMenuItem.Text = "Eliminar Usuarios";
             this.EliminarUsuariosToolStripMenuItem.Click += new System.EventHandler(this.EliminarUsuariosToolStripMenuItem_Click);
+            // 
+            // horariosYPuntosFuertesEntrenadoresToolStripMenuItem
+            // 
+            this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Name = "horariosYPuntosFuertesEntrenadoresToolStripMenuItem";
+            this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Size = new System.Drawing.Size(350, 26);
+            this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Text = "Horarios y Puntos Fuertes Entrenadores";
+            this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Click += new System.EventHandler(this.horariosPuntosFuertesEntrenadores_Click);
             // 
             // clasesToolStripMenuItem
             // 
@@ -132,28 +139,28 @@
             this.reservarClaseToolStripMenuItem,
             this.consultarReservasToolStripMenuItem});
             this.clasesToolStripMenuItem.Name = "clasesToolStripMenuItem";
-            this.clasesToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.clasesToolStripMenuItem.Size = new System.Drawing.Size(64, 26);
             this.clasesToolStripMenuItem.Text = "Clases";
             // 
             // registrarClaseToolStripMenuItem
             // 
             this.registrarClaseToolStripMenuItem.Name = "registrarClaseToolStripMenuItem";
-            this.registrarClaseToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.registrarClaseToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
             // 
             // consultarToolStripMenuItem
             // 
             this.consultarToolStripMenuItem.Name = "consultarToolStripMenuItem";
-            this.consultarToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.consultarToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
             // 
             // reservarClaseToolStripMenuItem
             // 
             this.reservarClaseToolStripMenuItem.Name = "reservarClaseToolStripMenuItem";
-            this.reservarClaseToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.reservarClaseToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
             // 
             // consultarReservasToolStripMenuItem
             // 
             this.consultarReservasToolStripMenuItem.Name = "consultarReservasToolStripMenuItem";
-            this.consultarReservasToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.consultarReservasToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
             this.consultarReservasToolStripMenuItem.Text = "Consultar Reservas";
             // 
             // membresíasToolStripMenuItem
@@ -162,19 +169,19 @@
             this.administrarMembresíasToolStripMenuItem,
             this.consultarMembresíasToolStripMenuItem});
             this.membresíasToolStripMenuItem.Name = "membresíasToolStripMenuItem";
-            this.membresíasToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
+            this.membresíasToolStripMenuItem.Size = new System.Drawing.Size(103, 26);
             this.membresíasToolStripMenuItem.Text = "Membresías";
             // 
             // administrarMembresíasToolStripMenuItem
             // 
             this.administrarMembresíasToolStripMenuItem.Name = "administrarMembresíasToolStripMenuItem";
-            this.administrarMembresíasToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.administrarMembresíasToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
             this.administrarMembresíasToolStripMenuItem.Text = "Administrar Membresías";
             // 
             // consultarMembresíasToolStripMenuItem
             // 
             this.consultarMembresíasToolStripMenuItem.Name = "consultarMembresíasToolStripMenuItem";
-            this.consultarMembresíasToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.consultarMembresíasToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
             this.consultarMembresíasToolStripMenuItem.Text = "Consultar Membresías";
             // 
             // inventarioToolStripMenuItem
@@ -184,25 +191,25 @@
             this.consultarInventarioToolStripMenuItem,
             this.notificacionesDeMantenimientoToolStripMenuItem});
             this.inventarioToolStripMenuItem.Name = "inventarioToolStripMenuItem";
-            this.inventarioToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
+            this.inventarioToolStripMenuItem.Size = new System.Drawing.Size(89, 26);
             this.inventarioToolStripMenuItem.Text = "Inventario";
             // 
             // registrarEquipoToolStripMenuItem
             // 
             this.registrarEquipoToolStripMenuItem.Name = "registrarEquipoToolStripMenuItem";
-            this.registrarEquipoToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.registrarEquipoToolStripMenuItem.Size = new System.Drawing.Size(313, 26);
             this.registrarEquipoToolStripMenuItem.Text = "Registrar Equipo";
             // 
             // consultarInventarioToolStripMenuItem
             // 
             this.consultarInventarioToolStripMenuItem.Name = "consultarInventarioToolStripMenuItem";
-            this.consultarInventarioToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.consultarInventarioToolStripMenuItem.Size = new System.Drawing.Size(313, 26);
             this.consultarInventarioToolStripMenuItem.Text = "Consultar Inventario";
             // 
             // notificacionesDeMantenimientoToolStripMenuItem
             // 
             this.notificacionesDeMantenimientoToolStripMenuItem.Name = "notificacionesDeMantenimientoToolStripMenuItem";
-            this.notificacionesDeMantenimientoToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.notificacionesDeMantenimientoToolStripMenuItem.Size = new System.Drawing.Size(313, 26);
             this.notificacionesDeMantenimientoToolStripMenuItem.Text = "Notificaciones de Mantenimiento";
             // 
             // reportesToolStripMenuItem
@@ -212,42 +219,43 @@
             this.informeContableToolStripMenuItem,
             this.reporteDeClasesPopularesToolStripMenuItem});
             this.reportesToolStripMenuItem.Name = "reportesToolStripMenuItem";
-            this.reportesToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.reportesToolStripMenuItem.Size = new System.Drawing.Size(82, 26);
             this.reportesToolStripMenuItem.Text = "Reportes";
             // 
             // reporteDeMatrículaToolStripMenuItem
             // 
             this.reporteDeMatrículaToolStripMenuItem.Name = "reporteDeMatrículaToolStripMenuItem";
-            this.reporteDeMatrículaToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.reporteDeMatrículaToolStripMenuItem.Size = new System.Drawing.Size(279, 26);
             this.reporteDeMatrículaToolStripMenuItem.Text = "Reporte de Matrícula";
             // 
             // informeContableToolStripMenuItem
             // 
             this.informeContableToolStripMenuItem.Name = "informeContableToolStripMenuItem";
-            this.informeContableToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.informeContableToolStripMenuItem.Size = new System.Drawing.Size(279, 26);
             this.informeContableToolStripMenuItem.Text = "Informe Contable";
             // 
             // reporteDeClasesPopularesToolStripMenuItem
             // 
             this.reporteDeClasesPopularesToolStripMenuItem.Name = "reporteDeClasesPopularesToolStripMenuItem";
-            this.reporteDeClasesPopularesToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.reporteDeClasesPopularesToolStripMenuItem.Size = new System.Drawing.Size(279, 26);
             this.reporteDeClasesPopularesToolStripMenuItem.Text = "Reporte de Clases Populares";
             // 
             // salirToolStripMenuItem
             // 
             this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
-            this.salirToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+            this.salirToolStripMenuItem.Size = new System.Drawing.Size(52, 26);
             this.salirToolStripMenuItem.Text = "Salir";
             // 
             // panelInicio
             // 
             this.panelInicio.BackColor = System.Drawing.Color.LightCyan;
+            this.panelInicio.BackgroundImage = global::SistemaGestionGimnasio.Properties.Resources.Inicio;
             this.panelInicio.Controls.Add(this.textBox1);
             this.panelInicio.Controls.Add(this.label7);
-            this.panelInicio.Location = new System.Drawing.Point(0, 25);
-            this.panelInicio.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelInicio.Location = new System.Drawing.Point(0, 31);
+            this.panelInicio.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelInicio.Name = "panelInicio";
-            this.panelInicio.Size = new System.Drawing.Size(730, 357);
+            this.panelInicio.Size = new System.Drawing.Size(973, 439);
             this.panelInicio.TabIndex = 13;
             // 
             // textBox1
@@ -255,12 +263,12 @@
             this.textBox1.BackColor = System.Drawing.Color.LightCyan;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(174, 109);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox1.Location = new System.Drawing.Point(263, 93);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(362, 84);
+            this.textBox1.Size = new System.Drawing.Size(483, 103);
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "\"Este sistema le permite gestionar usuarios, clases, inventario y reportes para u" +
     "n mejor control del gimnasio.\"";
@@ -269,28 +277,20 @@
             // label7
             // 
             this.label7.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(124, 11);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Location = new System.Drawing.Point(165, 14);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(498, 36);
+            this.label7.Size = new System.Drawing.Size(664, 44);
             this.label7.TabIndex = 0;
             this.label7.Text = "Bienvenido al Sistema de Gestión de Gimnasio";
             // 
-            // horariosYPuntosFuertesEntrenadoresToolStripMenuItem
-            // 
-            this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Name = "horariosYPuntosFuertesEntrenadoresToolStripMenuItem";
-            this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
-            this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Text = "Horarios y Puntos Fuertes Entrenadores";
-            this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Click += new System.EventHandler(this.horariosPuntosFuertesEntrenadores_Click);
-            // 
             // UsuarioForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(730, 382);
+            this.ClientSize = new System.Drawing.Size(973, 470);
             this.Controls.Add(this.panelInicio);
             this.Controls.Add(this.menuStrip1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "UsuarioForm";
             this.Text = "UsuarioForm";
             this.menuStrip1.ResumeLayout(false);
