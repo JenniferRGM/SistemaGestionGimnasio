@@ -16,10 +16,5 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
         {
             InitializeComponent();
         }
-
-        private void ConsultarClasesForm_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }
