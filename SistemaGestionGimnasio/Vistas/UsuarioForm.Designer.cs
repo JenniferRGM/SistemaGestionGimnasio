@@ -56,6 +56,8 @@
             this.panelInicio = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.reservarClasesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.consultarReservasEntrenadoresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panelInicio.SuspendLayout();
             this.SuspendLayout();
@@ -137,7 +139,9 @@
             this.registrarClaseToolStripMenuItem,
             this.consultarToolStripMenuItem,
             this.reservarClaseToolStripMenuItem,
-            this.consultarReservasToolStripMenuItem});
+            this.consultarReservasToolStripMenuItem,
+            this.reservarClasesToolStripMenuItem,
+            this.consultarReservasEntrenadoresToolStripMenuItem});
             this.clasesToolStripMenuItem.Name = "clasesToolStripMenuItem";
             this.clasesToolStripMenuItem.Size = new System.Drawing.Size(64, 24);
             this.clasesToolStripMenuItem.Text = "Clases";
@@ -288,6 +292,19 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "Bienvenido al Sistema de Gestión de Gimnasio";
             // 
+            // reservarClasesToolStripMenuItem
+            // 
+            this.reservarClasesToolStripMenuItem.Name = "reservarClasesToolStripMenuItem";
+            this.reservarClasesToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.reservarClasesToolStripMenuItem.Text = "Reservar Clases";
+            this.reservarClasesToolStripMenuItem.Click += new System.EventHandler(this.ReservarClasesToolStripMenuItem_Click);
+            // 
+            // consultarReservasEntrenadoresToolStripMenuItem
+            // 
+            this.consultarReservasEntrenadoresToolStripMenuItem.Name = "consultarReservasEntrenadoresToolStripMenuItem";
+            this.consultarReservasEntrenadoresToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
+            this.consultarReservasEntrenadoresToolStripMenuItem.Text = "Consultar Reservas Entrenadores";
+            // 
             // UsuarioForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -336,5 +353,7 @@
         private System.Windows.Forms.ToolStripMenuItem ConsultarUsuariosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem EliminarUsuariosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem horariosYPuntosFuertesEntrenadoresToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reservarClasesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem consultarReservasEntrenadoresToolStripMenuItem;
     }
 }

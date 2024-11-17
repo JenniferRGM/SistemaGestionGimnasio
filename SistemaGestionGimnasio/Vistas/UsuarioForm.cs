@@ -74,6 +74,12 @@ namespace SistemaGestionGimnasio.Vistas
             consultaForm.Show();
         }
 
+        private void ReservarClasesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReservarClases reservarClasesForm = new ReservarClases();
+            reservarClasesForm.Show();
+        }
+
     }
 }
 
