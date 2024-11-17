@@ -38,9 +38,10 @@
             this.horariosYPuntosFuertesEntrenadoresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clasesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.registrarClaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.consultarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reservarClaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consultarReservasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reservarClasesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.consultarReservasEntrenadoresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.membresíasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AdministrarMembresíasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ConsultarMembresíasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,8 +57,6 @@
             this.panelInicio = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.reservarClasesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.consultarReservasEntrenadoresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panelInicio.SuspendLayout();
             this.SuspendLayout();
@@ -137,7 +136,6 @@
             // 
             this.clasesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.registrarClaseToolStripMenuItem,
-            this.consultarToolStripMenuItem,
             this.reservarClaseToolStripMenuItem,
             this.consultarReservasToolStripMenuItem,
             this.reservarClasesToolStripMenuItem,
@@ -149,26 +147,33 @@
             // registrarClaseToolStripMenuItem
             // 
             this.registrarClaseToolStripMenuItem.Name = "registrarClaseToolStripMenuItem";
-            this.registrarClaseToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.registrarClaseToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
             this.registrarClaseToolStripMenuItem.Text = "Consultar Clases";
-            // 
-            // consultarToolStripMenuItem
-            // 
-            this.consultarToolStripMenuItem.Name = "consultarToolStripMenuItem";
-            this.consultarToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.consultarToolStripMenuItem.Text = "Agregar Clases";
             // 
             // reservarClaseToolStripMenuItem
             // 
             this.reservarClaseToolStripMenuItem.Name = "reservarClaseToolStripMenuItem";
-            this.reservarClaseToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.reservarClaseToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
             this.reservarClaseToolStripMenuItem.Text = "Actualizar Cupos";
             // 
             // consultarReservasToolStripMenuItem
             // 
             this.consultarReservasToolStripMenuItem.Name = "consultarReservasToolStripMenuItem";
-            this.consultarReservasToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.consultarReservasToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
             this.consultarReservasToolStripMenuItem.Text = "Consultar Reservas";
+            // 
+            // reservarClasesToolStripMenuItem
+            // 
+            this.reservarClasesToolStripMenuItem.Name = "reservarClasesToolStripMenuItem";
+            this.reservarClasesToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
+            this.reservarClasesToolStripMenuItem.Text = "Reservar Clases";
+            this.reservarClasesToolStripMenuItem.Click += new System.EventHandler(this.ReservarClasesToolStripMenuItem_Click);
+            // 
+            // consultarReservasEntrenadoresToolStripMenuItem
+            // 
+            this.consultarReservasEntrenadoresToolStripMenuItem.Name = "consultarReservasEntrenadoresToolStripMenuItem";
+            this.consultarReservasEntrenadoresToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
+            this.consultarReservasEntrenadoresToolStripMenuItem.Text = "Consultar Reservas Entrenadores";
             // 
             // membresíasToolStripMenuItem
             // 
@@ -292,19 +297,6 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "Bienvenido al Sistema de Gestión de Gimnasio";
             // 
-            // reservarClasesToolStripMenuItem
-            // 
-            this.reservarClasesToolStripMenuItem.Name = "reservarClasesToolStripMenuItem";
-            this.reservarClasesToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.reservarClasesToolStripMenuItem.Text = "Reservar Clases";
-            this.reservarClasesToolStripMenuItem.Click += new System.EventHandler(this.ReservarClasesToolStripMenuItem_Click);
-            // 
-            // consultarReservasEntrenadoresToolStripMenuItem
-            // 
-            this.consultarReservasEntrenadoresToolStripMenuItem.Name = "consultarReservasEntrenadoresToolStripMenuItem";
-            this.consultarReservasEntrenadoresToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
-            this.consultarReservasEntrenadoresToolStripMenuItem.Text = "Consultar Reservas Entrenadores";
-            // 
             // UsuarioForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -333,7 +325,6 @@
         private System.Windows.Forms.ToolStripMenuItem salirToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clasesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem registrarClaseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem consultarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reservarClaseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem consultarReservasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AdministrarMembresíasToolStripMenuItem;

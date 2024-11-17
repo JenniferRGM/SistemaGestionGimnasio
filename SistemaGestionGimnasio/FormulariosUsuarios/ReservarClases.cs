@@ -59,5 +59,41 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
         }
 
 
+        public static void ActualizarCupo(string clase)
+        {
+            string rutaArchivo = "clases.csv";
+            var clasesActualizadas = new List<string>();
+
+            if (File.Exists(rutaArchivo))
+            {
+                using (StreamReader lector = new StreamReader(rutaArchivo))
+                {
+                    string linea;
+                    while ((linea = lector.ReadLine()) != null)
+                    {
+                        string[] datos = linea.Split(',');
+                        if (datos[0] == clase)
+                        {
+                            int capacidad = int.Parse(datos[1]);
+                            capacidad--; // Reducir el cupo en 1
+                            clasesActualizadas.Add($"{datos[0]},{capacidad}");
+                        }
+                        else
+                        {
+                            clasesActualizadas.Add(linea);
+                        }
+                    }
+                }
+
+                using (StreamWriter escritor = new StreamWriter(rutaArchivo))
+                {
+                    foreach (var claseActualizada in clasesActualizadas)
+                    {
+                        escritor.WriteLine(claseActualizada);
+                    }
+                }
+
+            }
+        }
     }
 }
