@@ -134,6 +134,12 @@
     <Compile Include="FormulariosUsuarios\ConsultarReservasEntrenadoresForm.Designer.cs">
       <DependentUpon>ConsultarReservasEntrenadoresForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormulariosUsuarios\ConsultarReservasForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormulariosUsuarios\ConsultarReservasForm.Designer.cs">
+      <DependentUpon>ConsultarReservasForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormulariosUsuarios\ConsultarUsuarioForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,6 +215,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormulariosUsuarios\ConsultarReservasEntrenadoresForm.resx">
       <DependentUpon>ConsultarReservasEntrenadoresForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormulariosUsuarios\ConsultarReservasForm.resx">
+      <DependentUpon>ConsultarReservasForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormulariosUsuarios\ConsultarUsuarioForm.resx">
       <DependentUpon>ConsultarUsuarioForm.cs</DependentUpon>
