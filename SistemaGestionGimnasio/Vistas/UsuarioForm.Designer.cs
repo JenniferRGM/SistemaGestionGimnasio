@@ -57,6 +57,7 @@
             this.panelInicio = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.LblUsuario = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.panelInicio.SuspendLayout();
             this.SuspendLayout();
@@ -264,6 +265,7 @@
             // 
             this.panelInicio.BackColor = System.Drawing.Color.LightCyan;
             this.panelInicio.BackgroundImage = global::SistemaGestionGimnasio.Properties.Resources.Inicio;
+            this.panelInicio.Controls.Add(this.LblUsuario);
             this.panelInicio.Controls.Add(this.textBox1);
             this.panelInicio.Controls.Add(this.label7);
             this.panelInicio.Location = new System.Drawing.Point(0, 31);
@@ -277,7 +279,7 @@
             this.textBox1.BackColor = System.Drawing.Color.LightCyan;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(263, 93);
+            this.textBox1.Location = new System.Drawing.Point(229, 130);
             this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
@@ -296,6 +298,15 @@
             this.label7.Size = new System.Drawing.Size(664, 44);
             this.label7.TabIndex = 0;
             this.label7.Text = "Bienvenido al Sistema de Gestión de Gimnasio";
+            // 
+            // LblUsuario
+            // 
+            this.LblUsuario.AutoSize = true;
+            this.LblUsuario.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblUsuario.Location = new System.Drawing.Point(312, 79);
+            this.LblUsuario.Name = "LblUsuario";
+            this.LblUsuario.Size = new System.Drawing.Size(0, 31);
+            this.LblUsuario.TabIndex = 2;
             // 
             // UsuarioForm
             // 
@@ -346,5 +357,6 @@
         private System.Windows.Forms.ToolStripMenuItem horariosYPuntosFuertesEntrenadoresToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reservarClasesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem consultarReservasEntrenadoresToolStripMenuItem;
+        private System.Windows.Forms.Label LblUsuario;
     }
 }

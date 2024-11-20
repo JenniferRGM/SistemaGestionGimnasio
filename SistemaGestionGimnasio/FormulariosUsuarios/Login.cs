@@ -16,6 +16,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class Login : Form
     {
+        private string usuarioActual;
         public Login()
         {
             InitializeComponent();
@@ -40,6 +41,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
             if (VerificarCredenciales(usuario, contraseña))
             {
+                usuarioActual = usuario;
                 Membresia membresia = Membresia.ObtenerMembresia(usuario);
 
                 if (membresia != null)
@@ -60,7 +62,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                 }
 
                 // Redirige a la página principal
-                UsuarioForm usuarioForm = new UsuarioForm();
+                UsuarioForm usuarioForm = new UsuarioForm(usuarioActual);
                 usuarioForm.Show();
                 this.Hide();
 

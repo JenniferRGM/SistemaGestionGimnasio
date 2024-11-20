@@ -15,15 +15,18 @@ namespace SistemaGestionGimnasio.Vistas
 {
     public partial class UsuarioForm : Form
     {
-        public UsuarioForm()
+        private string usuarioActual;
+        public UsuarioForm(string usuario)
         {
             InitializeComponent();
+            usuarioActual = usuario;
             this.Load += new EventHandler(UsuarioForm_Load);
         }
 
         private void UsuarioForm_Load(object sender, EventArgs e)
         {
             // Muestra solo el panel de Inicio al abrir el formulario
+            LblUsuario.Text = $"Bienvenido, {usuarioActual}";
             panelInicio.Visible = true;
            
         }
