@@ -83,6 +83,29 @@ namespace SistemaGestionGimnasio.Vistas
             reservarClasesForm.Show();
         }
 
+        private void eliminarClasesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EliminarClasesForm eliminarClasesForm = new EliminarClasesForm(usuarioActual);
+            eliminarClasesForm.Show();
+        }
+
+        private void registrarEquipoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RegistrarEquipoForm registrarEquipoForm = new RegistrarEquipoForm(usuarioActual);
+            registrarEquipoForm.Show();
+        }
+
+        private void consultarInventarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConsultarInventarioForm consultarInventarioForm = new ConsultarInventarioForm();
+            consultarInventarioForm.Show();
+        }
+
+        private void notificacionesDeMantenimientoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NotificacionesMantenimientoForm mantenimientoForm = new NotificacionesMantenimientoForm();
+            mantenimientoForm.Show();
+        }
     }
 }
 

@@ -122,6 +122,12 @@
     <Compile Include="FormulariosUsuarios\ConsultarClasesForm.Designer.cs">
       <DependentUpon>ConsultarClasesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormulariosUsuarios\ConsultarInventarioForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormulariosUsuarios\ConsultarInventarioForm.Designer.cs">
+      <DependentUpon>ConsultarInventarioForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormulariosUsuarios\ConsultarMembresiasForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +152,12 @@
     <Compile Include="FormulariosUsuarios\ConsultarUsuarioForm.Designer.cs">
       <DependentUpon>ConsultarUsuarioForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormulariosUsuarios\EliminarClasesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormulariosUsuarios\EliminarClasesForm.Designer.cs">
+      <DependentUpon>EliminarClasesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormulariosUsuarios\EliminarUsuarioForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -164,6 +176,18 @@
     <Compile Include="FormulariosUsuarios\ModificarUsuarioForm.Designer.cs">
       <DependentUpon>ModificarUsuarioForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormulariosUsuarios\NotificacionesMantenimientoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormulariosUsuarios\NotificacionesMantenimientoForm.Designer.cs">
+      <DependentUpon>NotificacionesMantenimientoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormulariosUsuarios\RegistrarEquipoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormulariosUsuarios\RegistrarEquipoForm.Designer.cs">
+      <DependentUpon>RegistrarEquipoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormulariosUsuarios\ReservarClases.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -173,6 +197,7 @@
     <Compile Include="Modelos\Clases.cs" />
     <Compile Include="Modelos\Cliente.cs" />
     <Compile Include="Modelos\Entrenador.cs" />
+    <Compile Include="Modelos\Inventario.cs" />
     <Compile Include="Modelos\Membresia.cs" />
     <Compile Include="Modelos\Reservas.cs" />
     <Compile Include="Modelos\Usuario.cs" />
@@ -210,6 +235,9 @@
     <EmbeddedResource Include="FormulariosUsuarios\ConsultarClasesForm.resx">
       <DependentUpon>ConsultarClasesForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormulariosUsuarios\ConsultarInventarioForm.resx">
+      <DependentUpon>ConsultarInventarioForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormulariosUsuarios\ConsultarMembresiasForm.resx">
       <DependentUpon>ConsultarMembresiasForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -222,6 +250,9 @@
     <EmbeddedResource Include="FormulariosUsuarios\ConsultarUsuarioForm.resx">
       <DependentUpon>ConsultarUsuarioForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormulariosUsuarios\EliminarClasesForm.resx">
+      <DependentUpon>EliminarClasesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormulariosUsuarios\EliminarUsuarioForm.resx">
       <DependentUpon>EliminarUsuarioForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -230,6 +261,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormulariosUsuarios\ModificarUsuarioForm.resx">
       <DependentUpon>ModificarUsuarioForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormulariosUsuarios\NotificacionesMantenimientoForm.resx">
+      <DependentUpon>NotificacionesMantenimientoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormulariosUsuarios\RegistrarEquipoForm.resx">
+      <DependentUpon>RegistrarEquipoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormulariosUsuarios\RegistrarUsuarioForm.resx">
       <DependentUpon>RegistrarUsuarioForm.cs</DependentUpon>
