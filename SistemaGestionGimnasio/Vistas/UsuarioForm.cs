@@ -106,6 +106,12 @@ namespace SistemaGestionGimnasio.Vistas
             NotificacionesMantenimientoForm mantenimientoForm = new NotificacionesMantenimientoForm();
             mantenimientoForm.Show();
         }
+
+        private void reportesDeCrecimientosDeMembresíasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReporteCrecimientoForm reporteCrecimientoForm = new ReporteCrecimientoForm();
+            reporteCrecimientoForm.Show();
+        }
     }
 }
 

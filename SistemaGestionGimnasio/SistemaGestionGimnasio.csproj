@@ -78,6 +78,7 @@
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -188,6 +189,12 @@
     <Compile Include="FormulariosUsuarios\RegistrarEquipoForm.Designer.cs">
       <DependentUpon>RegistrarEquipoForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormulariosUsuarios\ReporteCrecimientoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormulariosUsuarios\ReporteCrecimientoForm.Designer.cs">
+      <DependentUpon>ReporteCrecimientoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormulariosUsuarios\ReservarClases.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,6 +206,7 @@
     <Compile Include="Modelos\Entrenador.cs" />
     <Compile Include="Modelos\Inventario.cs" />
     <Compile Include="Modelos\Membresia.cs" />
+    <Compile Include="Modelos\Reporte.cs" />
     <Compile Include="Modelos\Reservas.cs" />
     <Compile Include="Modelos\Usuario.cs" />
     <Compile Include="Program.cs" />
@@ -270,6 +278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormulariosUsuarios\RegistrarUsuarioForm.resx">
       <DependentUpon>RegistrarUsuarioForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormulariosUsuarios\ReporteCrecimientoForm.resx">
+      <DependentUpon>ReporteCrecimientoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormulariosUsuarios\ReservarClases.resx">
       <DependentUpon>ReservarClases.cs</DependentUpon>
