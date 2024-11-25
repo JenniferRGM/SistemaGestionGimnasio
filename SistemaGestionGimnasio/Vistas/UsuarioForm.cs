@@ -112,6 +112,18 @@ namespace SistemaGestionGimnasio.Vistas
             ReporteCrecimientoForm reporteCrecimientoForm = new ReporteCrecimientoForm();
             reporteCrecimientoForm.Show();
         }
+
+        private void reporteDeMatrículaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReporteCrecimientoForm reporteCrecimientoForm = new ReporteCrecimientoForm();
+            reporteCrecimientoForm.ShowDialog();
+        }
+
+        private void informeContableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InformeContableForm informeContableForm = new InformeContableForm();
+            informeContableForm.ShowDialog();
+        }
     }
 }
 
