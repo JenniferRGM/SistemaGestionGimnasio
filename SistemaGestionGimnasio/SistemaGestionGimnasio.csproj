@@ -171,6 +171,12 @@
     <Compile Include="FormulariosUsuarios\EliminarUsuarioForm.Designer.cs">
       <DependentUpon>EliminarUsuarioForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormulariosUsuarios\GestionFacturasForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormulariosUsuarios\GestionFacturasForm.Designer.cs">
+      <DependentUpon>GestionFacturasForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormulariosUsuarios\InformeContableForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +229,7 @@
     <Compile Include="Modelos\ClasesPopulares.cs" />
     <Compile Include="Modelos\Cliente.cs" />
     <Compile Include="Modelos\Entrenador.cs" />
+    <Compile Include="Modelos\Factura.cs" />
     <Compile Include="Modelos\Inventario.cs" />
     <Compile Include="Modelos\Membresia.cs" />
     <Compile Include="Modelos\Reporte.cs" />
@@ -285,6 +292,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormulariosUsuarios\EliminarUsuarioForm.resx">
       <DependentUpon>EliminarUsuarioForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormulariosUsuarios\GestionFacturasForm.resx">
+      <DependentUpon>GestionFacturasForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormulariosUsuarios\InformeContableForm.resx">
       <DependentUpon>InformeContableForm.cs</DependentUpon>
