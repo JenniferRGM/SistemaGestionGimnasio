@@ -1,4 +1,5 @@
-﻿using SistemaGestionGimnasio.Modelos;
+﻿using SistemaGestionGimnasio.DataHandler;
+using SistemaGestionGimnasio.Modelos;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,17 +15,17 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class RegistrarEquipoForm : Form
     {
+        private IDataHandler dataHandler;
         private Usuario usuarioActual;
-        public RegistrarEquipoForm(Usuario usuario)
+        public RegistrarEquipoForm(Usuario usuario, IDataHandler handler)
         {
             InitializeComponent();
             usuarioActual = usuario;
+            this.dataHandler = handler;
 
         }
-
             private void BtnGuardar_Click(object sender, EventArgs e)
         {
-            // Validar que todos los campos estén llenos
             if (string.IsNullOrWhiteSpace(TxtNombreEquipo.Text) ||
                 string.IsNullOrWhiteSpace(CmbCategoria.Text) ||
                 string.IsNullOrWhiteSpace(TxtVidaUtil.Text) ||
@@ -33,24 +34,25 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                 MessageBox.Show("Por favor, complete todos los campos.", "Campos vacíos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            // Obtener los valores ingresados
+
+            
             string nombreEquipo = TxtNombreEquipo.Text.Trim();
             string categoria = CmbCategoria.Text.Trim();
             string fechaAdquisicion = DtpFechaAdquisicion.Value.ToString("dd/MM/yyyy");
             string vidaUtil = TxtVidaUtil.Text.Trim();
             string estado = CmbEstado.Text.Trim();
 
-            // Incluir el usuarioActual al guardar en el archivo
-            string rutaArchivo = "inventario.csv";
+            
+            string nuevaLinea = $"{nombreEquipo},{categoria},{fechaAdquisicion},{vidaUtil},{estado},{usuarioActual.Nombre}";
+
             try
             {
-                using (StreamWriter escritor = new StreamWriter(rutaArchivo, true))
-                {
-                    escritor.WriteLine($"{nombreEquipo},{categoria},{fechaAdquisicion},{vidaUtil},{estado},{usuarioActual}");
-                }
+                
+                dataHandler.AppendLine("inventario.csv", nuevaLinea);
+
                 MessageBox.Show("Equipo registrado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Limpiar los campos
+                
                 TxtNombreEquipo.Clear();
                 CmbCategoria.SelectedIndex = -1;
                 TxtVidaUtil.Clear();
@@ -61,16 +63,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                 MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-           private static void GuardarEquipoEnArchivo(Inventario equipo)
-        {
-            string rutaArchivo = "inventario.csv";
-
-            // Guardar los datos del objeto `Inventario` en el archivo CSV
-            using (StreamWriter escritor = new StreamWriter(rutaArchivo, true))
-            {
-                escritor.WriteLine($"{equipo.NombreEquipo},{equipo.Categoria},{equipo.FechaAdquisicion:dd/MM/yyyy},{equipo.VidaUtilEstimada},{equipo.Estado}");
-            }
-        }
+     
         private void RegistrarEquipoForm_Load(object sender, EventArgs e)
         {
             CmbCategoria.Items.AddRange(new string[] { "Electrónico", "Mecánico", "Otro" });

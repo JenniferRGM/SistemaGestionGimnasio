@@ -8,14 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
+using SistemaGestionGimnasio.DataHandler;
+using SistemaGestionGimnasio.Modelos;
 
 namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class EliminarUsuarioForm : Form
     {
-        public EliminarUsuarioForm()
+        private IDataHandler dataHandler;
+        public EliminarUsuarioForm(IDataHandler dataHandler)
         {
             InitializeComponent();
+            this.dataHandler = dataHandler;
         }
 
         private void EliminarUsuarioForm_Load(object sender, EventArgs e)
@@ -37,11 +41,8 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
         private void BtnBuscar_Click(object sender, EventArgs e)
         {
             string idBuscado = txtBuscarID.Text;
-
-            // Llama al método para buscar el usuario en el archivo CSV
-            bool encontrado = BuscarUsuarioEnCsv(idBuscado);
-
-            if (!encontrado)
+            
+            if (!BuscarUsuarioEnCsv(idBuscado))
             {
                 MessageBox.Show("Usuario no encontrado");
             }
@@ -49,36 +50,28 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private bool BuscarUsuarioEnCsv(string idBuscado)
         {
-            string rutaArchivo = "usuarios.csv";
-
-            if (!File.Exists(rutaArchivo))
+        
+            if (!dataHandler.FileExists("usuarios.csv"))
             {
                 MessageBox.Show("El archivo de usuarios no existe.");
                 return false;
             }
-
-            using (StreamReader lector = new StreamReader(rutaArchivo))
+            foreach (var linea in dataHandler.ReadAllLines("usuarios.csv"))
             {
-                string linea;
-                while ((linea = lector.ReadLine()) != null)
-                {
-                    string[] datos = linea.Split(',');
+                string[] datos = linea.Split(',');
 
-                    if (datos[0] == idBuscado)
-                    {
-                        // Mostrar los datos del usuario en campos de solo lectura
-                        txtID.Text = datos[0];
-                        txtNombre.Text = datos[1];
-                        txtCorreo.Text = datos[2];
-                        txtTipo.Text = datos[3];
-                        return true;
-                    }
+                if (datos[0] == idBuscado)
+                {
+                    txtID.Text = datos[0];
+                    txtNombre.Text = datos[1];
+                    txtCorreo.Text = datos[2];
+                    txtTipo.Text = datos[3];
+                    return true;
                 }
             }
 
             return false;
         }
-
         private void BtnEliminar_Click(object sender, EventArgs e)
         {
             string idAEliminar = txtID.Text;
@@ -93,12 +86,10 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
             if (confirmacion == DialogResult.Yes)
             {
-                bool eliminado = EliminarUsuarioEnCsv(idAEliminar);
-
-                if (eliminado)
+                if (EliminarUsuarioEnCsv(idAEliminar))
                 {
                     MessageBox.Show("Usuario eliminado con éxito.");
-                    LimpiarCampos();
+                    RestablecerCampos();
                 }
                 else
                 {
@@ -107,57 +98,44 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             }
         }
 
-            private static bool EliminarUsuarioEnCsv(string idAEliminar)
+        private bool EliminarUsuarioEnCsv(string idAEliminar)
+        {
+           
+            string rutaTemporal = "Assets/usuarios_temp.csv";
+            bool usuarioEliminado = false;
+
+            if (!dataHandler.FileExists("usuarios.csv"))
             {
-                string rutaArchivo = "usuarios.csv";
-                string rutaTemporal = "usuarios_temp.csv";
-                bool usuarioEliminado = false;
-
-                if (!File.Exists(rutaArchivo))
-                {
-                    MessageBox.Show("El archivo de usuarios no existe.");
-                    return false;
-                }
-
-                using (StreamReader lector = new StreamReader(rutaArchivo))
-                using (StreamWriter escritor = new StreamWriter(rutaTemporal))
-                {
-                    string linea;
-
-                    while ((linea = lector.ReadLine()) != null)
-                    {
-                        string[] datos = linea.Split(',');
-
-                        if (datos[0] == idAEliminar)
-                        {
-                            usuarioEliminado = true;
-                            continue; // Omitir la línea que coincide con el usuario a eliminar
-                        }
-
-                        escritor.WriteLine(linea); // Escribir todas las demás líneas en el archivo temporal
-                    }
-                }
-                if (usuarioEliminado)
-                {
-                    File.Delete(rutaArchivo);
-                    File.Move(rutaTemporal, rutaArchivo);
-                }
-                else
-                {
-                    File.Delete(rutaTemporal);
-                }
-
-                return usuarioEliminado;
+                MessageBox.Show("El archivo de usuarios no existe.");
+                return false;
             }
-            private void LimpiarCampos()
+
+            var lineas = dataHandler.ReadAllLines("usuarios.csv");
+            var lineasActualizadas = lineas.Where(linea => !linea.StartsWith(idAEliminar + ",")).ToArray();
+
+            if (lineas.Length != lineasActualizadas.Length)
             {
-                txtBuscarID.Clear();
-                txtID.Clear();
-                txtNombre.Clear();
-                txtCorreo.Clear();
-                txtTipo.Clear();
+                dataHandler.WriteAllLines(rutaTemporal, lineasActualizadas);
+                dataHandler.DeleteFile("usuarios.csv");
+                dataHandler.MoveFile(rutaTemporal, "usuarios.csv");
+                usuarioEliminado = true;
             }
-    
+            else
+            {
+                dataHandler.DeleteFile(rutaTemporal);
+            }
+
+            return usuarioEliminado;
+        }
+
+        private void RestablecerCampos()
+        {
+            txtBuscarID.Clear();
+            txtID.Clear();
+            txtNombre.Clear();
+            txtCorreo.Clear();
+            txtTipo.Clear();
+        }
 
         private void BtnCancelar_Click(object sender, EventArgs e)
         {

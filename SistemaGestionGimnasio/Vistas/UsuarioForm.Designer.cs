@@ -81,7 +81,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(973, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(973, 28);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -115,7 +115,7 @@
             this.ModificarUsuarioToolStripMenuItem.Name = "ModificarUsuarioToolStripMenuItem";
             this.ModificarUsuarioToolStripMenuItem.Size = new System.Drawing.Size(350, 26);
             this.ModificarUsuarioToolStripMenuItem.Text = "Modificar Usuario";
-            this.ModificarUsuarioToolStripMenuItem.Click += new System.EventHandler(this.ModificarUsuarioToolStripMenuItem_Click);
+            
             // 
             // ConsultarUsuariosToolStripMenuItem
             // 
@@ -291,14 +291,15 @@
             this.facturaciónToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.gestiónDeFacturasToolStripMenuItem});
             this.facturaciónToolStripMenuItem.Name = "facturaciónToolStripMenuItem";
-            this.facturaciónToolStripMenuItem.Size = new System.Drawing.Size(98, 24);
+            this.facturaciónToolStripMenuItem.Size = new System.Drawing.Size(98, 26);
             this.facturaciónToolStripMenuItem.Text = "Facturación";
             // 
             // gestiónDeFacturasToolStripMenuItem
             // 
             this.gestiónDeFacturasToolStripMenuItem.Name = "gestiónDeFacturasToolStripMenuItem";
-            this.gestiónDeFacturasToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
+            this.gestiónDeFacturasToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.gestiónDeFacturasToolStripMenuItem.Text = "Gestión de Facturas";
+            this.gestiónDeFacturasToolStripMenuItem.Click += new System.EventHandler(this.gestiónDeFacturasToolStripMenuItem_Click);
             // 
             // salirToolStripMenuItem
             // 

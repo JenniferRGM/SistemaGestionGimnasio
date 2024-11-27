@@ -41,7 +41,25 @@ namespace SistemaGestionGimnasio.DataHandler
                 File.Move(sourcePath, destinationPath);
             }
         }
+
+        public void AppendLine(string path, string line)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(path, true))
+                {
+                    writer.WriteLine(line);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Error escribiendo en el archivo: {ex.Message}");
+            }
+        }
+
     }
 }
+
+
 
 

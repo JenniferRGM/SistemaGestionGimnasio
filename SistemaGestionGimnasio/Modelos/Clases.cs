@@ -22,8 +22,8 @@ namespace SistemaGestionGimnasio.Modelos
             Nombre = nombre;
             Fecha = fecha;
             Cupo = cupo;
-            
-            
+
+
         }
 
         public static List<Clases> CargarClasesDesdeArchivo(string rutaArchivo)
@@ -39,7 +39,7 @@ namespace SistemaGestionGimnasio.Modelos
             using (StreamReader lector = new StreamReader(rutaArchivo))
             {
                 string linea;
-                string formatoFecha = "dd/MM/yyyy";
+                
 
                 while ((linea = lector.ReadLine()) != null)
                 {
@@ -82,7 +82,10 @@ namespace SistemaGestionGimnasio.Modelos
                 {
                     string[] datos = linea.Split(',');
 
-                    if (datos.Length >= 3 && datos[0].Trim() == nombreClase && DateTime.TryParse(datos[1].Trim(), out DateTime fechaArchivo) && fechaArchivo == fecha)
+                    if (datos.Length >= 3 &&
+                        datos[0].Trim() == nombreClase &&
+                        DateTime.TryParseExact(datos[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaArchivo) &&
+                        fechaArchivo == fecha)
                     {
                         if (int.TryParse(datos[2], out int reservas))
                         {
@@ -112,21 +115,18 @@ namespace SistemaGestionGimnasio.Modelos
             {
                 string[] datos = lineas[i].Split(',');
 
-                if (datos.Length >= 3 && datos[0].Trim() == nombreClase && datos[1].Trim() == fechaFormato)
+                if (datos.Length >= 3 && datos[0].Trim() == nombreClase && datos[1].Trim() == fechaFormato && int.TryParse(datos[2], out int cupoActual))
                 {
-                    if (int.TryParse(datos[2], out int cupoActual))
-                    {
-                        datos[2] = (cupoActual + 1).ToString(); // Incrementa el cupo
-                        lineas[i] = string.Join(",", datos);
-                        claseEncontrada = true;
-                        break;
-                    }
+                    datos[2] = (cupoActual + 1).ToString();
+                    lineas[i] = string.Join(",", datos);
+                    claseEncontrada = true;
+                    break;
                 }
             }
 
             if (!claseEncontrada)
             {
-                lineas.Add($"{nombreClase},{fechaFormato},1"); 
+                lineas.Add($"{nombreClase},{fechaFormato},1");
             }
 
             File.WriteAllLines(rutaArchivo, lineas);
@@ -135,7 +135,7 @@ namespace SistemaGestionGimnasio.Modelos
         public static void ActualizarArchivoClases(string rutaArchivo, List<Clases> clases)
         {
             using (StreamWriter escritor = new StreamWriter(rutaArchivo, false))
-            { 
+            {
                 foreach (var clase in clases)
                 {
                     escritor.WriteLine($"{clase.Nombre},{clase.Fecha:dd/MM/yyyy},{clase.Cupo}");
@@ -144,3 +144,4 @@ namespace SistemaGestionGimnasio.Modelos
         }
     }
 }
+

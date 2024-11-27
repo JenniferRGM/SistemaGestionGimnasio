@@ -1,4 +1,5 @@
 ﻿using System;
+using SistemaGestionGimnasio.DataHandler;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,16 +10,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Globalization;
 
 namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class ReporteCrecimientoForm : Form
     {
-        private string rutaMembresias = "membresias.csv";
-        private string rutaReporte = "ReporteMembresia.csv";
-        public ReporteCrecimientoForm()
+        private IDataHandler dataHandler;
+        private string rutaMembresias = "Assets/membresias.csv";
+        private string rutaReporte = "Assets/ReporteMembresia.csv";
+        public ReporteCrecimientoForm(IDataHandler dataHandler)
         {
             InitializeComponent();
+            this.dataHandler = dataHandler;
         }
 
         private void ReporteCrecimientoForm_Load(object sender, EventArgs e)
@@ -63,25 +67,22 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
 private void GenerarReporteMembresias(DateTime fechaInicio, DateTime fechaFin)
 {
-    if (!File.Exists(rutaMembresias))
-    {
-        MessageBox.Show("El archivo de membresías no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        return;
-    }
-            var registrosMembresias = new List<DateTime>();
-            using (StreamReader lector = new StreamReader(rutaMembresias))
+            if (!dataHandler.FileExists(rutaMembresias))
             {
-                string linea;
-                while ((linea = lector.ReadLine()) != null)
+                MessageBox.Show("El archivo de membresías no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var registrosMembresias = new List<DateTime>();
+            foreach (var linea in dataHandler.ReadAllLines(rutaMembresias))
+            {
+                string[] datos = linea.Split(',');
+                if (DateTime.TryParse(datos[1], CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaInicioMembresia))
                 {
-                    string[] datos = linea.Split(',');
-                    if (DateTime.TryParse(datos[1], out DateTime fechaInicioMembresia))
-                    {
-                        registrosMembresias.Add(fechaInicioMembresia);
-                    }
+                    registrosMembresias.Add(fechaInicioMembresia);
                 }
             }
-            //Filtra las membresias por rango de fecha
+
             var membresiasPorFecha = registrosMembresias
                 .Where(fecha => fecha >= fechaInicio && fecha <= fechaFin)
                 .GroupBy(fecha => fecha.Date)
@@ -93,31 +94,25 @@ private void GenerarReporteMembresias(DateTime fechaInicio, DateTime fechaFin)
                 .OrderBy(grupo => grupo.Fecha)
                 .ToList();
 
-            //Calcula el total acumulado
-
             int totalMembresias = 0;
-            var reporte = new List<string>();
+            var reporte = new List<string>
+            {
+                "Fecha de Registro,Membresías Nuevas,Total de Membresías"
+            };
+
             foreach (var registro in membresiasPorFecha)
             {
                 totalMembresias += registro.NuevasMembresias;
                 reporte.Add($"{registro.Fecha:dd/MM/yyyy},{registro.NuevasMembresias},{totalMembresias}");
             }
 
-            //Guarda y actualiza archivo ReporteMembresia.csv
-            using (StreamWriter escritor = new StreamWriter(rutaReporte, false)) // Sobrescribe el archivo
-            {
-                escritor.WriteLine("Fecha de Registro,Membresías Nuevas,Total de Membresías");
-                foreach (var linea in reporte)
-                {
-                    escritor.WriteLine(linea);
-                }
-            }
+            dataHandler.WriteAllLines(rutaReporte, reporte.ToArray());
             MessageBox.Show("Reporte generado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void CargarDatosReporte()
         {
-            if (!File.Exists(rutaReporte))
+            if (!dataHandler.FileExists(rutaReporte))
             {
                 MessageBox.Show("El archivo del reporte no existe. Por favor, genera el reporte primero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -128,21 +123,10 @@ private void GenerarReporteMembresias(DateTime fechaInicio, DateTime fechaFin)
             tabla.Columns.Add("Membresías Nuevas");
             tabla.Columns.Add("Total de Membresías");
 
-            using (StreamReader lector = new StreamReader(rutaReporte))
+            foreach (var linea in dataHandler.ReadAllLines(rutaReporte).Skip(1)) // Omitir cabecera
             {
-                string linea;
-                bool esCabecera = true;
-                while ((linea = lector.ReadLine()) != null)
-                {
-                    if (esCabecera)
-                    {
-                        esCabecera = false;
-                        continue;
-                    }
-
-                    string[] datos = linea.Split(',');
-                    tabla.Rows.Add(datos);
-                }
+                string[] datos = linea.Split(',');
+                tabla.Rows.Add(datos);
             }
 
             DgvReporte.DataSource = tabla;
@@ -150,34 +134,24 @@ private void GenerarReporteMembresias(DateTime fechaInicio, DateTime fechaFin)
 
         private void GraficarDatos()
         {
-            if (!File.Exists(rutaReporte))
+            if (!dataHandler.FileExists(rutaReporte))
             {
                 MessageBox.Show("El archivo del reporte no existe. Por favor, genera el reporte primero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             var datosGrafico = new List<(DateTime Fecha, int TotalMembresias)>();
 
-            using (StreamReader lector = new StreamReader(rutaReporte))
+            foreach (var linea in dataHandler.ReadAllLines(rutaReporte).Skip(1)) 
             {
-                string linea;
-                bool esCabecera = true;
-                while ((linea = lector.ReadLine()) != null)
-                {
-                    if (esCabecera)
-                    {
-                        esCabecera = false;
-                        continue;
-                    }
+                string[] datos = linea.Split(',');
+                if (DateTime.TryParse(datos[0], CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fecha) &&
+                      int.TryParse(datos[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out int total))
 
-                    string[] datos = linea.Split(',');
-                    if (DateTime.TryParse(datos[0], out DateTime fecha) && int.TryParse(datos[2], out int total))
-                    {
-                        datosGrafico.Add((fecha, total));
-                    }
+                {
+                    datosGrafico.Add((fecha, total));
                 }
             }
-
-            //Configura las series del grafico
 
             ChartCrecimiento.Series.Clear();
             var serie = new Series("Total Membresías")

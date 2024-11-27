@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SistemaGestionGimnasio.FormulariosUsuarios;
+using SistemaGestionGimnasio.DataHandler;
 
 namespace SistemaGestionGimnasio
 {
@@ -18,7 +19,8 @@ namespace SistemaGestionGimnasio
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Login());
+            IDataHandler dataHandler = new FileDataHandler();
+            Application.Run(new Login(dataHandler));
         }
     }
 }

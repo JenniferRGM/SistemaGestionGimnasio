@@ -69,15 +69,9 @@ namespace SistemaGestionGimnasio.Vistas
         // Método para abrir el formulario de registro de usuario
         private void RegistrarUsuarioToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RegistrarUsuarioForm registrarForm = new RegistrarUsuarioForm();
-            registrarForm.Show(); 
-        }
-
-        // Método para abrir el formulario de modificación de usuario
-        private void ModificarUsuarioToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ModificarUsuarioForm modificarForm = new ModificarUsuarioForm();
-            modificarForm.ShowDialog(); 
+            IDataHandler dataHandler = new FileDataHandler();
+            RegistrarUsuarioForm registrarUsuarioForm = new RegistrarUsuarioForm(dataHandler);
+            registrarUsuarioForm.Show();
         }
 
         // Método para abrir el formulario de consulta de usuarios
@@ -92,8 +86,10 @@ namespace SistemaGestionGimnasio.Vistas
         // Método para abrir el formulario de eliminación de usuario
         private void EliminarUsuariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EliminarUsuarioForm eliminarForm = new EliminarUsuarioForm();
-            eliminarForm.Show(); 
+            IDataHandler dataHandler = new FileDataHandler();
+            EliminarUsuarioForm eliminarForm = new EliminarUsuarioForm(dataHandler);
+            eliminarForm.Show();
+
         }
 
         private void HorariosPuntosFuertesEntrenadores_Click(object sender, EventArgs e)
@@ -119,8 +115,9 @@ namespace SistemaGestionGimnasio.Vistas
 
         private void ReservarClasesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            
             ReservarClases reservarClasesForm = new ReservarClases();
-            reservarClasesForm.Show();
+            reservarClasesForm.Show(); 
         }
 
         private void eliminarClasesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -133,7 +130,8 @@ namespace SistemaGestionGimnasio.Vistas
 
         private void registrarEquipoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RegistrarEquipoForm registrarEquipoForm = new RegistrarEquipoForm(usuarioActual);
+            IDataHandler dataHandler = new FileDataHandler();
+            RegistrarEquipoForm registrarEquipoForm = new RegistrarEquipoForm(usuarioActual, dataHandler);
             registrarEquipoForm.Show();
         }
 
@@ -146,14 +144,16 @@ namespace SistemaGestionGimnasio.Vistas
 
         private void notificacionesDeMantenimientoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NotificacionesMantenimientoForm mantenimientoForm = new NotificacionesMantenimientoForm();
+            IDataHandler dataHandler = new FileDataHandler();
+            NotificacionesMantenimientoForm mantenimientoForm = new NotificacionesMantenimientoForm(dataHandler);
             mantenimientoForm.Show();
         }
 
         private void reportesDeCrecimientosDeMembresíasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ReporteCrecimientoForm reporteCrecimientoForm = new ReporteCrecimientoForm();
-            reporteCrecimientoForm.Show();
+            IDataHandler dataHandler = new FileDataHandler();
+            ReporteCrecimientoForm reporteForm = new ReporteCrecimientoForm(dataHandler);
+            reporteForm.Show();
         }
 
         private void reporteDeMatrículaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -166,8 +166,10 @@ namespace SistemaGestionGimnasio.Vistas
 
         private void informeContableToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            InformeContableForm informeContableForm = new InformeContableForm();
-            informeContableForm.ShowDialog();
+            IDataHandler dataHandler = new FileDataHandler();
+            InformeContableForm form = new InformeContableForm(dataHandler);
+            form.Show();
+
         }
 
         private void ActualizarCupoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -207,6 +209,20 @@ namespace SistemaGestionGimnasio.Vistas
             string usuarioActualLocal = "nombreUsuario";
             ConsultarReservasForm form = new ConsultarReservasForm(dataHandler, usuarioActualLocal);
             form.Show();
+        }
+
+        private void gestiónDeFacturasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IDataHandler dataHandler = new FileDataHandler();
+            GestionFacturasForm form = new GestionFacturasForm(dataHandler);
+            form.Show();
+        }
+
+        private void ModificarUsuarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IDataHandler dataHandler = new FileDataHandler();
+            ModificarUsuarioForm modificarForm = new ModificarUsuarioForm(dataHandler);
+            modificarForm.ShowDialog();
         }
     }
 }

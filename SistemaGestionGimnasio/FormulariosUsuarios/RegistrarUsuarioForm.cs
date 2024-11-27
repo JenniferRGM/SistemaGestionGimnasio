@@ -1,4 +1,5 @@
 ﻿using SistemaGestionGimnasio.Modelos;
+using SistemaGestionGimnasio.DataHandler;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,10 +16,12 @@ namespace SistemaGestionGimnasio
 {
     public partial class RegistrarUsuarioForm : Form
     {
-        public RegistrarUsuarioForm()
+        private IDataHandler dataHandler;
+        public RegistrarUsuarioForm(IDataHandler dataHandler)
         {
             InitializeComponent();
             this.Load += new EventHandler(RegistrarUsuarioForm_Load);
+            this.dataHandler = dataHandler;
         }
 
         private void RegistrarUsuarioForm_Load(object sender, EventArgs e)
@@ -101,58 +104,44 @@ namespace SistemaGestionGimnasio
                 }
             }
 
-        private static void GuardarUsuarioEnCsv(string id, string nombre, string correo, string tipo)
-        {
-            // Define la ruta del archivo CSV
-            string rutaArchivo = "usuarios.csv";
-
-            // Verifica si el archivo ya existe
-            bool archivoExiste = File.Exists(rutaArchivo);
-
-            // Usa StreamWriter para escribir en el archivo
-            using (StreamWriter escritor = new StreamWriter(rutaArchivo, true))
-            {
-                // Escribe la cabecera del CSV solo si el archivo no existe
-                if (!archivoExiste)
-                {
-                    escritor.WriteLine("ID,Nombre,Correo,Tipo");
-                }
-
-                // Escribe los datos del usuario en una nueva línea
-                escritor.WriteLine($"{id},{nombre},{correo},{tipo}");
-            }
-        }
         private void BtnGuardar_Click(object sender, EventArgs e)
         {
-            // Validar que todos los campos estén llenos
             if (string.IsNullOrWhiteSpace(txtID.Text) ||
-                string.IsNullOrWhiteSpace(txtNombre.Text) ||
-                string.IsNullOrWhiteSpace(txtCorreo.Text) ||
-                cmbTipo.SelectedIndex == -1)
+                 string.IsNullOrWhiteSpace(txtNombre.Text) ||
+                 string.IsNullOrWhiteSpace(txtCorreo.Text) ||
+                 cmbTipo.SelectedIndex == -1)
             {
                 MessageBox.Show("Por favor, complete todos los campos.");
                 return;
             }
 
-            string id = txtID.Text;
-            string nombre = txtNombre.Text;
-            string correo = txtCorreo.Text;
+            string id = txtID.Text.Trim();
+            string nombre = txtNombre.Text.Trim();
+            string correo = txtCorreo.Text.Trim();
             string tipo = cmbTipo.SelectedItem.ToString();
 
-            // Llama al método para guardar en CSV
-            GuardarUsuarioEnCsv(id, nombre, correo, tipo);
+            // Crear la línea de datos para guardar
+            string nuevaLinea = $"{id},{nombre},{correo},{tipo}";
 
-            MessageBox.Show($"Usuario guardado: {nombre}, {tipo}");
+            try
+            {
+                // Usar el dataHandler para guardar los datos
+                dataHandler.AppendLine("usuarios.csv", nuevaLinea);
 
-            // Confirmación y limpieza
-            MessageBox.Show("Usuario guardado con éxito.");
-            txtID.Clear();
-            txtNombre.Clear();
-            txtCorreo.Clear();
-            cmbTipo.SelectedIndex = -1;
+                MessageBox.Show($"Usuario guardado: {nombre}, {tipo}");
+
+                // Limpiar los campos
+                txtID.Clear();
+                txtNombre.Clear();
+                txtCorreo.Clear();
+                cmbTipo.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-
-    private void BtnInicio_Click(object sender, EventArgs e)
+        private void BtnInicio_Click(object sender, EventArgs e)
         {
             this.Close();
         }

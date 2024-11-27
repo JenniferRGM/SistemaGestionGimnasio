@@ -1,4 +1,5 @@
-﻿using SistemaGestionGimnasio.Modelos;
+﻿using SistemaGestionGimnasio.DataHandler;
+using SistemaGestionGimnasio.Modelos;
 using SistemaGestionGimnasio.Vistas;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,12 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class Login : Form
     {
+        private readonly IDataHandler dataHandler;
         private Usuario usuarioActual;
-        public Login()
+        public Login(IDataHandler handler)
         {
             InitializeComponent();
+            dataHandler = handler;
         }
 
         private void CbxMostrarClave_CheckedChanged(object sender, EventArgs e)
@@ -69,40 +72,36 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             }
         }
 
-        private static Usuario BuscarUsuarioEnArchivo(string rutaArchivo, string usuario, string contraseña)
+        private Usuario BuscarUsuarioEnArchivo(string rutaArchivo, string usuario, string contraseña)
         {
-            if (!File.Exists(rutaArchivo))
+            if (!dataHandler.FileExists(rutaArchivo))
             {
                 MessageBox.Show($"Archivo {rutaArchivo} no encontrado.");
                 return null;
             }
 
-            using (StreamReader lector = new StreamReader(rutaArchivo))
+            var lineas = dataHandler.ReadAllLines(rutaArchivo);
+            foreach (var linea in lineas)
             {
-                string linea;
-                while ((linea = lector.ReadLine()) != null)
+                string[] datos = linea.Split(',');
+                if (datos.Length >= 6)
                 {
-                    string[] datos = linea.Split(',');
-                    if (datos.Length >= 6)
-                    {
-                        string id = datos[0];
-                        string nombre = datos[1];
-                        string correo = datos[2];
-                        string tipo = datos[3];
-                        string usuarioArchivo = datos[4];
-                        string contraseñaArchivo = datos[5];
+                    string id = datos[0];
+                    string nombre = datos[1];
+                    string correo = datos[2];
+                    string tipo = datos[3];
+                    string usuarioArchivo = datos[4];
+                    string contraseñaArchivo = datos[5];
 
-                        if (usuarioArchivo == usuario && contraseñaArchivo == contraseña)
-                        {
-                            if (tipo == "Cliente")
-                                return new Cliente(int.Parse(id), nombre, correo, contraseñaArchivo);
-                            else if (tipo == "Entrenador")
-                                return new Entrenador(int.Parse(id), nombre, correo, contraseñaArchivo, "PuntosFuertes"); // Modifica según sea necesario
-                        }
+                    if (usuarioArchivo == usuario && contraseñaArchivo == contraseña)
+                    {
+                        if (tipo == "Cliente")
+                            return new Cliente(int.Parse(id), nombre, correo, contraseñaArchivo);
+                        else if (tipo == "Entrenador")
+                            return new Entrenador(int.Parse(id), nombre, correo, contraseñaArchivo, "PuntosFuertes"); // Ajustar según los datos
                     }
                 }
             }
-
             return null;
         }
     }

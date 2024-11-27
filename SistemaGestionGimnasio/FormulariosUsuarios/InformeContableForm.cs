@@ -8,14 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SistemaGestionGimnasio.DataHandler;
 
 namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class InformeContableForm : Form
     {
-        public InformeContableForm()
+        private readonly IDataHandler dataHandler;
+        public InformeContableForm(IDataHandler dataHandler)
         {
             InitializeComponent();
+            this.dataHandler = dataHandler;
         }
 
         private void BtnGenerarInforme_Click(object sender, EventArgs e)
@@ -32,7 +35,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             }
 
             string rutaArchivo = "InformeContable.csv";
-            if (!File.Exists(rutaArchivo))
+            if (!dataHandler.FileExists(rutaArchivo))
             {
                 MessageBox.Show("El archivo InformeContable.csv no existe.", "Archivo no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -41,37 +44,43 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             decimal totalIngresos = 0;
             decimal totalGastos = 0;
 
-            using (StreamReader lector = new StreamReader(rutaArchivo))
+            try
             {
-                string linea;
-                while ((linea = lector.ReadLine()) != null)
+                var lineas = dataHandler.ReadAllLines(rutaArchivo);
+                foreach (var linea in lineas)
                 {
                     string[] datos = linea.Split(',');
 
                     if (datos.Length >= 4)
                     {
-                        DateTime fechaRegistro = DateTime.Parse(datos[0]);
-                        string descripcion = datos[1];
-                        decimal ingreso = decimal.Parse(datos[2]);
-                        decimal gasto = decimal.Parse(datos[3]);
-
-                        if (fechaRegistro >= fechaInicio && fechaRegistro <= fechaFin)
+                        if (DateTime.TryParse(datos[0], out DateTime fechaRegistro) &&
+                            decimal.TryParse(datos[2], out decimal ingreso) &&
+                            decimal.TryParse(datos[3], out decimal gasto))
                         {
-                            DgvInformeContable.Rows.Add(fechaRegistro.ToString("dd/MM/yyyy"), descripcion, ingreso, gasto);
+                            if (fechaRegistro >= fechaInicio && fechaRegistro <= fechaFin)
+                            {
+                                DgvInformeContable.Rows.Add(fechaRegistro.ToString("dd/MM/yyyy"), datos[1], ingreso, gasto);
 
-                            totalIngresos += ingreso;
-                            totalGastos += gasto;
-
+                                totalIngresos += ingreso;
+                                totalGastos += gasto;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Error al procesar la línea: {linea}", "Error de Datos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
+
+                // Mostrar el resumen en los labels
+                LblTotalIngresos.Text = $"Total Ingresos: {totalIngresos:C}";
+                LblTotalGastos.Text = $"Total Gastos: {totalGastos:C}";
+                LblBalance.Text = $"Balance: {(totalIngresos - totalGastos):C}";
             }
-
-            //Muestra el resumen en labels
-
-            LblTotalIngresos.Text = $"Total Ingresos: {totalIngresos:C}";
-            LblTotalGastos.Text = $"Total Gastos: {totalGastos:C}";
-            LblBalance.Text = $"Balance: {(totalIngresos - totalGastos):C}";
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al leer el archivo: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void InformeContableForm_Load(object sender, EventArgs e)
