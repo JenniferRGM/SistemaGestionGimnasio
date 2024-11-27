@@ -17,18 +17,31 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
     {
         private readonly IDataHandler dataHandler;
 
-        // Constructor que recibe el DataHandler
+
+
+        /// <summary>
+        /// Constructor que inicializa el formulario y establece el manejador de datos (IDataHandler).
+        /// </summary>
+        /// <param name="handler">Instancia de IDataHandler para gestionar las operaciones de archivo.</param>
         public ActualizarCuposForm(IDataHandler handler)
         {
              InitializeComponent();
              dataHandler = handler; 
         }
 
+
+        /// <summary>
+        /// Evento que se ejecuta al cargar el formulario. 
+        /// Carga las clases en el ComboBox al abrir el formulario.
+        /// </summary>
         private void ActualizarCuposForm_Load(object sender, EventArgs e)
         {
             CargarClasesEnComboBox();
         }
 
+        /// <summary>
+        /// Carga las clases desde el archivo "actividades.csv" y las muestra en el ComboBox.
+        /// </summary>
         private void CargarClasesEnComboBox()
         {
             string rutaArchivo = Path.Combine("Assets", "actividades.csv");
@@ -52,6 +65,9 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             }
         }
 
+        /// <summary>
+        /// Evento asociado al botón para actualizar el cupo de una clase seleccionada.
+        /// </summary>
         private void BtnActualizarCupo_Click(object sender, EventArgs e)
         {
             string claseSeleccionada = CmbClases.SelectedItem?.ToString();
