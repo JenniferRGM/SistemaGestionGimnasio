@@ -13,135 +13,111 @@ namespace SistemaGestionGimnasio.Modelos
     {
         public string Nombre { get; set; }
         public DateTime Fecha { get; set; }
+        public string Horario { get; set; }
+        public string Entrenador { get; set; }
         public int Cupo { get; set; }
-        public int CupoTotal { get; set; }
-        public int CuposDisponibles { get; set; }
 
-        public Clases(string nombre, DateTime fecha, int cupo)
+
+
+        public Clases(string nombre, DateTime fecha, string horario, string entrenador, int cupo)
         {
             Nombre = nombre;
             Fecha = fecha;
+            Horario = horario;
+            Entrenador = entrenador;
             Cupo = cupo;
 
 
         }
 
-        public static List<Clases> CargarClasesDesdeArchivo(string rutaArchivo)
+        public static List<string> CargarClasesDesdeArchivo(string rutaArchivo)
         {
-            List<Clases> clasesDisponibles = new List<Clases>();
+            List<string> clasesDisponibles = new List<string>();
 
             if (!File.Exists(rutaArchivo))
             {
-                MessageBox.Show("El archivo de clases no existe.");
                 return clasesDisponibles;
             }
 
-            using (StreamReader lector = new StreamReader(rutaArchivo))
+            var lineas = File.ReadAllLines(rutaArchivo).Skip(1); // Saltar encabezado
+
+            foreach (var linea in lineas)
             {
-                string linea;
-                
+                string[] datos = linea.Split(',');
 
-                while ((linea = lector.ReadLine()) != null)
+                if (datos.Length >= 5)
                 {
-                    string[] datos = linea.Split(',');
-                    if (datos.Length >= 3)
-                    {
-                        try
-                        {
-                            string nombre = datos[0].Trim();
-                            DateTime fecha = DateTime.ParseExact(datos[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                            int cupo = int.Parse(datos[2].Trim());
+                    string nombre = datos[0].Trim();
+                    string fecha = datos[1].Trim();
+                    string horario = datos[2].Trim();
+                    string entrenador = datos[3].Trim();
+                    int cupo = int.Parse(datos[4].Trim());
 
-                            clasesDisponibles.Add(new Clases(nombre, fecha, cupo));
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Error al procesar la línea: {linea}\n{ex.Message}");
-                        }
-                    }
+                    string claseTexto = $"{nombre} - {fecha} - {horario} - {entrenador} (Cupo: {cupo})";
+                    clasesDisponibles.Add(claseTexto);
                 }
             }
 
             return clasesDisponibles;
         }
 
-        public static int ObtenerCupoActual(string rutaArchivo, string nombreClase, DateTime fecha)
+        public static void ReservarClase(string rutaArchivo, string nombreClase, string horarioClase, string entrenadorClase, string fechaClase)
         {
             if (!File.Exists(rutaArchivo))
             {
-                MessageBox.Show("El archivo de clases no se encontró.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return 0;
+                throw new FileNotFoundException("El archivo de actividades no existe.");
             }
 
-            int cupoActual = 0;
-
-            using (StreamReader lector = new StreamReader(rutaArchivo))
-            {
-                string linea;
-                while ((linea = lector.ReadLine()) != null)
-                {
-                    string[] datos = linea.Split(',');
-
-                    if (datos.Length >= 3 &&
-                        datos[0].Trim() == nombreClase &&
-                        DateTime.TryParseExact(datos[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaArchivo) &&
-                        fechaArchivo == fecha)
-                    {
-                        if (int.TryParse(datos[2], out int reservas))
-                        {
-                            cupoActual = reservas;
-                        }
-                        break;
-                    }
-                }
-            }
-
-            return cupoActual;
-        }
-
-        public static void ReservarClase(string rutaArchivo, string nombreClase, DateTime fecha)
-        {
-            List<string> lineas = new List<string>();
-
-            if (File.Exists(rutaArchivo))
-            {
-                lineas = File.ReadAllLines(rutaArchivo).ToList();
-            }
-
+            var lineas = File.ReadAllLines(rutaArchivo).ToList();
             bool claseEncontrada = false;
-            string fechaFormato = fecha.ToString("dd/MM/yyyy");
 
-            for (int i = 0; i < lineas.Count; i++)
+            for (int i = 1; i < lineas.Count; i++) // Saltar encabezado
             {
-                string[] datos = lineas[i].Split(',');
+                var datos = lineas[i].Split(',');
 
-                if (datos.Length >= 3 && datos[0].Trim() == nombreClase && datos[1].Trim() == fechaFormato && int.TryParse(datos[2], out int cupoActual))
+                if (datos.Length >= 5)
                 {
-                    datos[2] = (cupoActual + 1).ToString();
-                    lineas[i] = string.Join(",", datos);
-                    claseEncontrada = true;
-                    break;
+                    string nombreArchivo = datos[0].Trim();
+                    string fechaArchivo = datos[1].Trim();
+                    string horarioArchivo = datos[2].Trim();
+                    string entrenadorArchivo = datos[3].Trim();
+
+                    // Agrega un mensaje de depuración para verificar las comparaciones
+                    Console.WriteLine($"Comparando: Nombre={nombreArchivo}, Fecha={fechaArchivo}, Horario={horarioArchivo}, Entrenador={entrenadorArchivo}");
+
+                    if (nombreArchivo == nombreClase &&
+                        fechaArchivo == fechaClase &&
+                        horarioArchivo == horarioClase &&
+                        entrenadorArchivo == entrenadorClase)
+                    {
+                        int cupo = int.Parse(datos[4].Trim());
+                        if (cupo > 0)
+                        {
+                            cupo--;
+                            datos[4] = cupo.ToString(); // Actualizar cupo en línea
+                            lineas[i] = string.Join(",", datos); // Actualizar la línea
+                            claseEncontrada = true;
+                            break;
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("Cupo lleno. No se puede realizar la reserva.");
+                        }
+                    }
                 }
             }
 
             if (!claseEncontrada)
             {
-                lineas.Add($"{nombreClase},{fechaFormato},1");
+                throw new KeyNotFoundException("Clase no encontrada. Verifica los datos seleccionados.");
             }
 
+            // Escribir las líneas actualizadas de vuelta al archivo
             File.WriteAllLines(rutaArchivo, lineas);
-        }
-
-        public static void ActualizarArchivoClases(string rutaArchivo, List<Clases> clases)
-        {
-            using (StreamWriter escritor = new StreamWriter(rutaArchivo, false))
-            {
-                foreach (var clase in clases)
-                {
-                    escritor.WriteLine($"{clase.Nombre},{clase.Fecha:dd/MM/yyyy},{clase.Cupo}");
-                }
-            }
         }
     }
 }
+
+
+
 

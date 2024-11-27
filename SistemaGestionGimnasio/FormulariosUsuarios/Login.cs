@@ -2,16 +2,10 @@
 using SistemaGestionGimnasio.Modelos;
 using SistemaGestionGimnasio.Vistas;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
 
 namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
@@ -19,6 +13,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
     {
         private readonly IDataHandler dataHandler;
         private Usuario usuarioActual;
+
         public Login(IDataHandler handler)
         {
             InitializeComponent();
@@ -32,27 +27,27 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void BtnIniciarSesion_Click(object sender, EventArgs e)
         {
-            string usuario = txtUsuario.Text;
-            string contraseña = txtClave.Text;
+            string usuario = txtUsuario.Text.Trim();
+            string contraseña = txtClave.Text.Trim();
 
-            Usuario usuarioEncontrado = BuscarUsuarioEnArchivo("usuarios.csv", usuario, contraseña) ??
-                                 BuscarUsuarioEnArchivo("entrenadores.csv", usuario, contraseña);
+            Usuario usuarioEncontrado = BuscarUsuarioEnArchivo("Assets/usuarios.csv", usuario, contraseña) ??
+                                         BuscarUsuarioEnArchivo("Assets/entrenadores.csv", usuario, contraseña);
 
             if (usuarioEncontrado != null)
             {
                 usuarioActual = usuarioEncontrado;
 
-                // Validar membresía solo si el usuario es cliente
+                
                 if (usuarioActual is Cliente)
                 {
-                    Membresia membresia = Membresia.ObtenerMembresia(usuarioActual.Nombre);
+                    Membresia membresia = Membresia.ObtenerMembresia(usuarioActual.NombreUsuario);
 
                     if (membresia != null)
                     {
                         int diasRestantes = (membresia.FechaVencimiento - DateTime.Now).Days;
                         if (diasRestantes <= 5)
                         {
-                            MessageBox.Show($"Tu membresía vence en {diasRestantes} días. ¡Renueva pronto!");
+                            MessageBox.Show($"Tu membresía vence en {diasRestantes} días. ¡Renueva pronto!", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                     else
@@ -61,7 +56,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                     }
                 }
 
-               
+                // Mostrar el formulario principal
                 UsuarioForm principalForm = new UsuarioForm(usuarioActual);
                 principalForm.Show();
                 this.Hide();
@@ -76,17 +71,29 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
         {
             if (!dataHandler.FileExists(rutaArchivo))
             {
-                MessageBox.Show($"Archivo {rutaArchivo} no encontrado.");
+                MessageBox.Show($"Archivo {rutaArchivo} no encontrado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
 
             var lineas = dataHandler.ReadAllLines(rutaArchivo);
+            bool esPrimeraLinea = true;
+
             foreach (var linea in lineas)
             {
+                if (esPrimeraLinea)
+                {
+                    esPrimeraLinea = false;
+                    continue;
+                }
+
                 string[] datos = linea.Split(',');
                 if (datos.Length >= 6)
                 {
-                    string id = datos[0];
+                    if (!int.TryParse(datos[0], out int id))
+                    {
+                        continue;
+                    }
+
                     string nombre = datos[1];
                     string correo = datos[2];
                     string tipo = datos[3];
@@ -96,9 +103,9 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                     if (usuarioArchivo == usuario && contraseñaArchivo == contraseña)
                     {
                         if (tipo == "Cliente")
-                            return new Cliente(int.Parse(id), nombre, correo, contraseñaArchivo);
+                            return new Cliente(id, nombre, correo, usuarioArchivo, contraseñaArchivo);
                         else if (tipo == "Entrenador")
-                            return new Entrenador(int.Parse(id), nombre, correo, contraseñaArchivo, "PuntosFuertes"); // Ajustar según los datos
+                            return new Entrenador(id, nombre, correo, usuarioArchivo, contraseñaArchivo, "Puntos fuertes" );
                     }
                 }
             }
@@ -106,3 +113,6 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
         }
     }
 }
+
+
+

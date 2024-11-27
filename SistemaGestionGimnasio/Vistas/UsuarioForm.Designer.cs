@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.inicioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.usuariosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RegistrarUsuarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ModificarUsuarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,7 +56,6 @@
             this.reporteDeClasesPopularesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.facturaciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gestiónDeFacturasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelInicio = new System.Windows.Forms.Panel();
             this.LblUsuario = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -70,26 +68,18 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.inicioToolStripMenuItem,
             this.usuariosToolStripMenuItem,
             this.clasesToolStripMenuItem,
             this.membresíasToolStripMenuItem,
             this.inventarioToolStripMenuItem,
             this.reportesToolStripMenuItem,
-            this.facturaciónToolStripMenuItem,
-            this.salirToolStripMenuItem});
+            this.facturaciónToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
             this.menuStrip1.Size = new System.Drawing.Size(973, 28);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // inicioToolStripMenuItem
-            // 
-            this.inicioToolStripMenuItem.Name = "inicioToolStripMenuItem";
-            this.inicioToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
-            this.inicioToolStripMenuItem.Text = "Inicio";
             // 
             // usuariosToolStripMenuItem
             // 
@@ -115,7 +105,7 @@
             this.ModificarUsuarioToolStripMenuItem.Name = "ModificarUsuarioToolStripMenuItem";
             this.ModificarUsuarioToolStripMenuItem.Size = new System.Drawing.Size(350, 26);
             this.ModificarUsuarioToolStripMenuItem.Text = "Modificar Usuario";
-            
+            this.ModificarUsuarioToolStripMenuItem.Click += new System.EventHandler(this.ModificarUsuarioToolStripMenuItem_Click);
             // 
             // ConsultarUsuariosToolStripMenuItem
             // 
@@ -148,7 +138,7 @@
             this.consultarReservasEntrenadoresToolStripMenuItem,
             this.eliminarClasesToolStripMenuItem});
             this.clasesToolStripMenuItem.Name = "clasesToolStripMenuItem";
-            this.clasesToolStripMenuItem.Size = new System.Drawing.Size(64, 26);
+            this.clasesToolStripMenuItem.Size = new System.Drawing.Size(64, 24);
             this.clasesToolStripMenuItem.Text = "Clases";
             // 
             // ConsultarClaseToolStripMenuItem
@@ -291,21 +281,15 @@
             this.facturaciónToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.gestiónDeFacturasToolStripMenuItem});
             this.facturaciónToolStripMenuItem.Name = "facturaciónToolStripMenuItem";
-            this.facturaciónToolStripMenuItem.Size = new System.Drawing.Size(98, 26);
+            this.facturaciónToolStripMenuItem.Size = new System.Drawing.Size(98, 24);
             this.facturaciónToolStripMenuItem.Text = "Facturación";
             // 
             // gestiónDeFacturasToolStripMenuItem
             // 
             this.gestiónDeFacturasToolStripMenuItem.Name = "gestiónDeFacturasToolStripMenuItem";
-            this.gestiónDeFacturasToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.gestiónDeFacturasToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
             this.gestiónDeFacturasToolStripMenuItem.Text = "Gestión de Facturas";
             this.gestiónDeFacturasToolStripMenuItem.Click += new System.EventHandler(this.gestiónDeFacturasToolStripMenuItem_Click);
-            // 
-            // salirToolStripMenuItem
-            // 
-            this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
-            this.salirToolStripMenuItem.Size = new System.Drawing.Size(52, 24);
-            this.salirToolStripMenuItem.Text = "Salir";
             // 
             // panelInicio
             // 
@@ -375,11 +359,9 @@
 
         #endregion
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem inicioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem membresíasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inventarioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem salirToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clasesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ConsultarClaseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ActualizarCupoToolStripMenuItem;

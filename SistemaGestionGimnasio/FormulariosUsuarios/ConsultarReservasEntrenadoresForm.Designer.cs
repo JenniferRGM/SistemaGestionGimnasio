@@ -127,7 +127,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 36F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.MediumAquamarine;
-            this.ClientSize = new System.Drawing.Size(1370, 749);
+            this.ClientSize = new System.Drawing.Size(930, 515);
             this.Controls.Add(this.BtnConsultar);
             this.Controls.Add(this.DgvReservas);
             this.Controls.Add(this.DtpFecha);

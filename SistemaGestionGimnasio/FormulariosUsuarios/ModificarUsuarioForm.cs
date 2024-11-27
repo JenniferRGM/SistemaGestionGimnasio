@@ -68,13 +68,13 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             bool usuarioEncontrado = false;
 
            
-            if (!dataHandler.FileExists("usuarios.csv"))
+            if (!dataHandler.FileExists("Assets/usuarios.csv"))
             {
                 MessageBox.Show("El archivo de usuarios no existe.");
                 return;
             }
 
-            foreach (var linea in dataHandler.ReadAllLines("usuarios.csv"))
+            foreach (var linea in dataHandler.ReadAllLines("Assets/usuarios.csv"))
             {
                 string[] datos = linea.Split(',');
 
@@ -122,7 +122,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
         }
         private bool ActualizarUsuarioEnCsv(string id, string nombre, string correo, string tipo)
         {
-            string[] lineas = dataHandler.ReadAllLines("usuarios.csv");
+            string[] lineas = dataHandler.ReadAllLines("Assets/usuarios.csv");
             bool usuarioEncontrado = false;
 
             for (int i = 0; i < lineas.Length; i++)

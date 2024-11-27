@@ -12,6 +12,7 @@ using SistemaGestionGimnasio.Modelos;
 using SistemaGestionGimnasio.FormulariosUsuarios;
 using SistemaGestionGimnasio.DataHandler;
 
+
 namespace SistemaGestionGimnasio.Vistas
 {
     public partial class UsuarioForm : Form
@@ -25,37 +26,58 @@ namespace SistemaGestionGimnasio.Vistas
             this.Load += new EventHandler(UsuarioForm_Load);
         }
 
+
         private void ConfigurarMenus()
         {
+            MessageBox.Show($"El tipo de usuario actual es: {usuarioActual.Tipo}", "Depuración");
+
             if (usuarioActual.Tipo == "Cliente")
             {
-                ModificarUsuarioToolStripMenuItem.Visible = true;
-                ConsultarClaseToolStripMenuItem.Visible = true;
-                consultarReservasToolStripMenuItem.Visible = true;
-                reservarClasesToolStripMenuItem.Visible = true;
-                eliminarClasesToolStripMenuItem.Visible = true;
-                ConsultarMembresíasToolStripMenuItem.Visible = true;
-
-                gestiónDeFacturasToolStripMenuItem.Visible = false;
-                AdministrarMembresíasToolStripMenuItem.Visible = false;
-                ActualizarCupoToolStripMenuItem.Visible = false;
-                consultarReservasEntrenadoresToolStripMenuItem.Visible = false;
-                reportesDeCrecimientosDeMembresíasToolStripMenuItem.Visible = false;
-                registrarEquipoToolStripMenuItem.Visible = false;
-                consultarInventarioToolStripMenuItem.Visible = false;
-                notificacionesDeMantenimientoToolStripMenuItem.Visible = false;
-                reporteDeMatrículaToolStripMenuItem.Visible = false;
-                informeContableToolStripMenuItem.Visible = false;
-                reporteDeClasesPopularesToolStripMenuItem.Visible = false;
-                
+                ConfigurarMenuCliente();
             }
             else if (usuarioActual.Tipo == "Entrenador")
             {
-                
-                foreach (ToolStripMenuItem item in menuStrip1.Items)
-                {
-                    item.Visible = true;
-                }
+                ConfigurarMenuEntrenador();
+            }
+            else
+            {
+                MessageBox.Show("Tipo de usuario no reconocido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ConfigurarMenuCliente()
+        {
+            // Mostrar opciones para cliente
+            ModificarUsuarioToolStripMenuItem.Visible = true;
+            ConsultarClaseToolStripMenuItem.Visible = true;
+            consultarReservasToolStripMenuItem.Visible = true;
+            reservarClasesToolStripMenuItem.Visible = true;
+            eliminarClasesToolStripMenuItem.Visible = true;
+            ConsultarMembresíasToolStripMenuItem.Visible = true;
+
+            // Ocultar opciones no aplicables a cliente
+            gestiónDeFacturasToolStripMenuItem.Visible = false;
+            AdministrarMembresíasToolStripMenuItem.Visible = false;
+            ActualizarCupoToolStripMenuItem.Visible = false;
+            consultarReservasEntrenadoresToolStripMenuItem.Visible = false;
+            reportesDeCrecimientosDeMembresíasToolStripMenuItem.Visible = false;
+            registrarEquipoToolStripMenuItem.Visible = false;
+            consultarInventarioToolStripMenuItem.Visible = false;
+            notificacionesDeMantenimientoToolStripMenuItem.Visible = false;
+            reporteDeMatrículaToolStripMenuItem.Visible = false;
+            informeContableToolStripMenuItem.Visible = false;
+            reporteDeClasesPopularesToolStripMenuItem.Visible = false;
+            RegistrarUsuarioToolStripMenuItem.Visible = false;
+            ConsultarUsuariosToolStripMenuItem.Visible = false;
+            EliminarUsuariosToolStripMenuItem.Visible = false;
+            horariosYPuntosFuertesEntrenadoresToolStripMenuItem.Visible = false;
+        }
+
+        private void ConfigurarMenuEntrenador()
+        {
+            foreach (ToolStripMenuItem item in menuStrip1.Items)
+            {
+                item.Visible = true;
             }
         }
 

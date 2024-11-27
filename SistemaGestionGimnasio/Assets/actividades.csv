@@ -1,13 +1,121 @@
-Nombre,Fecha,Cupo
-Ejercicios variados para activar todo el cuerpo,11/11/2024,10
-Spinning,23/10/2024,15
-Yoga Matutino,18/09/2024,6
-CrossFit,28/12/2024,10
-Zumba,09/05/2024,9
-Boxeo para Principiantes,13/09/2024,7
-Pilates,18/03/2024,12
-Circuito de Peso Libre,19/07/2024,8
-Cardio en Grupo,11/05/2024,23
-Bootcamp,11/12/2024,7
-Kickboxing,16/10/2024,16
-Meditación y Relaxación,26/06/2024,20
+Nombre,Fecha,Horario,Entrenador,Cupo
+Ejercicios funcionales,27/11/2024,5:00 - 6:00,Andrea Mora Salas,25
+Spinning,27/11/2024,6:00 - 7:00,Alejandro Solano Jimenez,25
+Yoga Matutino,27/11/2024,7:00 - 8:00,Veronica Solis Castro,25
+CrossFit,27/11/2024,8:00 - 9:00,Diego Fernandez Rojas,25
+Zumba,27/11/2024,9:00 - 10:00,Maria Jose Quesada Vargas,25
+Boxeo para Principiantes,27/11/2024,10:00 - 11:00,Felipe Alvarado Mora,25
+Pilates,27/11/2024,11:00 - 12:00,Andrea Mora Salas,25
+Circuito de Peso Libre,27/11/2024,12:00 - 13:00,Alejandro Solano Jimenez,25
+Cardio en Grupo,27/11/2024,13:00 - 14:00,Veronica Solis Castro,25
+Bootcamp,27/11/2024,14:00 - 15:00,Diego Fernandez Rojas,25
+Kickboxing,27/11/2024,15:00 - 16:00,Maria Jose Quesada Vargas,25
+Meditacion y Relajacion,27/11/2024,16:00 - 17:00,Felipe Alvarado Mora,25
+Ejercicios funcionales,27/11/2024,17:00 - 18:00,Andrea Mora Salas,25
+Spinning,27/11/2024,18:00 - 19:00,Alejandro Solano Jimenez,25
+Yoga Matutino,27/11/2024,19:00 - 20:00,Veronica Solis Castro,25
+CrossFit,27/11/2024,20:00 - 21:00,Diego Fernandez Rojas,25
+Zumba,27/11/2024,21:00 - 22:00,Maria Jose Quesada Vargas,25
+Boxeo para Principiantes,28/11/2024,5:00 - 6:00,Felipe Alvarado Mora,25
+Pilates,28/11/2024,6:00 - 7:00,Andrea Mora Salas,25
+Circuito de Peso Libre,28/11/2024,7:00 - 8:00,Alejandro Solano Jimenez,25
+Cardio en Grupo,28/11/2024,8:00 - 9:00,Veronica Solis Castro,25
+Bootcamp,28/11/2024,9:00 - 10:00,Diego Fernandez Rojas,25
+Kickboxing,28/11/2024,10:00 - 11:00,Maria Jose Quesada Vargas,25
+Meditacion y Relajacion,28/11/2024,11:00 - 12:00,Felipe Alvarado Mora,25
+Ejercicios funcionales,28/11/2024,12:00 - 13:00,Andrea Mora Salas,25
+Spinning,28/11/2024,13:00 - 14:00,Alejandro Solano Jimenez,25
+Yoga Matutino,28/11/2024,14:00 - 15:00,Veronica Solis Castro,25
+CrossFit,28/11/2024,15:00 - 16:00,Diego Fernandez Rojas,25
+Zumba,28/11/2024,16:00 - 17:00,Maria Jose Quesada Vargas,25
+Boxeo para Principiantes,28/11/2024,17:00 - 18:00,Felipe Alvarado Mora,25
+Pilates,28/11/2024,18:00 - 19:00,Andrea Mora Salas,25
+Circuito de Peso Libre,28/11/2024,19:00 - 20:00,Alejandro Solano Jimenez,25
+Cardio en Grupo,28/11/2024,20:00 - 21:00,Veronica Solis Castro,25
+Bootcamp,28/11/2024,21:00 - 22:00,Diego Fernandez Rojas,25
+Kickboxing,29/11/2024,5:00 - 6:00,Maria Jose Quesada Vargas,25
+Meditacion y Relajacion,29/11/2024,6:00 - 7:00,Felipe Alvarado Mora,25
+Ejercicios funcionales,29/11/2024,7:00 - 8:00,Andrea Mora Salas,25
+Spinning,29/11/2024,8:00 - 9:00,Alejandro Solano Jimenez,25
+Yoga Matutino,29/11/2024,9:00 - 10:00,Veronica Solis Castro,25
+CrossFit,29/11/2024,10:00 - 11:00,Diego Fernandez Rojas,25
+Zumba,29/11/2024,11:00 - 12:00,Maria Jose Quesada Vargas,25
+Boxeo para Principiantes,29/11/2024,12:00 - 13:00,Felipe Alvarado Mora,25
+Pilates,29/11/2024,13:00 - 14:00,Andrea Mora Salas,25
+Circuito de Peso Libre,29/11/2024,14:00 - 15:00,Alejandro Solano Jimenez,25
+Cardio en Grupo,29/11/2024,15:00 - 16:00,Veronica Solis Castro,25
+Bootcamp,29/11/2024,16:00 - 17:00,Diego Fernandez Rojas,25
+Kickboxing,29/11/2024,17:00 - 18:00,Maria Jose Quesada Vargas,25
+Meditacion y Relajacion,29/11/2024,18:00 - 19:00,Felipe Alvarado Mora,25
+Ejercicios funcionales,29/11/2024,19:00 - 20:00,Andrea Mora Salas,25
+Spinning,29/11/2024,20:00 - 21:00,Alejandro Solano Jimenez,25
+Yoga Matutino,29/11/2024,21:00 - 22:00,Veronica Solis Castro,25
+CrossFit,30/11/2024,5:00 - 6:00,Diego Fernandez Rojas,25
+Zumba,30/11/2024,6:00 - 7:00,Maria Jose Quesada Vargas,25
+Boxeo para Principiantes,30/11/2024,7:00 - 8:00,Felipe Alvarado Mora,25
+Pilates,30/11/2024,8:00 - 9:00,Andrea Mora Salas,25
+Circuito de Peso Libre,30/11/2024,9:00 - 10:00,Alejandro Solano Jimenez,25
+Cardio en Grupo,30/11/2024,10:00 - 11:00,Veronica Solis Castro,25
+Bootcamp,30/11/2024,11:00 - 12:00,Diego Fernandez Rojas,25
+Kickboxing,30/11/2024,12:00 - 13:00,Maria Jose Quesada Vargas,25
+Meditacion y Relajacion,30/11/2024,13:00 - 14:00,Felipe Alvarado Mora,25
+Ejercicios funcionales,30/11/2024,14:00 - 15:00,Andrea Mora Salas,25
+Spinning,30/11/2024,15:00 - 16:00,Alejandro Solano Jimenez,25
+Yoga Matutino,30/11/2024,16:00 - 17:00,Veronica Solis Castro,25
+CrossFit,30/11/2024,17:00 - 18:00,Diego Fernandez Rojas,25
+Zumba,30/11/2024,18:00 - 19:00,Maria Jose Quesada Vargas,25
+Boxeo para Principiantes,30/11/2024,19:00 - 20:00,Felipe Alvarado Mora,25
+Pilates,30/11/2024,20:00 - 21:00,Andrea Mora Salas,25
+Circuito de Peso Libre,30/11/2024,21:00 - 22:00,Alejandro Solano Jimenez,25
+Cardio en Grupo,01/12/2024,5:00 - 6:00,Veronica Solis Castro,25
+Bootcamp,01/12/2024,6:00 - 7:00,Diego Fernandez Rojas,25
+Kickboxing,01/12/2024,7:00 - 8:00,Maria Jose Quesada Vargas,25
+Meditacion y Relajacion,01/12/2024,8:00 - 9:00,Felipe Alvarado Mora,25
+Ejercicios funcionales,01/12/2024,9:00 - 10:00,Andrea Mora Salas,25
+Spinning,01/12/2024,10:00 - 11:00,Alejandro Solano Jimenez,25
+Yoga Matutino,01/12/2024,11:00 - 12:00,Veronica Solis Castro,25
+CrossFit,01/12/2024,12:00 - 13:00,Diego Fernandez Rojas,25
+Zumba,01/12/2024,13:00 - 14:00,Maria Jose Quesada Vargas,25
+Boxeo para Principiantes,01/12/2024,14:00 - 15:00,Felipe Alvarado Mora,25
+Pilates,01/12/2024,15:00 - 16:00,Andrea Mora Salas,25
+Circuito de Peso Libre,01/12/2024,16:00 - 17:00,Alejandro Solano Jimenez,25
+Cardio en Grupo,01/12/2024,17:00 - 18:00,Veronica Solis Castro,25
+Bootcamp,01/12/2024,18:00 - 19:00,Diego Fernandez Rojas,25
+Kickboxing,01/12/2024,19:00 - 20:00,Maria Jose Quesada Vargas,25
+Meditacion y Relajacion,01/12/2024,20:00 - 21:00,Felipe Alvarado Mora,25
+Ejercicios funcionales,01/12/2024,21:00 - 22:00,Andrea Mora Salas,25
+Spinning,02/12/2024,5:00 - 6:00,Alejandro Solano Jimenez,25
+Yoga Matutino,02/12/2024,6:00 - 7:00,Veronica Solis Castro,25
+CrossFit,02/12/2024,7:00 - 8:00,Diego Fernandez Rojas,25
+Zumba,02/12/2024,8:00 - 9:00,Maria Jose Quesada Vargas,25
+Boxeo para Principiantes,02/12/2024,9:00 - 10:00,Felipe Alvarado Mora,25
+Pilates,02/12/2024,10:00 - 11:00,Andrea Mora Salas,25
+Circuito de Peso Libre,02/12/2024,11:00 - 12:00,Alejandro Solano Jimenez,25
+Cardio en Grupo,02/12/2024,12:00 - 13:00,Veronica Solis Castro,25
+Bootcamp,02/12/2024,13:00 - 14:00,Diego Fernandez Rojas,25
+Kickboxing,02/12/2024,14:00 - 15:00,Maria Jose Quesada Vargas,25
+Meditacion y Relajacion,02/12/2024,15:00 - 16:00,Felipe Alvarado Mora,25
+Ejercicios funcionales,02/12/2024,16:00 - 17:00,Andrea Mora Salas,25
+Spinning,02/12/2024,17:00 - 18:00,Alejandro Solano Jimenez,25
+Yoga Matutino,02/12/2024,18:00 - 19:00,Veronica Solis Castro,25
+CrossFit,02/12/2024,19:00 - 20:00,Diego Fernandez Rojas,25
+Zumba,02/12/2024,20:00 - 21:00,Maria Jose Quesada Vargas,25
+Boxeo para Principiantes,02/12/2024,21:00 - 22:00,Felipe Alvarado Mora,25
+Pilates,03/12/2024,5:00 - 6:00,Andrea Mora Salas,25
+Circuito de Peso Libre,03/12/2024,6:00 - 7:00,Alejandro Solano Jimenez,25
+Cardio en Grupo,03/12/2024,7:00 - 8:00,Veronica Solis Castro,25
+Bootcamp,03/12/2024,8:00 - 9:00,Diego Fernandez Rojas,25
+Kickboxing,03/12/2024,9:00 - 10:00,Maria Jose Quesada Vargas,25
+Meditacion y Relajacion,03/12/2024,10:00 - 11:00,Felipe Alvarado Mora,25
+Ejercicios funcionales,03/12/2024,11:00 - 12:00,Andrea Mora Salas,25
+Spinning,03/12/2024,12:00 - 13:00,Alejandro Solano Jimenez,25
+Yoga Matutino,03/12/2024,13:00 - 14:00,Veronica Solis Castro,25
+CrossFit,03/12/2024,14:00 - 15:00,Diego Fernandez Rojas,25
+Zumba,03/12/2024,15:00 - 16:00,Maria Jose Quesada Vargas,25
+Boxeo para Principiantes,03/12/2024,16:00 - 17:00,Felipe Alvarado Mora,25
+Pilates,03/12/2024,17:00 - 18:00,Andrea Mora Salas,25
+Circuito de Peso Libre,03/12/2024,18:00 - 19:00,Alejandro Solano Jimenez,25
+Cardio en Grupo,03/12/2024,19:00 - 20:00,Veronica Solis Castro,25
+Bootcamp,03/12/2024,20:00 - 21:00,Diego Fernandez Rojas,25
+Kickboxing,03/12/2024,21:00 - 22:00,Maria Jose Quesada Vargas,25
+

@@ -8,8 +8,8 @@ namespace SistemaGestionGimnasio.Modelos
 {
     internal class Cliente : Usuario
     {
-        public Cliente(int id, string nombre, string correo, string contraseña)
-                    : base(id, nombre, correo, contraseña, "Cliente")
+        public Cliente(int id, string nombre, string correo, string nombreUsuario, string contraseña)
+        : base(id, nombre, correo, "Cliente", contraseña, nombreUsuario)
         { 
         }
 

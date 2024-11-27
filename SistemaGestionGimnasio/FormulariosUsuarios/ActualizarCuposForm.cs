@@ -31,7 +31,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void CargarClasesEnComboBox()
         {
-            string rutaArchivo = Path.Combine("Assets", "clases.csv");
+            string rutaArchivo = Path.Combine("Assets", "actividades.csv");
 
             if (!dataHandler.FileExists(rutaArchivo))
             {
@@ -85,9 +85,9 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             {
                 string[] datos = linea.Split(',');
 
-                if (datos.Length >= 3 && datos[0] == clase)
+                if (datos.Length >= 5 && datos[0] == clase)
                 {
-                    lineasActualizadas.Add($"{datos[0]},{datos[1]},{nuevoCupo}");
+                    lineasActualizadas.Add($"{datos[0]},{datos[4]},{nuevoCupo}");
                     actualizado = true;
                 }
                 else

@@ -45,13 +45,13 @@
             this.NombreClase,
             this.FechaClase,
             this.CuposDisponibles});
-            this.DgvClases.Location = new System.Drawing.Point(64, 111);
-            this.DgvClases.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.DgvClases.Location = new System.Drawing.Point(210, 130);
+            this.DgvClases.Margin = new System.Windows.Forms.Padding(4);
             this.DgvClases.Name = "DgvClases";
             this.DgvClases.ReadOnly = true;
             this.DgvClases.RowHeadersWidth = 51;
             this.DgvClases.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DgvClases.Size = new System.Drawing.Size(468, 185);
+            this.DgvClases.Size = new System.Drawing.Size(579, 197);
             this.DgvClases.TabIndex = 0;
             // 
             // NombreClase
@@ -79,7 +79,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(57, 46);
+            this.label1.Location = new System.Drawing.Point(407, 25);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(96, 37);
@@ -94,7 +94,7 @@
             this.ClientSize = new System.Drawing.Size(1067, 554);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.DgvClases);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ConsultarClasesForm";
             this.Text = "ConsultarClasesForm";
             this.Load += new System.EventHandler(this.ConsultarClasesForm_Load);

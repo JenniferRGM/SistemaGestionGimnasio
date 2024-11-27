@@ -33,50 +33,53 @@ namespace SistemaGestionGimnasio.Modelos
 
         public static Membresia ObtenerMembresia(string usuario)
         {
-            string rutaArchivo = "membresias.csv";
+            string rutaArchivo = Path.Combine("Assets", "membresias.csv");
 
             if (!File.Exists(rutaArchivo))
             {
-                MessageBox.Show("Archivo de membresías no encontrado.");
+                MessageBox.Show($"El archivo {rutaArchivo} no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
-
             }
 
             using (StreamReader lector = new StreamReader(rutaArchivo))
             {
                 string linea;
-                string formatoFecha = "dd/MM/yyyy";
+                bool esPrimeraLinea = true;
 
                 while ((linea = lector.ReadLine()) != null)
                 {
-                    string[] datos = linea.Split(',');
-
-                    if (datos.Length >= 3 && datos[0].Trim().Equals(usuario.Trim(), StringComparison.OrdinalIgnoreCase))
+                    if (esPrimeraLinea)
                     {
-                        if (!DateTime.TryParseExact(datos[1], formatoFecha, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaInicio) ||
-                            !DateTime.TryParseExact(datos[2], formatoFecha, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaVencimiento))
+                        esPrimeraLinea = false;
+                        continue;
+                    }
+
+                    string[] datos = linea.Split(',');
+                    if (datos.Length >= 3 && datos[0] == usuario)
+                    {
+                        if (DateTime.TryParseExact(datos[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaInicio) &&
+                   DateTime.TryParseExact(datos[2].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaVencimiento))
                         {
-                            MessageBox.Show($"Error al procesar las fechas para el usuario: {usuario}");
+                            return new Membresia(fechaInicio, fechaVencimiento);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Error en el formato de las fechas para el usuario {usuario}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return null;
                         }
-
-                        return new Membresia(fechaInicio, fechaVencimiento);
                     }
                 }
             }
 
-
-            MessageBox.Show($"No se encontró membresía asociada al usuario.");
-            return null;
+            return null; 
         }
     }
 }
-                    
-                
-            
 
-            
-        
+
+
+
+
 
 
 

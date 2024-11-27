@@ -38,15 +38,24 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
             DgvClases.Rows.Clear();
 
-            foreach (var linea in dataHandler.ReadAllLines(rutaArchivo)) 
+             var lineas = dataHandler.ReadAllLines(rutaArchivo);
+
+            if (lineas.Length == 0)
             {
-                string[] datos = linea.Split(',');
+                MessageBox.Show("El archivo de clases está vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            for (int i = 1; i < lineas.Length; i++)
+            {
+                string[] datos = lineas[i].Split(',');
 
                 if (datos.Length >= 3)
                 {
-                    DgvClases.Rows.Add(datos[0], datos[1], datos[2]);
+                    DgvClases.Rows.Add(datos[0], datos[1], datos[4]);
                 }
             }
+
         }
     }
 }
