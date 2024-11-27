@@ -20,9 +20,9 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
         public EliminarClasesForm(Usuario usuario, IDataHandler dataHandler)
         {
             InitializeComponent();
-            usuarioActual = usuario;
-            CargarClases();
+            this.usuarioActual = usuario;
             this.dataHandler = dataHandler;
+            CargarClases();
         }
 
         private void CargarClases()
