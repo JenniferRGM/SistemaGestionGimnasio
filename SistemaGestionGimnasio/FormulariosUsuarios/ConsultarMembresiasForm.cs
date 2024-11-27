@@ -15,7 +15,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class ConsultarMembresiasForm : Form
     {
-        private readonly IDataHandler dataHandler;
+        private IDataHandler dataHandler;
         public ConsultarMembresiasForm(IDataHandler dataHandler)
         {
             InitializeComponent();
@@ -25,45 +25,34 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void CargarMembresias()
         {
-            string rutaArchivo = "Assets/membresias.csv"; // Ruta relativa al archivo
-
-            if (!dataHandler.FileExists(rutaArchivo)) // Verifica si el archivo existe usando IDataHandler
+            if (dataHandler == null)
             {
-                MessageBox.Show("No se encontró el archivo de membresías.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("El manejador de datos no está inicializado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            DgvMembresias.Rows.Clear(); 
+            string rutaArchivo = "Assets/membresias.csv"; 
+
+            if (!dataHandler.FileExists(rutaArchivo)) 
+            {
+                MessageBox.Show("El archivo de membresías no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             try
             {
-                foreach (var linea in dataHandler.ReadAllLines(rutaArchivo)) 
+                var datos = dataHandler.ReadLines(rutaArchivo); 
+                DgvMembresias.Rows.Clear(); 
+
+                foreach (var linea in datos)
                 {
-                    string[] datos = linea.Split(',');
-                    if (datos.Length >= 3)
-                    {
-                        string usuario = datos[0];
-                        string fechaVencimientoString = datos[2];
-                        string estado = "Desconocido";
-
-                        if (DateTime.TryParseExact(datos[2], "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaVencimiento))
-                        {
-                            int diasRestantes = (fechaVencimiento - DateTime.Now).Days;
-                            estado = diasRestantes <= 5 ? "Por vencer" : "Activa";
-                        }
-                        else
-                        {
-                            MessageBox.Show($"El formato de la fecha '{fechaVencimientoString}' no es válido.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
-
-                        // Agrega la fila incluso si la fecha no fue válida para mostrar los datos restantes
-                        DgvMembresias.Rows.Add(usuario, datos[1], fechaVencimientoString, estado);
-                    }
+                    var valores = linea.Split(','); 
+                    DgvMembresias.Rows.Add(valores);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar las membresías: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error al cargar las membresías: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

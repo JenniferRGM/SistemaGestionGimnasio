@@ -130,9 +130,9 @@ namespace SistemaGestionGimnasio.Vistas
 
         private void ConsultarMembresíasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IDataHandler dataHandler = new FileDataHandler();
-            ConsultarMembresiasForm form = new ConsultarMembresiasForm(dataHandler);
-            form.Show();
+            var dataHandler = new FileDataHandler();
+            var formulario = new ConsultarMembresiasForm(dataHandler);
+            formulario.Show();
         }
 
         private void ReservarClasesToolStripMenuItem_Click(object sender, EventArgs e)

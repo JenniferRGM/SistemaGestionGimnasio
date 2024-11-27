@@ -12,5 +12,6 @@ namespace SistemaGestionGimnasio.DataHandler
         void AppendLine(string filePath, string line);
         void DeleteFile(string filePath);
         void MoveFile(string sourcePath, string destinationPath);
+        IEnumerable<string> ReadLines(string path);
     }
 }

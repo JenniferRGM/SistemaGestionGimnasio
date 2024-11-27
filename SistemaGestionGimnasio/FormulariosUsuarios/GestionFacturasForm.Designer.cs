@@ -39,10 +39,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.DgvFacturas = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button2 = new System.Windows.Forms.Button();
             this.BtnEmitirFacturasMensuales = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DgvFacturas)).BeginInit();
@@ -149,46 +145,14 @@
             // DgvFacturas
             // 
             this.DgvFacturas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DgvFacturas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4});
             this.DgvFacturas.Location = new System.Drawing.Point(16, 259);
             this.DgvFacturas.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DgvFacturas.Name = "DgvFacturas";
+            this.DgvFacturas.ReadOnly = true;
             this.DgvFacturas.RowHeadersWidth = 62;
             this.DgvFacturas.RowTemplate.Height = 28;
             this.DgvFacturas.Size = new System.Drawing.Size(671, 120);
             this.DgvFacturas.TabIndex = 10;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Num. Factura";
-            this.Column1.MinimumWidth = 8;
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 150;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Fecha";
-            this.Column2.MinimumWidth = 8;
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 150;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Cliente";
-            this.Column3.MinimumWidth = 8;
-            this.Column3.Name = "Column3";
-            this.Column3.Width = 150;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Estado";
-            this.Column4.MinimumWidth = 8;
-            this.Column4.Name = "Column4";
-            this.Column4.Width = 150;
             // 
             // button2
             // 
@@ -256,10 +220,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DataGridView DgvFacturas;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button BtnEmitirFacturasMensuales;
     }

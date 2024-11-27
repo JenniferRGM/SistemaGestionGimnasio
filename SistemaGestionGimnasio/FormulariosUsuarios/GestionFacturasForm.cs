@@ -22,10 +22,11 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
         {
             InitializeComponent();
 
+            this.dataHandler = dataHandler;
             CmbEstado.Items.AddRange(new string[] { "Pagada", "Pendiente" });
             CargarFacturas();
             ActualizarListaFacturas();
-            this.dataHandler = dataHandler;
+            
         }
 
         private void BtnGenerarFactura(object sender, EventArgs e)
@@ -59,8 +60,40 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             ActualizarListaFacturas();
         }
 
+        private static void GuardarFacturaEnArchivo(Factura factura, IDataHandler dataHandler)
+        {
+            string rutaArchivo = "facturas.csv";
+
+            try
+            {
+                string nuevaLinea = $"{factura.NumeroFactura},{factura.FechaEmision},{factura.Cliente},{factura.Monto},{factura.Estado}";
+                dataHandler.AppendLine(rutaArchivo, nuevaLinea);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al guardar la factura: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+        private void ActualizarListaFacturas()
+        {
+            DgvFacturas.Rows.Clear();
+
+            foreach (var factura in listaFacturas)
+            {
+                DgvFacturas.Rows.Add(factura.NumeroFactura, factura.FechaEmision.ToShortDateString(), factura.Cliente, factura.Monto, factura.Estado);
+            }
+        }
+
         private void CargarFacturas()
         {
+            if (dataHandler == null)
+            {
+                MessageBox.Show("Error interno: El gestor de datos no está inicializado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             string rutaArchivo = "facturas.csv";
 
             if (!dataHandler.FileExists(rutaArchivo))
@@ -91,31 +124,6 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cargar las facturas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void ActualizarListaFacturas()
-        {
-            DgvFacturas.Rows.Clear();
-
-            foreach (var factura in listaFacturas)
-            {
-                DgvFacturas.Rows.Add(factura.NumeroFactura, factura.FechaEmision.ToShortDateString(), factura.Cliente, factura.Estado);
-            }
-        }
-
-        private static void GuardarFacturaEnArchivo(Factura factura, IDataHandler dataHandler)
-        {
-            string rutaArchivo = "facturas.csv";
-
-            try
-            {
-                string nuevaLinea = $"{factura.NumeroFactura},{factura.FechaEmision},{factura.Cliente},{factura.Monto},{factura.Estado}";
-                dataHandler.AppendLine(rutaArchivo, nuevaLinea);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al guardar la factura: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

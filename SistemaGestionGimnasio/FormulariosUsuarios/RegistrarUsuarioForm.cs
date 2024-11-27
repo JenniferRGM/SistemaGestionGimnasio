@@ -22,6 +22,9 @@ namespace SistemaGestionGimnasio
             InitializeComponent();
             this.Load += new EventHandler(RegistrarUsuarioForm_Load);
             this.dataHandler = dataHandler;
+
+            //evento KeyPress al TextBox ID
+            txtID.KeyPress += new KeyPressEventHandler(ValidarSoloNumeros);
         }
 
         private void RegistrarUsuarioForm_Load(object sender, EventArgs e)
@@ -49,8 +52,19 @@ namespace SistemaGestionGimnasio
 
             txtCorreo.Enter += new EventHandler(RemoverPlaceholderCorreo);
             txtCorreo.Leave += new EventHandler(AgregarPlaceholderCorreo);
-           
-    }
+        }
+    
+        // Método para permitir solo números en el campo txtID
+        private void ValidarSoloNumeros(object sender, KeyPressEventArgs e)
+        {
+            
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; 
+            }
+        }
+
+
         private void RemoverPlaceholderID(object sender, EventArgs e)
             {
                 if (txtID.Text == "Digite su ID")

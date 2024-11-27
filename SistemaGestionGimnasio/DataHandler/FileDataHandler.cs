@@ -57,6 +57,11 @@ namespace SistemaGestionGimnasio.DataHandler
             }
         }
 
+        public IEnumerable<string> ReadLines(string path)
+        {
+            return File.ReadLines(path); 
+        }
+
     }
 }
 
