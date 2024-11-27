@@ -52,9 +52,9 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(330, 9);
+            this.label1.Location = new System.Drawing.Point(293, 7);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(312, 45);
+            this.label1.Size = new System.Drawing.Size(267, 37);
             this.label1.TabIndex = 0;
             this.label1.Text = "Gestión de Facturas";
             // 
@@ -62,51 +62,54 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 118);
+            this.label2.Location = new System.Drawing.Point(11, 94);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(100, 32);
+            this.label2.Size = new System.Drawing.Size(83, 28);
             this.label2.TabIndex = 1;
             this.label2.Text = "Cliente:";
             // 
             // TxtCliente
             // 
-            this.TxtCliente.Location = new System.Drawing.Point(118, 124);
+            this.TxtCliente.Location = new System.Drawing.Point(105, 99);
+            this.TxtCliente.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TxtCliente.Name = "TxtCliente";
-            this.TxtCliente.Size = new System.Drawing.Size(227, 26);
+            this.TxtCliente.Size = new System.Drawing.Size(202, 22);
             this.TxtCliente.TabIndex = 2;
             // 
             // TxtMonto
             // 
-            this.TxtMonto.Location = new System.Drawing.Point(482, 118);
+            this.TxtMonto.Location = new System.Drawing.Point(422, 101);
+            this.TxtMonto.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TxtMonto.Name = "TxtMonto";
-            this.TxtMonto.Size = new System.Drawing.Size(230, 26);
+            this.TxtMonto.Size = new System.Drawing.Size(205, 22);
             this.TxtMonto.TabIndex = 3;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(378, 118);
+            this.label3.Location = new System.Drawing.Point(336, 94);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(98, 32);
+            this.label3.Size = new System.Drawing.Size(80, 28);
             this.label3.TabIndex = 4;
             this.label3.Text = "Monto:";
             // 
             // CmbEstado
             // 
             this.CmbEstado.FormattingEnabled = true;
-            this.CmbEstado.Location = new System.Drawing.Point(118, 179);
+            this.CmbEstado.Location = new System.Drawing.Point(105, 143);
+            this.CmbEstado.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CmbEstado.Name = "CmbEstado";
-            this.CmbEstado.Size = new System.Drawing.Size(217, 28);
+            this.CmbEstado.Size = new System.Drawing.Size(193, 24);
             this.CmbEstado.TabIndex = 5;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(15, 172);
+            this.label4.Location = new System.Drawing.Point(13, 138);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(97, 32);
+            this.label4.Size = new System.Drawing.Size(80, 28);
             this.label4.TabIndex = 6;
             this.label4.Text = "Estado:";
             // 
@@ -114,9 +117,9 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(12, 65);
+            this.label5.Location = new System.Drawing.Point(11, 52);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(269, 32);
+            this.label5.Size = new System.Drawing.Size(223, 28);
             this.label5.TabIndex = 7;
             this.label5.Text = "Generación de Factura";
             // 
@@ -124,9 +127,10 @@
             // 
             this.button1.BackColor = System.Drawing.Color.LightSkyBlue;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(365, 213);
+            this.button1.Location = new System.Drawing.Point(324, 170);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(204, 43);
+            this.button1.Size = new System.Drawing.Size(181, 34);
             this.button1.TabIndex = 8;
             this.button1.Text = "Generar Factura";
             this.button1.UseVisualStyleBackColor = false;
@@ -136,9 +140,9 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(12, 267);
+            this.label6.Location = new System.Drawing.Point(11, 214);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(254, 32);
+            this.label6.Size = new System.Drawing.Size(210, 28);
             this.label6.TabIndex = 9;
             this.label6.Text = "Sección de Consultas";
             // 
@@ -150,11 +154,12 @@
             this.Column2,
             this.Column3,
             this.Column4});
-            this.DgvFacturas.Location = new System.Drawing.Point(18, 324);
+            this.DgvFacturas.Location = new System.Drawing.Point(16, 259);
+            this.DgvFacturas.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DgvFacturas.Name = "DgvFacturas";
             this.DgvFacturas.RowHeadersWidth = 62;
             this.DgvFacturas.RowTemplate.Height = 28;
-            this.DgvFacturas.Size = new System.Drawing.Size(694, 150);
+            this.DgvFacturas.Size = new System.Drawing.Size(671, 120);
             this.DgvFacturas.TabIndex = 10;
             // 
             // Column1
@@ -189,9 +194,10 @@
             // 
             this.button2.BackColor = System.Drawing.Color.LightSkyBlue;
             this.button2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(146, 512);
+            this.button2.Location = new System.Drawing.Point(130, 410);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(176, 42);
+            this.button2.Size = new System.Drawing.Size(156, 34);
             this.button2.TabIndex = 11;
             this.button2.Text = "Actualizar";
             this.button2.UseVisualStyleBackColor = false;
@@ -200,9 +206,10 @@
             // 
             this.BtnEmitirFacturasMensuales.BackColor = System.Drawing.Color.LightSkyBlue;
             this.BtnEmitirFacturasMensuales.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnEmitirFacturasMensuales.Location = new System.Drawing.Point(432, 512);
+            this.BtnEmitirFacturasMensuales.Location = new System.Drawing.Point(384, 410);
+            this.BtnEmitirFacturasMensuales.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BtnEmitirFacturasMensuales.Name = "BtnEmitirFacturasMensuales";
-            this.BtnEmitirFacturasMensuales.Size = new System.Drawing.Size(190, 42);
+            this.BtnEmitirFacturasMensuales.Size = new System.Drawing.Size(169, 34);
             this.BtnEmitirFacturasMensuales.TabIndex = 12;
             this.BtnEmitirFacturasMensuales.Text = "Emitir Factura";
             this.BtnEmitirFacturasMensuales.UseVisualStyleBackColor = false;
@@ -210,10 +217,10 @@
             // 
             // GestionFacturasForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightBlue;
-            this.ClientSize = new System.Drawing.Size(1071, 604);
+            this.ClientSize = new System.Drawing.Size(952, 483);
             this.Controls.Add(this.BtnEmitirFacturasMensuales);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.DgvFacturas);
@@ -227,6 +234,7 @@
             this.Controls.Add(this.TxtCliente);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "GestionFacturasForm";
             this.Text = "GestionFacturasForm";
             ((System.ComponentModel.ISupportInitialize)(this.DgvFacturas)).EndInit();

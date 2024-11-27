@@ -9,16 +9,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SistemaGestionGimnasio.DataHandler;
 
 namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class ConsultarReservasForm : Form
     {
-        private string usuarioActual;
-        public ConsultarReservasForm(string usuario)
+        private readonly IDataHandler dataHandler;
+        private readonly string usuarioActual;
+        
+        public ConsultarReservasForm(IDataHandler handler, string usuario)
         {
             InitializeComponent();
             usuarioActual = usuario;
+            dataHandler = handler;
         }
 
         private void ConsultarReservasForm_Load(object sender, EventArgs e)
@@ -29,33 +33,36 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void CargarReservasCliente(string usuario)
         {
-            string rutaArchivo = "reservas.csv";
+            string rutaArchivo = "Assets/reservas.csv";
 
             DgvReservasClientes.Rows.Clear();
 
-            if (!File.Exists(rutaArchivo))
+            if (!dataHandler.FileExists(rutaArchivo))
             {
                 MessageBox.Show("No se encontraron reservas registradas.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            using (StreamReader lector = new StreamReader(rutaArchivo))
+            try
             {
-                string linea;
-                while ((linea = lector.ReadLine()) != null)
+                foreach (var linea in dataHandler.ReadAllLines(rutaArchivo))
                 {
                     string[] datos = linea.Split(',');
                     if (datos.Length >= 3 && datos[2] == usuario)
                     {
-                        DgvReservasClientes.Rows.Add(datos[0], datos[1]);
+                        DgvReservasClientes.Rows.Add(datos[0], datos[1]); // Añade los datos al DataGridView
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar las reservas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void BtnConsultarReservas_Click(object sender, EventArgs e)
         {
-            ConsultarReservasForm reservasForm = new ConsultarReservasForm(usuarioActual);
+            ConsultarReservasForm reservasForm = new ConsultarReservasForm(dataHandler, usuarioActual);
             reservasForm.Show();
         }
     }

@@ -14,8 +14,8 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class RegistrarEquipoForm : Form
     {
-        private string usuarioActual;
-        public RegistrarEquipoForm(string usuario)
+        private Usuario usuarioActual;
+        public RegistrarEquipoForm(Usuario usuario)
         {
             InitializeComponent();
             usuarioActual = usuario;
@@ -61,8 +61,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                 MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private static void GuardarEquipoEnArchivo(Inventario equipo)
+           private static void GuardarEquipoEnArchivo(Inventario equipo)
         {
             string rutaArchivo = "inventario.csv";
 

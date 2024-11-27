@@ -16,7 +16,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class Login : Form
     {
-        private string usuarioActual;
+        private Usuario usuarioActual;
         public Login()
         {
             InitializeComponent();
@@ -24,14 +24,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void CbxMostrarClave_CheckedChanged(object sender, EventArgs e)
         {
-            if (CbxMostrarClave.Checked)
-            {
-                txtClave.UseSystemPasswordChar = false;
-            }
-            else
-            {
-                txtClave.UseSystemPasswordChar = true;
-            }
+            txtClave.UseSystemPasswordChar = !CbxMostrarClave.Checked;
         }
 
         private void BtnIniciarSesion_Click(object sender, EventArgs e)
@@ -39,63 +32,49 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             string usuario = txtUsuario.Text;
             string contraseña = txtClave.Text;
 
-            if (VerificarCredenciales(usuario, contraseña))
-            {
-                usuarioActual = usuario;
-                Membresia membresia = Membresia.ObtenerMembresia(usuario);
+            Usuario usuarioEncontrado = BuscarUsuarioEnArchivo("usuarios.csv", usuario, contraseña) ??
+                                 BuscarUsuarioEnArchivo("entrenadores.csv", usuario, contraseña);
 
-                if (membresia != null)
+            if (usuarioEncontrado != null)
+            {
+                usuarioActual = usuarioEncontrado;
+
+                // Validar membresía solo si el usuario es cliente
+                if (usuarioActual is Cliente)
                 {
-                    int diasRestantes = (membresia.FechaVencimiento - DateTime.Now).Days;
-                    if (diasRestantes <= 5)
+                    Membresia membresia = Membresia.ObtenerMembresia(usuarioActual.Nombre);
+
+                    if (membresia != null)
                     {
-                        MessageBox.Show($"Tu membresía vence en {diasRestantes} días. ¡Renueva pronto!");
+                        int diasRestantes = (membresia.FechaVencimiento - DateTime.Now).Days;
+                        if (diasRestantes <= 5)
+                        {
+                            MessageBox.Show($"Tu membresía vence en {diasRestantes} días. ¡Renueva pronto!");
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("Bienvenido al sistema");
+                        MessageBox.Show("No se encontró una membresía asociada al usuario.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
-                else
-                {
-                    MessageBox.Show("No se encontró membresía asociada al usuario.");
-                }
 
-                // Redirige a la página principal
-                UsuarioForm usuarioForm = new UsuarioForm(usuarioActual);
-                usuarioForm.Show();
+               
+                UsuarioForm principalForm = new UsuarioForm(usuarioActual);
+                principalForm.Show();
                 this.Hide();
-
             }
             else
             {
-                MessageBox.Show("Los datos introducidos no son correctos.");
+                MessageBox.Show("Los datos introducidos no son correctos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private static bool VerificarCredenciales(string usuario, string contraseña)
-        {
-            // Verificar en usuarios.csv
-            if (BuscarEnArchivo("usuarios.csv", usuario.Trim(), contraseña.Trim()))
-            {
-                return true;
-            }
-
-            // Verificar en entrenadores.csv
-            if (BuscarEnArchivo("entrenadores.csv", usuario.Trim(), contraseña.Trim()))
-            {
-                return true;
-            }
-
-            return false; // No se encontraron las credenciales en ninguno de los archivos
-        }
-
-        private static bool BuscarEnArchivo(string rutaArchivo, string usuario, string contraseña)
+        private static Usuario BuscarUsuarioEnArchivo(string rutaArchivo, string usuario, string contraseña)
         {
             if (!File.Exists(rutaArchivo))
             {
                 MessageBox.Show($"Archivo {rutaArchivo} no encontrado.");
-                return false;
+                return null;
             }
 
             using (StreamReader lector = new StreamReader(rutaArchivo))
@@ -104,20 +83,27 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                 while ((linea = lector.ReadLine()) != null)
                 {
                     string[] datos = linea.Split(',');
-                    if (datos.Length >= 6)// Asegurarse de que hay al menos usuario y contraseña
+                    if (datos.Length >= 6)
                     {
-                        string usuarioArchivo = datos[4].Trim();
-                        string contraseñaArchivo = datos[5].Trim();
+                        string id = datos[0];
+                        string nombre = datos[1];
+                        string correo = datos[2];
+                        string tipo = datos[3];
+                        string usuarioArchivo = datos[4];
+                        string contraseñaArchivo = datos[5];
 
                         if (usuarioArchivo == usuario && contraseñaArchivo == contraseña)
                         {
-                            return true; // Credenciales coinciden
+                            if (tipo == "Cliente")
+                                return new Cliente(int.Parse(id), nombre, correo, contraseñaArchivo);
+                            else if (tipo == "Entrenador")
+                                return new Entrenador(int.Parse(id), nombre, correo, contraseñaArchivo, "PuntosFuertes"); // Modifica según sea necesario
                         }
                     }
                 }
             }
 
-            return false; // No se encontraron las credenciales
+            return null;
         }
     }
 }

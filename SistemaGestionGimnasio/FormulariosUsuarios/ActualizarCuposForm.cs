@@ -8,14 +8,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SistemaGestionGimnasio.DataHandler;
+
 
 namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class ActualizarCuposForm : Form
     {
-        public ActualizarCuposForm()
+        private readonly IDataHandler dataHandler;
+
+        // Constructor que recibe el DataHandler
+        public ActualizarCuposForm(IDataHandler handler)
         {
-            InitializeComponent();
+             InitializeComponent();
+             dataHandler = handler; 
         }
 
         private void ActualizarCuposForm_Load(object sender, EventArgs e)
@@ -25,9 +31,9 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void CargarClasesEnComboBox()
         {
-            string rutaArchivo = "clases.csv";
+            string rutaArchivo = Path.Combine("Assets", "clases.csv");
 
-            if (!File.Exists(rutaArchivo))
+            if (!dataHandler.FileExists(rutaArchivo))
             {
                 MessageBox.Show("No se encontraron clases registradas.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -35,17 +41,13 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
             CmbClases.Items.Clear();
 
-            using (StreamReader lector = new StreamReader(rutaArchivo))
+            foreach (var linea in dataHandler.ReadAllLines(rutaArchivo))
             {
-                string linea;
-                while ((linea = lector.ReadLine()) != null)
-                {
-                    string[] datos = linea.Split(',');
+                string[] datos = linea.Split(',');
 
-                    if (datos.Length >= 1)
-                    {
-                        CmbClases.Items.Add(datos[0]);
-                    }
+                if (datos.Length >= 1)
+                {
+                    CmbClases.Items.Add(datos[0]);
                 }
             }
         }
@@ -57,57 +59,55 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
             if (string.IsNullOrEmpty(claseSeleccionada))
             {
-                MessageBox.Show("Por favor, selecciona una clase.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, seleccione una clase.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             ActualizarCupoEnArchivo(claseSeleccionada, nuevoCupo);
         }
 
-        private static void ActualizarCupoEnArchivo(string clase, int nuevoCupo)
+        private void ActualizarCupoEnArchivo(string clase, int nuevoCupo)
         {
-            string rutaArchivo = "actividades.csv";
-            string rutaTemporal = "actividades_temp.csv";
+            string rutaArchivo = Path.Combine("Assets", "actividades.csv");
+            string rutaTemporal = Path.Combine("Assets", "actividades_temp.csv");
 
-            if (!File.Exists(rutaArchivo))
+            if (!dataHandler.FileExists(rutaArchivo))
             {
                 MessageBox.Show("No se encontró el archivo de clases.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            using (StreamReader lector = new StreamReader(rutaArchivo))
-            using (StreamWriter escritor = new StreamWriter(rutaTemporal))
+            var lineas = dataHandler.ReadAllLines(rutaArchivo);
+            var lineasActualizadas = new List<string>();
+            bool actualizado = false;
+
+            foreach (var linea in lineas)
             {
-                string linea;
-                bool actualizado = false;
+                string[] datos = linea.Split(',');
 
-                while ((linea = lector.ReadLine()) != null)
+                if (datos.Length >= 3 && datos[0] == clase)
                 {
-                    string[] datos = linea.Split(',');
-
-                    if (datos.Length >= 3 && datos[0] == clase)
-                    {
-                        escritor.WriteLine($"{datos[0]},{datos[1]},{nuevoCupo}");
-                        actualizado = true;
-                    }
-
-                    else
-                    {
-                        escritor.WriteLine(linea);
-                    }
+                    lineasActualizadas.Add($"{datos[0]},{datos[1]},{nuevoCupo}");
+                    actualizado = true;
                 }
-
-                if (!actualizado)
+                else
                 {
-                    MessageBox.Show("La clase seleccionada no se encontró.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    lineasActualizadas.Add(linea);
                 }
             }
 
-            File.Delete(rutaArchivo);
-            File.Move(rutaTemporal, rutaArchivo);
+            if (!actualizado)
+            {
+                MessageBox.Show("La clase seleccionada no se encontró.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Escribimos las líneas actualizadas usando el DataHandler
+            dataHandler.WriteAllLines(rutaTemporal, lineasActualizadas.ToArray());
+            dataHandler.DeleteFile(rutaArchivo);
+            dataHandler.MoveFile(rutaTemporal, rutaArchivo);
 
             MessageBox.Show("Cupo actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
-

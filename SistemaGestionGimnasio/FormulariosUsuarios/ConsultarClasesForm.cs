@@ -1,4 +1,5 @@
 ﻿using System;
+using SistemaGestionGimnasio.DataHandler;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,9 +14,11 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class ConsultarClasesForm : Form
     {
-        public ConsultarClasesForm()
+        private readonly IDataHandler dataHandler;
+        public ConsultarClasesForm(IDataHandler dataHandler)
         {
             InitializeComponent();
+            this.dataHandler = dataHandler;
         }
 
         private void ConsultarClasesForm_Load(object sender, EventArgs e)
@@ -25,26 +28,23 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void CargarClases()
         {
-            string rutaArchivo = "actividades.csv";
+            string rutaArchivo = "Assets/actividades.csv";
 
-            if (!File.Exists(rutaArchivo))
+            if (!dataHandler.FileExists(rutaArchivo))
             {
                 MessageBox.Show("No se encontraron clases registradas.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+
             DgvClases.Rows.Clear();
 
-            using (StreamReader lector = new StreamReader(rutaArchivo))
+            foreach (var linea in dataHandler.ReadAllLines(rutaArchivo)) 
             {
-                string linea;
-                while ((linea = lector.ReadLine()) != null)
-                {
-                    string[] datos = linea.Split(',');
+                string[] datos = linea.Split(',');
 
-                    if (datos.Length >= 3)
-                    {
-                        DgvClases.Rows.Add(datos[0], datos[1], datos[2]);
-                    }
+                if (datos.Length >= 3)
+                {
+                    DgvClases.Rows.Add(datos[0], datos[1], datos[2]);
                 }
             }
         }

@@ -9,14 +9,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SistemaGestionGimnasio.DataHandler;
 
 namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class ConsultarReservasEntrenadoresForm : Form
     {
-        public ConsultarReservasEntrenadoresForm()
+        private readonly IDataHandler dataHandler;
+        public ConsultarReservasEntrenadoresForm(IDataHandler dataHandler)
         {
             InitializeComponent();
+            this.dataHandler = dataHandler;
         }
 
         private void BtnConsultar_Click(object sender, EventArgs e)
@@ -35,57 +38,67 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void CargarReservasParaEntrenador(string clase, DateTime fecha)
         {
-            string rutaArchivo = "reservas.csv";
-
+            string rutaArchivo = "Assets/reservas.csv";
             DgvReservas.Rows.Clear();
 
-            if (File.Exists(rutaArchivo))
+            if (dataHandler.FileExists(rutaArchivo))
             {
-                using (StreamReader lector = new StreamReader(rutaArchivo))
+                try
                 {
-                    string linea;
-                    while ((linea = lector.ReadLine()) != null)
+                    foreach (var linea in dataHandler.ReadAllLines(rutaArchivo))
                     {
                         string[] datos = linea.Split(',');
                         string formatoFecha = "dd/MM/yyyy";
-                        if(datos.Length > 2 && datos[0] == clase && DateTime.TryParseExact(datos[1], formatoFecha, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaArchivo) && fechaArchivo.Date == fecha.Date)
-                        {
 
+                        if (datos.Length > 2 && datos[0] == clase &&
+                            DateTime.TryParseExact(datos[1], formatoFecha, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaArchivo) &&
+                            fechaArchivo.Date == fecha.Date)
+                        {
                             DgvReservas.Rows.Add(datos[2], datos[1]); 
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al cargar las reservas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
-                MessageBox.Show("No se encontraron reservas.");
-
+                MessageBox.Show("No se encontraron reservas.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         private void ConsultarReservasEntrenadoresForm_Load(object sender, EventArgs e)
         {
             string entrenadorActual = "Entrenador";
-            string rutaArchivo = "ClasesEntrenadores.csv";
+            string rutaArchivo = "Assets/ClasesEntrenadores.csv";
 
-            if (File.Exists(rutaArchivo))
+            if (dataHandler.FileExists(rutaArchivo))
             {
-                using (StreamReader lector = new StreamReader(rutaArchivo))
+                try
                 {
-                    string linea;
-                    while ((linea = lector.ReadLine()) != null)
+                    foreach (var linea in dataHandler.ReadAllLines(rutaArchivo))
                     {
                         string[] datos = linea.Split(',');
-                        if (datos[1] == entrenadorActual)
+                        if (datos.Length > 1 && datos[1] == entrenadorActual)
                         {
-                            CmbClases.Items.Add(datos[0]);
+                            CmbClases.Items.Add(datos[0]); // Añadir la clase asociada al entrenador
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al cargar las clases: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No se encontraron clases para el entrenador.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }
 }
 
-      
+
 

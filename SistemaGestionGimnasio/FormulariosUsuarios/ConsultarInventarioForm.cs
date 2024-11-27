@@ -1,4 +1,5 @@
 ﻿using SistemaGestionGimnasio.Modelos;
+using SistemaGestionGimnasio.DataHandler;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,9 +16,11 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class ConsultarInventarioForm : Form
     {
-        public ConsultarInventarioForm()
+        private readonly IDataHandler dataHandler;
+        public ConsultarInventarioForm(IDataHandler dataHandler)
         {
             InitializeComponent();
+            this.dataHandler = dataHandler;
         }
 
         private void ConsultarInventarioForm_Load(object sender, EventArgs e)
@@ -27,8 +30,9 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void CargarInventario()
         {
-            string rutaArchivo = "inventario.csv";
-            if (!File.Exists(rutaArchivo))
+            string rutaArchivo = "Assets/inventario.csv"; // Ruta relativa al archivo
+
+            if (!dataHandler.FileExists(rutaArchivo))
             {
                 MessageBox.Show("El archivo de inventario no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -39,26 +43,22 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
             try
             {
-                using (StreamReader lector = new StreamReader(rutaArchivo))
+                foreach (var linea in dataHandler.ReadAllLines(rutaArchivo)) // Usar DataHandler para leer líneas
                 {
-                    string linea;
-                    while ((linea = lector.ReadLine()) != null)
+                    string[] datos = linea.Split(',');
+
+                    if (datos.Length >= 5)
                     {
-                        string[] datos = linea.Split(',');
-
-                        if (datos.Length >= 5)
+                        Inventario item = new Inventario
                         {
-                            Inventario item = new Inventario
-                            {
-                                NombreEquipo = datos[0],
-                                Categoria = datos[1],
-                                FechaAdquisicion = DateTime.ParseExact(datos[2], "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None),
-                                VidaUtilEstimada = datos[3],
-                                Estado = datos[4]
-                            };
+                            NombreEquipo = datos[0],
+                            Categoria = datos[1],
+                            FechaAdquisicion = DateTime.ParseExact(datos[2], "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None),
+                            VidaUtilEstimada = datos[3],
+                            Estado = datos[4]
+                        };
 
-                            listaInventario.Add(item);
-                        }
+                        listaInventario.Add(item);
                     }
                 }
 
@@ -70,7 +70,6 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                 MessageBox.Show($"Error al cargar el inventario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         private void BtnActualizar_Click(object sender, EventArgs e)
         {

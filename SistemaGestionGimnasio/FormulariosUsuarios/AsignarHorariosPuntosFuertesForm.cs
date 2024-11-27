@@ -1,4 +1,5 @@
 ﻿using SistemaGestionGimnasio.Modelos;
+using SistemaGestionGimnasio.DataHandler;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,17 +15,18 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class AsignarHorariosPuntosFuertesForm : Form
     {
+        private readonly IDataHandler dataHandler;
         private List<Usuario> listUsuarios = new List<Usuario>();
-        public AsignarHorariosPuntosFuertesForm()
+        public AsignarHorariosPuntosFuertesForm(IDataHandler handler)
         {
             InitializeComponent();
+            dataHandler = handler;
             this.Load += new EventHandler(AsignarHorariosPuntosFuertesForm_Load);
         }
 
         private void AsignarHorariosPuntosFuertesForm_Load(object sender, EventArgs e)
         {
             CargarHorarios();
-
             CargarEntrenadores();
             CargarPuntosFuertes();
            
@@ -32,17 +34,13 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void CargarHorarios()
         {
-            string rutaArchivo = "horarios.txt";
+            string rutaArchivo = Path.Combine("Assets", "horarios.txt"); 
 
-            if (File.Exists(rutaArchivo))
+            if (dataHandler.FileExists(rutaArchivo)) 
             {
-                using (StreamReader lector = new StreamReader(rutaArchivo))
+                foreach (var linea in dataHandler.ReadAllLines(rutaArchivo)) 
                 {
-                    string linea;
-                    while ((linea = lector.ReadLine()) != null)
-                    {
-                        listBoxHorariosDisponibles.Items.Add(linea);
-                    }
+                    listBoxHorariosDisponibles.Items.Add(linea);
                 }
             }
             else
@@ -54,22 +52,17 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
         // Método para cargar entrenadores en el ComboBox desde el archivo CSV
         private void CargarEntrenadores()
         {
-            string rutaArchivo = "usuarios.csv";
+            string rutaArchivo = "Assets/usuarios.csv";
 
-            if (File.Exists(rutaArchivo))
+            if (dataHandler.FileExists(rutaArchivo))
             {
-                using (StreamReader lector = new StreamReader(rutaArchivo))
+                foreach (var linea in dataHandler.ReadAllLines(rutaArchivo))
                 {
-                    string linea;
-                    while ((linea = lector.ReadLine()) != null)
-                    {
-                        string[] datos = linea.Split(',');
+                    string[] datos = linea.Split(',');
 
-                        // Comprobar si el usuario es un entrenador
-                        if (datos.Length >= 4 && datos[3].Trim() == "Entrenador")
-                        {
-                            CmbEntrenador.Items.Add(datos[1]); // Añadir el nombre del entrenador
-                        }
+                    if (datos.Length >= 4 && datos[3].Trim() == "Entrenador")
+                    {
+                        CmbEntrenador.Items.Add(datos[1]); 
                     }
                 }
             }
@@ -79,19 +72,16 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             }
         }
 
+
         private void CargarPuntosFuertes()
         {
-            string rutaArchivo = "actividades.txt";
+            string rutaArchivo = "Assets/actividades.txt";
 
-            if (File.Exists(rutaArchivo))
+            if (dataHandler.FileExists(rutaArchivo))
             {
-                using (StreamReader lector = new StreamReader(rutaArchivo))
+                foreach (var linea in dataHandler.ReadAllLines(rutaArchivo))
                 {
-                    string linea;
-                    while ((linea = lector.ReadLine()) != null)
-                    {
-                        listBoxPuntosFuertes.Items.Add(linea);
-                    }
+                    listBoxPuntosFuertes.Items.Add(linea);
                 }
             }
             else
@@ -99,7 +89,6 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                 MessageBox.Show("El archivo de actividades no existe.");
             }
         }
-
 
         private void BtnAgregar_Click(object sender, EventArgs e)
         {
@@ -118,20 +107,14 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             }
         }
 
-
         private void BtnGuardar_Click(object sender, EventArgs e)
         {
-            string rutaArchivo = "puntosfuertes.csv";
+            string rutaArchivo = "Assets/puntosfuertes.csv";
 
             if (listBoxPuntosFuertes.SelectedItems.Count > 0)
             {
-                using (StreamWriter escritor = new StreamWriter(rutaArchivo, true)) // true para agregar en lugar de sobrescribir
-                {
-                    foreach (var item in listBoxPuntosFuertes.SelectedItems)
-                    {
-                        escritor.WriteLine(item.ToString());
-                    }
-                }
+                var puntosFuertesSeleccionados = listBoxPuntosFuertes.SelectedItems.Cast<string>().ToArray();
+                dataHandler.AppendLines(rutaArchivo, puntosFuertesSeleccionados);
                 MessageBox.Show("Puntos fuertes guardados con éxito.");
             }
             else

@@ -8,14 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SistemaGestionGimnasio.DataHandler;
 
 namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class ConsultarUsuarioForm : Form
     {
-        public ConsultarUsuarioForm()
+        private readonly IDataHandler dataHandler;
+        public ConsultarUsuarioForm(IDataHandler dataHandler)
         {
             InitializeComponent();
+            this.dataHandler = dataHandler;
         }
 
         private void BtnBuscar_Click(object sender, EventArgs e)
@@ -36,34 +39,31 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             string rutaArchivo = "usuarios.csv";
 
             // Verificar si el archivo CSV existe
-            if (!File.Exists(rutaArchivo))
+            if (!dataHandler.FileExists(rutaArchivo))
             {
                 MessageBox.Show("El archivo de usuarios no existe.");
                 return false;
             }
 
             // Leer el archivo CSV y buscar el usuario
-            using (StreamReader lector = new StreamReader(rutaArchivo))
+            var lineas = dataHandler.ReadAllLines(rutaArchivo);
+            foreach (var linea in lineas)
             {
-                string linea;
-                while ((linea = lector.ReadLine()) != null)
-                {
-                    string[] datos = linea.Split(',');
+                string[] datos = linea.Split(',');
 
-                    // Verificar si el primer campo (ID) coincide con el ID buscado
-                    if (datos[0] == idBuscado)
-                    {
-                        // Mostrar los datos en los campos de solo lectura
-                        txtID.Text = datos[0];
-                        txtNombre.Text = datos[1];
-                        txtCorreo.Text = datos[2];
-                        txtTipo.Text = datos[3];
-                        return true; // Usuario encontrado
-                    }
+                // Verificar si el primer campo (ID) coincide con el ID buscado
+                if (datos[0] == idBuscado)
+                {
+                    // Mostrar los datos en los campos de solo lectura
+                    txtID.Text = datos[0];
+                    txtNombre.Text = datos[1];
+                    txtCorreo.Text = datos[2];
+                    txtTipo.Text = datos[3];
+                    return true; 
                 }
             }
 
-            return false; // Usuario no encontrado
+            return false; 
         }
 
         private void BtnCerrar_Click(object sender, EventArgs e)

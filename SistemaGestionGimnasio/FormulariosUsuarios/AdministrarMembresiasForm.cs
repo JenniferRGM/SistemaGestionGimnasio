@@ -9,15 +9,20 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 using SistemaGestionGimnasio.Vistas;
+using SistemaGestionGimnasio.DataHandler;
+using System.Runtime.InteropServices;
 
 
 namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class AdministrarMembresiasForm : Form
     {
-        public AdministrarMembresiasForm()
+        private readonly IDataHandler dataHandler;
+
+        public AdministrarMembresiasForm(IDataHandler handler)
         {
             InitializeComponent();
+            dataHandler = handler;
         }
 
         private void BtnAgregar_Click(object sender, EventArgs e)
@@ -26,11 +31,10 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             DateTime fechaInicio = dtpFechaInicio.Value;
             DateTime fechaVencimiento = dtpFechaVencimiento.Value;
 
-            string rutaArchivo = "membresias.csv";
-            using (StreamWriter escritor = new StreamWriter(rutaArchivo, true))
-            {
-                escritor.WriteLine($"{usuario},{fechaInicio:dd/MM/yyyy},{fechaVencimiento:dd/MM/yyyy}");
-            }
+            string rutaArchivo = Path.Combine("Assets", "membresias.csv");
+
+            string nuevaLinea = $"{usuario},{fechaInicio:dd/MM/yyyy},{fechaVencimiento:dd/MM/yyyy}";
+            dataHandler.AppendLine(rutaArchivo, nuevaLinea);
 
             MessageBox.Show("Membresía agregada correctamente.");
             LimpiarCampos();
@@ -48,43 +52,37 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             DateTime fechaInicio = dtpFechaInicio.Value;
             DateTime fechaVencimiento = dtpFechaVencimiento.Value;
 
-            string rutaArchivo = "membresias.csv";
-            string rutaTemporal = "temp_membresias.csv";
+            string rutaArchivo = Path.Combine("Assets", "membresias.csv");
+            string rutaTemporal = Path.Combine("Assets", "temp_membresias.csv");
 
-            if (!File.Exists(rutaArchivo))
+            if (!dataHandler.FileExists(rutaArchivo))
             {
                 MessageBox.Show("El archivo de membresías no existe.");
                 return;
             }
 
             bool encontrado = false;
+            var lineasActualizadas = new List<string>();
 
-            using (StreamReader lector = new StreamReader(rutaArchivo))
-            using (StreamWriter escritor = new StreamWriter(rutaTemporal))
+            foreach (var linea in dataHandler.ReadAllLines(rutaArchivo))
             {
-                string linea;
-                while ((linea = lector.ReadLine()) != null)
-                {
-                    string[] datos = linea.Split(',');
+                string[] datos = linea.Split(',');
 
-                    if (datos.Length >= 3 && datos[0].Trim() == usuario)
-                    {
-                        // Actualizar la información
-                        string nuevaLinea = $"{usuario},{fechaInicio:yyyy-MM-dd},{fechaVencimiento:yyyy-MM-dd}";
-                        escritor.WriteLine(nuevaLinea);
-                        encontrado = true;
-                    }
-                    else
-                    {
-                        // Copiar línea original
-                        escritor.WriteLine(linea);
-                    }
+                if (datos.Length >= 3 && datos[0].Trim() == usuario)
+                {
+                    string nuevaLinea = $"{usuario},{fechaInicio:yyyy-MM-dd},{fechaVencimiento:yyyy-MM-dd}";
+                    lineasActualizadas.Add(nuevaLinea);
+                    encontrado = true;
+                }
+                else
+                {
+                    lineasActualizadas.Add(linea);
                 }
             }
 
-            // Reemplazar el archivo original
-            File.Delete(rutaArchivo);
-            File.Move(rutaTemporal, rutaArchivo);
+            dataHandler.WriteAllLines(rutaTemporal, lineasActualizadas.ToArray());
+            dataHandler.DeleteFile(rutaArchivo);
+            dataHandler.MoveFile(rutaTemporal, rutaArchivo);
 
             if (encontrado)
             {
@@ -101,51 +99,49 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
         {
             string usuario = txtUsuario.Text.Trim();
 
-            string rutaArchivo = "membresias.csv";
-            string rutaTemporal = "temp_membresias.csv";
+            string rutaArchivo = Path.Combine("Assets", "membresias.csv");
+            string rutaTemporal = Path.Combine("Assets", "temp_membresias.csv");
 
-            if (!File.Exists(rutaArchivo))
+            if (!dataHandler.FileExists(rutaArchivo))
             {
                 MessageBox.Show("El archivo de membresías no existe.");
                 return;
             }
 
+            var lineas = dataHandler.ReadAllLines(rutaArchivo);
+            var lineasActualizadas = new List<string>();
             bool encontrado = false;
 
-            using (StreamReader lector = new StreamReader(rutaArchivo))
-            using (StreamWriter escritor = new StreamWriter(rutaTemporal))
+            foreach (var linea in lineas)
             {
-                string linea;
-                while ((linea = lector.ReadLine()) != null)
+                var datos = linea.Split(',');
+
+                if (datos.Length >= 3 && datos[0].Trim() == usuario)
                 {
-                    string[] datos = linea.Split(',');
-
-                    if (datos.Length >= 3 && datos[0].Trim() == usuario)
-                    {
-                        // Salta la línea que coincide con el usuario (eliminar)
-                        encontrado = true;
-                        continue;
-                    }
-
-                    escritor.WriteLine(linea);
+                    // Salta la línea del usuario
+                    encontrado = true;
+                    continue;
                 }
+
+                lineasActualizadas.Add(linea);
             }
+
             DialogResult confirmacion = MessageBox.Show("¿Estás seguro de que deseas eliminar esta membresía?", "Confirmar Eliminación", MessageBoxButtons.YesNo);
             if (confirmacion == DialogResult.No) return;
 
-            // Reemplaza el archivo original
-            File.Delete(rutaArchivo);
-            File.Move(rutaTemporal, rutaArchivo);
-
-            if (encontrado)
-            {
-                MessageBox.Show("Membresía eliminada con éxito.");
-                LimpiarCampos();
-            }
-            else
+            if (!encontrado)
             {
                 MessageBox.Show("Usuario no encontrado.");
+                return;
             }
+
+            // Escribe las líneas actualizadas
+            dataHandler.WriteAllLines(rutaTemporal, lineasActualizadas.ToArray());
+            dataHandler.DeleteFile(rutaArchivo);
+            dataHandler.MoveFile(rutaTemporal, rutaArchivo);
+
+            MessageBox.Show("Membresía eliminada con éxito.");
+            LimpiarCampos();
         }
 
     }

@@ -9,43 +9,42 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using SistemaGestionGimnasio.Modelos;
+using SistemaGestionGimnasio.DataHandler;
 
 namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class EliminarClasesForm : Form
     {
-        private string usuarioActual;
-        public EliminarClasesForm(string usuario)
+        private Usuario usuarioActual;
+        private readonly IDataHandler dataHandler;
+        public EliminarClasesForm(Usuario usuario, IDataHandler dataHandler)
         {
             InitializeComponent();
             usuarioActual = usuario;
             CargarClases();
+            this.dataHandler = dataHandler;
         }
 
         private void CargarClases()
         {
-            string rutaArchivo = "actividades.csv";
+            string rutaArchivo = "Assets/actividades.csv";
 
-            if (!File.Exists(rutaArchivo))
+            if (!dataHandler.FileExists(rutaArchivo))
             {
                 MessageBox.Show("No se encontró el archivo de actividades.");
                 return;
             }
 
-            using (StreamReader lector = new StreamReader(rutaArchivo))
+            var lineas = dataHandler.ReadAllLines(rutaArchivo);
+            foreach (var linea in lineas)
             {
-                string linea;
-                while ((linea = lector.ReadLine()) != null)
+                string[] datos = linea.Split(',');
+                if (datos[0] == usuarioActual.Nombre)
                 {
-                    string[] datos = linea.Split(',');
-                    if (datos[0] == usuarioActual) 
-                    {
-                        CmbClases.Items.Add(datos[1]); 
-                    }
+                    CmbClases.Items.Add(datos[1]);
                 }
             }
         }
-
         private void EliminarClasesForm_Load(object sender, EventArgs e)
         {
             CargarClasesPorUsuario();
@@ -53,9 +52,9 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void CargarClasesPorUsuario()
         {
-            string rutaMatriculas = "matriculas.csv";
+            string rutaMatriculas = "Assets/matriculas.csv";
 
-            if (!File.Exists(rutaMatriculas))
+            if (!dataHandler.FileExists(rutaMatriculas))
             {
                 MessageBox.Show("No hay clases matriculadas registradas.");
                 return;
@@ -64,23 +63,19 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             CmbClases.Items.Clear();
             DgvClasesMatriculadas.Rows.Clear();
 
-            using (StreamReader lector = new StreamReader(rutaMatriculas))
+            var lineas = dataHandler.ReadAllLines(rutaMatriculas);
+            foreach (var linea in lineas)
             {
-                string linea;
-                while ((linea = lector.ReadLine()) != null)
-                {
-                    string[] datos = linea.Split(',');
+                string[] datos = linea.Split(',');
 
-                    // Filtrar solo las clases del usuario actual
-                    if (datos.Length > 1 && datos[0] == usuarioActual)
-                    {
-                        CmbClases.Items.Add(datos[1]); 
-                        DgvClasesMatriculadas.Rows.Add(datos[1]); 
-                    }
+                // Filtrar solo las clases del usuario actual
+                if (datos.Length > 1 && datos[0] == usuarioActual.Nombre)
+                {
+                    CmbClases.Items.Add(datos[1]);
+                    DgvClasesMatriculadas.Rows.Add(datos[1]);
                 }
             }
         }
-
         private void BtnEliminar_Click(object sender, EventArgs e)
         {
             if (CmbClases.SelectedItem == null)
@@ -95,33 +90,35 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void EliminarClase(string clase)
         {
-            string rutaActividades = "actividades.csv";
-            string rutaMatriculas = "matriculas.csv";
+            string rutaActividades = "Assets/actividades.csv";
+            string rutaMatriculas = "Assets/matriculas.csv";
 
             // Eliminar la clase del archivo actividades.csv
-            if (File.Exists(rutaActividades))
+            if (dataHandler.FileExists(rutaActividades))
             {
-                var lineas = File.ReadAllLines(rutaActividades).Where(linea => !linea.StartsWith(clase + ",")).ToArray();
-                File.WriteAllLines(rutaActividades, lineas);
+                var lineas = dataHandler.ReadAllLines(rutaActividades)
+                    .Where(linea => !linea.StartsWith(clase + ","))
+                    .ToArray();
+                dataHandler.WriteAllLines(rutaActividades, lineas);
             }
 
             // Eliminar la clase del archivo matriculas.csv
-            if (File.Exists(rutaMatriculas))
+            if (dataHandler.FileExists(rutaMatriculas))
             {
-                var lineas = File.ReadAllLines(rutaMatriculas)
-                                 .Where(linea =>
-                                 {
-                                     string[] datos = linea.Split(',');
-                                     return !(datos.Length > 1 && datos[0] == usuarioActual && datos[1] == clase);
-                                 })
-                                 .ToArray();
-                File.WriteAllLines(rutaMatriculas, lineas);
+                var lineas = dataHandler.ReadAllLines(rutaMatriculas)
+                    .Where(linea =>
+                    {
+                        string[] datos = linea.Split(',');
+                        return !(datos.Length > 1 && datos[0] == usuarioActual.Nombre && datos[1] == clase);
+                    })
+                    .ToArray();
+                dataHandler.WriteAllLines(rutaMatriculas, lineas);
             }
 
             MessageBox.Show($"La clase '{clase}' ha sido eliminada correctamente.");
-            CargarClasesPorUsuario(); 
+            CargarClasesPorUsuario();
         }
     }
 }
-    
+
 

@@ -1,4 +1,5 @@
 ﻿using SistemaGestionGimnasio.Modelos;
+using SistemaGestionGimnasio.DataHandler;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,26 +11,28 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Globalization;
+using System.Runtime.InteropServices;
 
 
 namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
     public partial class ClasesPopularesForm : Form
     {
-        public ClasesPopularesForm()
+        private readonly IDataHandler dataHandler;
+        public ClasesPopularesForm(IDataHandler dataHandler)
         {
             InitializeComponent();
-
+            this.dataHandler = dataHandler;
+            
             CmbCategoria.Items.AddRange(new string[] { "Yoga", "Pilates", "Spinning", "CrossFit" });
             DtpFechaInicio.Value = DateTime.Now.AddMonths(-1);
             DtpFechaFin.Value = DateTime.Now;
+            
         }
-
 
         private void BtnGenerarReporte_Click(object sender, EventArgs e)
         {
             if (DtpFechaInicio.Value > DtpFechaFin.Value)
-
             {
                 MessageBox.Show("La fecha de inicio no puede ser mayor que la fecha final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -53,17 +56,22 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             else
             {
                 GenerarGrafico(clasesPopulares);
-
             }
         }
-
         private List<ClasesPopulares> ObtenerClasesPopulares(DateTime fechaInicio, DateTime fechaFin)
         {
             List<ClasesPopulares> listaClases = new List<ClasesPopulares>();
 
             try
             {
-                string[] lineas = File.ReadAllLines("clasesPopulares.csv");
+                string rutaArchivo = "Assets/clasesPopulares.csv"; // Ruta relativa
+                if (!dataHandler.FileExists(rutaArchivo))
+                {
+                    MessageBox.Show("El archivo de clases populares no existe.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return listaClases;
+                }
+
+                var lineas = dataHandler.ReadAllLines(rutaArchivo); // Usar DataHandler para leer líneas
                 foreach (string linea in lineas)
                 {
                     string[] datos = linea.Split(',');
@@ -82,7 +90,6 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                         });
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -90,8 +97,6 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             }
 
             return listaClases;
-
-
         }
         private void GenerarGrafico(List<ClasesPopulares> clasesPopulares)
         {
