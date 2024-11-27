@@ -106,10 +106,11 @@ namespace SistemaGestionGimnasio
 
         private void BtnGuardar_Click(object sender, EventArgs e)
         {
+            // Verificar que todos los campos estén completos
             if (string.IsNullOrWhiteSpace(txtID.Text) ||
-                 string.IsNullOrWhiteSpace(txtNombre.Text) ||
-                 string.IsNullOrWhiteSpace(txtCorreo.Text) ||
-                 cmbTipo.SelectedIndex == -1)
+                string.IsNullOrWhiteSpace(txtNombre.Text) ||
+                string.IsNullOrWhiteSpace(txtCorreo.Text) ||
+                cmbTipo.SelectedIndex == -1)
             {
                 MessageBox.Show("Por favor, complete todos los campos.");
                 return;
@@ -120,17 +121,33 @@ namespace SistemaGestionGimnasio
             string correo = txtCorreo.Text.Trim();
             string tipo = cmbTipo.SelectedItem.ToString();
 
+            // Generar usuario y contraseña automáticamente
+            string usuario = GenerarUsuario(nombre);
+            string contraseña = GenerarContraseña();
+
             // Crear la línea de datos para guardar
-            string nuevaLinea = $"{id},{nombre},{correo},{tipo}";
+            string nuevaLinea = $"{id},{nombre},{correo},{tipo},{usuario},{contraseña}";
 
             try
             {
-                // Usar el dataHandler para guardar los datos
-                dataHandler.AppendLine("usuarios.csv", nuevaLinea);
+                if (tipo.Equals("Cliente", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Guardar en usuarios.csv para clientes
+                    dataHandler.AppendLine("Assets/usuarios.csv", nuevaLinea);
+                    MessageBox.Show($"Cliente guardado: {nombre}\nUsuario: {usuario}\nContraseña: {contraseña}");
+                }
+                else if (tipo.Equals("Entrenador", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Guardar en entrenadores.csv para entrenadores
+                    dataHandler.AppendLine("Assets/entrenadores.csv", nuevaLinea);
+                    MessageBox.Show($"Entrenador guardado: {nombre}\nUsuario: {usuario}\nContraseña: {contraseña}");
+                }
+                else
+                {
+                    MessageBox.Show($"El tipo de usuario {tipo} no está definido para guardar en un archivo.");
+                }
 
-                MessageBox.Show($"Usuario guardado: {nombre}, {tipo}");
-
-                // Limpiar los campos
+                // Limpiar los campos del formulario
                 txtID.Clear();
                 txtNombre.Clear();
                 txtCorreo.Clear();
@@ -140,6 +157,32 @@ namespace SistemaGestionGimnasio
             {
                 MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private static string GenerarUsuario(string nombreCompleto)
+        {
+            string[] nombres = nombreCompleto.Split(' ');
+            string primerNombre = nombres[0].ToLower();
+
+            Random random = new Random();
+            int numero = random.Next(10, 99);
+
+            return $"{primerNombre}{numero}";
+        }
+
+        private static string GenerarContraseña()
+        {
+            const int longitud = 8; // Longitud de la contraseña
+            const string caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+            Random random = new Random();
+            StringBuilder contraseña = new StringBuilder(longitud);
+
+            for (int i = 0; i < longitud; i++)
+            {
+                contraseña.Append(caracteres[random.Next(caracteres.Length)]);
+            }
+
+            return contraseña.ToString();
         }
         private void BtnInicio_Click(object sender, EventArgs e)
         {

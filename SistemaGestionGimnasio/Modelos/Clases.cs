@@ -30,6 +30,7 @@ namespace SistemaGestionGimnasio.Modelos
 
         }
 
+        // Método para cargar clases desde el archivo
         public static List<string> CargarClasesDesdeArchivo(string rutaArchivo)
         {
             List<string> clasesDisponibles = new List<string>();
@@ -39,7 +40,7 @@ namespace SistemaGestionGimnasio.Modelos
                 return clasesDisponibles;
             }
 
-            var lineas = File.ReadAllLines(rutaArchivo).Skip(1); // Saltar encabezado
+            var lineas = File.ReadAllLines(rutaArchivo).Skip(1);
 
             foreach (var linea in lineas)
             {
@@ -60,7 +61,7 @@ namespace SistemaGestionGimnasio.Modelos
 
             return clasesDisponibles;
         }
-
+        // Método para reservar una clase
         public static void ReservarClase(string rutaArchivo, string nombreClase, string horarioClase, string entrenadorClase, string fechaClase)
         {
             if (!File.Exists(rutaArchivo))
@@ -77,26 +78,32 @@ namespace SistemaGestionGimnasio.Modelos
 
                 if (datos.Length >= 5)
                 {
-                    string nombreArchivo = datos[0].Trim();
+                    // Normalizar datos del archivo
+                    string nombreArchivo = datos[0].Trim().ToLower();
                     string fechaArchivo = datos[1].Trim();
                     string horarioArchivo = datos[2].Trim();
-                    string entrenadorArchivo = datos[3].Trim();
+                    string horarioInicialArchivo = horarioArchivo.Split('-')[0].Trim();
+                    string entrenadorArchivo = datos[3].Trim().ToLower();
 
-                    // Agrega un mensaje de depuración para verificar las comparaciones
-                    Console.WriteLine($"Comparando: Nombre={nombreArchivo}, Fecha={fechaArchivo}, Horario={horarioArchivo}, Entrenador={entrenadorArchivo}");
+                    Console.WriteLine($"Comparando: nombreArchivo={nombreArchivo}, fechaArchivo={fechaArchivo}, horarioInicialArchivo={horarioInicialArchivo}, entrenadorArchivo={entrenadorArchivo}");
 
+                    // Comparación normalizada
                     if (nombreArchivo == nombreClase &&
                         fechaArchivo == fechaClase &&
-                        horarioArchivo == horarioClase &&
+                        horarioInicialArchivo.StartsWith(horarioClase) && // Validar prefijo de hora
                         entrenadorArchivo == entrenadorClase)
                     {
                         int cupo = int.Parse(datos[4].Trim());
                         if (cupo > 0)
                         {
+                            // Reducir el cupo y actualizar la línea
                             cupo--;
-                            datos[4] = cupo.ToString(); // Actualizar cupo en línea
-                            lineas[i] = string.Join(",", datos); // Actualizar la línea
+                            datos[4] = cupo.ToString();
+                            lineas[i] = string.Join(",", datos);
                             claseEncontrada = true;
+
+                            // Registrar reserva
+                            GuardarReserva("reservas.csv", nombreClase, fechaClase, horarioArchivo, entrenadorClase);
                             break;
                         }
                         else
@@ -112,11 +119,24 @@ namespace SistemaGestionGimnasio.Modelos
                 throw new KeyNotFoundException("Clase no encontrada. Verifica los datos seleccionados.");
             }
 
-            // Escribir las líneas actualizadas de vuelta al archivo
             File.WriteAllLines(rutaArchivo, lineas);
+        }
+
+
+        // Método para guardar una reserva en el archivo reservas.csv
+        private static void GuardarReserva(string rutaReservas, string nombreClase, string fechaClase, string horarioClase, string entrenadorClase)
+        {
+            if (!File.Exists(rutaReservas))
+            {
+                File.WriteAllText(rutaReservas, "Nombre,Fecha,Horario,Entrenador\n"); // Crear archivo con encabezado
+            }
+
+            string nuevaReserva = $"{nombreClase},{fechaClase},{horarioClase},{entrenadorClase}";
+            File.AppendAllText(rutaReservas, nuevaReserva + Environment.NewLine);
         }
     }
 }
+
 
 
 
