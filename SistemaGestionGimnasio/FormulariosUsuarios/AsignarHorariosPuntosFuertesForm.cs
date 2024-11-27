@@ -52,7 +52,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
         // Método para cargar entrenadores en el ComboBox desde el archivo CSV
         private void CargarEntrenadores()
         {
-            string rutaArchivo = "Assets/usuarios.csv";
+            string rutaArchivo = "Assets/entrenadores.csv";
 
             if (dataHandler.FileExists(rutaArchivo))
             {
@@ -123,10 +123,6 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             }
         }
 
-        private void BntCancelar_Click(object sender, EventArgs e)
-        {
-            listBoxPuntosFuertes.ClearSelected();
-        }
     }
 }
 
