@@ -1,4 +1,31 @@
-﻿@page "/"
+﻿@page "/home"
+
+@inject AppState AppState
+@inject NavigationManager NavigationManager
+
+@code {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        //  await AppState.InitializeAsync();
+
+        // if (!await AppState.IsAuthenticated())
+        // {
+        //     Redirige a la página de login si no está autenticado
+        //     NavigationManager.NavigateTo("/", true);
+        // }
+        // await base.OnInitializedAsync();
+    }
+
+
+
+
+}
+
+
+<h3>Página protegida</h3>
+<p>Solo los usuarios autenticados pueden ver esta página.</p>
 
 <PageTitle>Home</PageTitle>
 

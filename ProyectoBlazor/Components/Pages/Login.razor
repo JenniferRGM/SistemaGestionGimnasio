@@ -1,0 +1,97 @@
+﻿@page "/"
+@using ProyectoBlazor.Service
+@using ProyectoBlazor.Modelos
+
+@inject AuthenticationService AuthService
+@inject AppState AppState
+@inject NavigationManager NavigationManager
+@inject MembresiaService MembresiaService
+@inject InventarioService InventarioService
+
+@inject IJSRuntime JSRuntime
+
+@using System.ComponentModel.DataAnnotations
+@rendermode InteractiveServer
+
+<h3>Login</h3>
+
+<EditForm Model="loginModel" OnValidSubmit="HandleLogin" FormName="formlogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Username:</label>
+        <InputText @bind-Value="loginModel.Username" />
+        <ValidationMessage For="@(() => loginModel.Username)" />
+    </div>
+    <div>
+        <label>Password:</label>
+        <InputText @bind-Value="loginModel.Password" type="password" />
+        <ValidationMessage For="@(() => loginModel.Password)" />
+    </div>
+    <button type="submit">Login</button>
+</EditForm>
+
+@if (errorMessage != null)
+{
+    <p style="color: red;">@errorMessage</p>
+}
+
+@code {
+    private LoginModel loginModel = new();
+    private string? errorMessage;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Inicializar el estado de la aplicación una vez que se haya renderizado el componente
+            //await AppState.InitializeAsync();
+        }
+    }
+
+    private async Task HandleLogin()
+    {
+        var user = await AuthService.Authenticate(loginModel.Username, loginModel.Password);
+        if (user != null)
+        {
+            AppState.SetCurrentUser(user);
+
+            if (user.Tipo == "Cliente")
+            {
+                // Verificar los días restantes de la membresía
+                var diasRestantes = await MembresiaService.ObtenerDiasRestantesMembresia(user.Id);
+
+                if (diasRestantes.HasValue && diasRestantes.Value <= 5)
+                {
+                    // Mostrar alerta con JavaScript
+                    await JSRuntime.InvokeVoidAsync("alert", $"Tu membresía está por vencer. Te quedan {diasRestantes.Value} días.");
+
+                }
+            }
+
+            if (user.Tipo == "Entrenador")
+            {
+                // Verificar los días restantes de la membresía
+                List<InventarioModel> equiposPorVencerse = await InventarioService.ObtenerEquiposCercaDeVencer();
+
+                var equiposList = string.Join(", ", equiposPorVencerse.Select(e => e.NombreEquipo));
+
+                await JSRuntime.InvokeVoidAsync("alert", $"Los siguientes equipos están cerca de vencer: {equiposList}");
+            }
+
+            NavigationManager.NavigateTo("/home");
+        }
+        else
+        {
+            errorMessage = "Invalid credentials!";
+        }
+    }
+
+    private class LoginModel
+    {
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+}
+
