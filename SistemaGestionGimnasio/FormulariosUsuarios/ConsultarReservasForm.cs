@@ -47,10 +47,18 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             {
                 foreach (var linea in dataHandler.ReadAllLines(rutaArchivo))
                 {
+                    
+
                     string[] datos = linea.Split(',');
-                    if (datos.Length >= 3 && datos[2] == usuario)
+                    if (datos.Length < 3)
                     {
-                        DgvReservasClientes.Rows.Add(datos[0], datos[1]); // Añade los datos al DataGridView
+                        
+                        continue;
+                    }
+                    if (datos[2].Trim().Equals(usuario.Trim(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        
+                        DgvReservasClientes.Rows.Add(datos[0].Trim(), datos[1].Trim()); // Añade los datos al DataGridView
                     }
                 }
             }
@@ -62,8 +70,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void BtnConsultarReservas_Click(object sender, EventArgs e)
         {
-            ConsultarReservasForm reservasForm = new ConsultarReservasForm(dataHandler, usuarioActual);
-            reservasForm.Show();
+            CargarReservasCliente(usuarioActual);
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SistemaGestionGimnasio.DataHandler;
+using System.Globalization;
 
 namespace SistemaGestionGimnasio.FormulariosUsuarios
 {
@@ -34,7 +35,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                 return;
             }
 
-            string rutaArchivo = "InformeContable.csv";
+            string rutaArchivo = "Assets/InformeContable.csv";
             if (!dataHandler.FileExists(rutaArchivo))
             {
                 MessageBox.Show("El archivo InformeContable.csv no existe.", "Archivo no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -46,14 +47,14 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
             try
             {
-                var lineas = dataHandler.ReadAllLines(rutaArchivo);
+                var lineas = dataHandler.ReadAllLines(rutaArchivo).Skip(1);
                 foreach (var linea in lineas)
                 {
                     string[] datos = linea.Split(',');
 
                     if (datos.Length >= 4)
                     {
-                        if (DateTime.TryParse(datos[0], out DateTime fechaRegistro) &&
+                        if (DateTime.TryParseExact(datos[0].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaRegistro) &&
                             decimal.TryParse(datos[2], out decimal ingreso) &&
                             decimal.TryParse(datos[3], out decimal gasto))
                         {
@@ -73,9 +74,9 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                 }
 
                 // Mostrar el resumen en los labels
-                LblTotalIngresos.Text = $"Total Ingresos: {totalIngresos:C}";
-                LblTotalGastos.Text = $"Total Gastos: {totalGastos:C}";
-                LblBalance.Text = $"Balance: {(totalIngresos - totalGastos):C}";
+                LblTotalIngresos.Text = $" {totalIngresos:C}";
+                LblTotalGastos.Text = $" {totalGastos:C}";
+                LblBalance.Text = $" {(totalIngresos - totalGastos):C}";
             }
             catch (Exception ex)
             {

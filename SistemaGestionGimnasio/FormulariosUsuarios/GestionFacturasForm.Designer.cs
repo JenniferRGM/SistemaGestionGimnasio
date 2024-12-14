@@ -41,6 +41,11 @@
             this.DgvFacturas = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
             this.BtnEmitirFacturasMensuales = new System.Windows.Forms.Button();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.DgvFacturas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -145,6 +150,12 @@
             // DgvFacturas
             // 
             this.DgvFacturas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DgvFacturas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4,
+            this.Column5});
             this.DgvFacturas.Location = new System.Drawing.Point(16, 259);
             this.DgvFacturas.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DgvFacturas.Name = "DgvFacturas";
@@ -178,6 +189,46 @@
             this.BtnEmitirFacturasMensuales.Text = "Emitir Factura";
             this.BtnEmitirFacturasMensuales.UseVisualStyleBackColor = false;
             this.BtnEmitirFacturasMensuales.Click += new System.EventHandler(this.BtnEmitirFacturasMensuales_Click);
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Num.Factura";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 125;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Fecha Emision";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 125;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Cliente";
+            this.Column3.MinimumWidth = 6;
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Width = 125;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Monto";
+            this.Column4.MinimumWidth = 6;
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            this.Column4.Width = 125;
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "Estado";
+            this.Column5.MinimumWidth = 6;
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            this.Column5.Width = 125;
             // 
             // GestionFacturasForm
             // 
@@ -222,5 +273,10 @@
         private System.Windows.Forms.DataGridView DgvFacturas;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button BtnEmitirFacturasMensuales;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
     }
 }

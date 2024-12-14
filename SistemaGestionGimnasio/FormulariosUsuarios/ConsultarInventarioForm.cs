@@ -38,13 +38,15 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                 return;
             }
 
-            // Leer datos desde el archivo
+            // Lee datos desde el archivo
             List<Inventario> listaInventario = new List<Inventario>();
 
             try
             {
-                foreach (var linea in dataHandler.ReadAllLines(rutaArchivo)) // Usar DataHandler para leer líneas
+                var lineas = dataHandler.ReadAllLines(rutaArchivo).Skip(1); // Usa DataHandler para leer líneas
+                foreach (var linea in lineas)
                 {
+
                     string[] datos = linea.Split(',');
 
                     if (datos.Length >= 5)

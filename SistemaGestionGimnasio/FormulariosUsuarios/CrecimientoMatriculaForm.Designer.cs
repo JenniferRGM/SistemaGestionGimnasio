@@ -35,6 +35,9 @@
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.BtnGenerarReporte = new System.Windows.Forms.Button();
             this.DgvCrecimiento = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.DgvCrecimiento)).BeginInit();
             this.SuspendLayout();
             // 
@@ -98,6 +101,10 @@
             // 
             this.DgvCrecimiento.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.DgvCrecimiento.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DgvCrecimiento.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3});
             this.DgvCrecimiento.Location = new System.Drawing.Point(30, 218);
             this.DgvCrecimiento.Name = "DgvCrecimiento";
             this.DgvCrecimiento.ReadOnly = true;
@@ -105,6 +112,27 @@
             this.DgvCrecimiento.RowTemplate.Height = 24;
             this.DgvCrecimiento.Size = new System.Drawing.Size(1033, 316);
             this.DgvCrecimiento.TabIndex = 6;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Fecha Registro";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Membresias Nuevas";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Total de Membresias";
+            this.Column3.MinimumWidth = 6;
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
             // 
             // CrecimientoMatriculaForm
             // 
@@ -136,5 +164,8 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.Button BtnGenerarReporte;
         private System.Windows.Forms.DataGridView DgvCrecimiento;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
     }
 }

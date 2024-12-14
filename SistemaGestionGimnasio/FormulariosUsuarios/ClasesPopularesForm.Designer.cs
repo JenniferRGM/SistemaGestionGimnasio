@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.CmbCategoria = new System.Windows.Forms.ComboBox();
@@ -41,6 +41,10 @@
             this.BtnGenerarReporte = new System.Windows.Forms.Button();
             this.DgvClases = new System.Windows.Forms.DataGridView();
             this.ChartClases = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.DgvClases)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChartClases)).BeginInit();
             this.SuspendLayout();
@@ -122,6 +126,11 @@
             // DgvClases
             // 
             this.DgvClases.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DgvClases.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4});
             this.DgvClases.Location = new System.Drawing.Point(18, 311);
             this.DgvClases.Name = "DgvClases";
             this.DgvClases.RowHeadersWidth = 51;
@@ -131,19 +140,47 @@
             // 
             // ChartClases
             // 
-            chartArea2.Name = "ChartArea1";
-            this.ChartClases.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.ChartClases.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            this.ChartClases.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.ChartClases.Legends.Add(legend1);
             this.ChartClases.Location = new System.Drawing.Point(606, 311);
             this.ChartClases.Name = "ChartClases";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.ChartClases.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.ChartClases.Series.Add(series1);
             this.ChartClases.Size = new System.Drawing.Size(518, 283);
             this.ChartClases.TabIndex = 9;
             this.ChartClases.Text = "chart1";
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Nombre";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "Column1";
+            this.Column1.Width = 125;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Asistentes";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "Column2";
+            this.Column2.Width = 125;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Horario";
+            this.Column3.MinimumWidth = 6;
+            this.Column3.Name = "Column3";
+            this.Column3.Width = 125;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Fecha";
+            this.Column4.MinimumWidth = 6;
+            this.Column4.Name = "Column4";
+            this.Column4.Width = 125;
             // 
             // ClasesPopularesForm
             // 
@@ -182,5 +219,9 @@
         private System.Windows.Forms.Button BtnGenerarReporte;
         private System.Windows.Forms.DataGridView DgvClases;
         private System.Windows.Forms.DataVisualization.Charting.Chart ChartClases;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
     }
 }

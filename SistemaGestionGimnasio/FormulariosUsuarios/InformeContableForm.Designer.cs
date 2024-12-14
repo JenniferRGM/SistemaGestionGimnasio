@@ -108,7 +108,7 @@
             // 
             this.LblTotalIngresos.AutoSize = true;
             this.LblTotalIngresos.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblTotalIngresos.Location = new System.Drawing.Point(215, 237);
+            this.LblTotalIngresos.Location = new System.Drawing.Point(211, 237);
             this.LblTotalIngresos.Name = "LblTotalIngresos";
             this.LblTotalIngresos.Size = new System.Drawing.Size(56, 28);
             this.LblTotalIngresos.TabIndex = 6;
@@ -128,7 +128,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(323, 235);
+            this.label6.Location = new System.Drawing.Point(364, 234);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(150, 31);
             this.label6.TabIndex = 8;
@@ -138,7 +138,7 @@
             // 
             this.LblTotalGastos.AutoSize = true;
             this.LblTotalGastos.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblTotalGastos.Location = new System.Drawing.Point(491, 237);
+            this.LblTotalGastos.Location = new System.Drawing.Point(535, 237);
             this.LblTotalGastos.Name = "LblTotalGastos";
             this.LblTotalGastos.Size = new System.Drawing.Size(50, 28);
             this.LblTotalGastos.TabIndex = 9;
@@ -148,7 +148,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(595, 237);
+            this.label8.Location = new System.Drawing.Point(736, 235);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(103, 31);
             this.label8.TabIndex = 10;
@@ -158,7 +158,7 @@
             // 
             this.LblBalance.AutoSize = true;
             this.LblBalance.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblBalance.Location = new System.Drawing.Point(726, 238);
+            this.LblBalance.Location = new System.Drawing.Point(869, 238);
             this.LblBalance.Name = "LblBalance";
             this.LblBalance.Size = new System.Drawing.Size(50, 28);
             this.LblBalance.TabIndex = 11;

@@ -84,7 +84,7 @@ namespace SistemaGestionGimnasio.Vistas
         private void UsuarioForm_Load(object sender, EventArgs e)
         {
             // Muestra solo el panel de Inicio al abrir el formulario
-            LblUsuario.Text = $"Bienvenido, {usuarioActual}";
+            
             panelInicio.Visible = true;
            
         }

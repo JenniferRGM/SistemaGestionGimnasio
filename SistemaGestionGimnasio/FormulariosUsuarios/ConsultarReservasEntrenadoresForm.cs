@@ -21,7 +21,17 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             InitializeComponent();
             this.dataHandler = dataHandler;
         }
-
+        private void ConsultarReservasEntrenadoresForm_Load(object sender, EventArgs e)
+        {
+            ConfigurarDataGridView();
+            CargarClasesDelEntrenador(); 
+        }
+        private void ConfigurarDataGridView()
+        {
+            DgvReservas.Columns.Clear();
+            DgvReservas.Columns.Add("Cliente", "Cliente");
+            DgvReservas.Columns.Add("Fecha", "Fecha (DD/MM/YYYY)");
+        }
         private void BtnConsultar_Click(object sender, EventArgs e)
         {
             string claseSeleccionada = CmbClases.SelectedItem?.ToString();
@@ -43,18 +53,22 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
             if (dataHandler.FileExists(rutaArchivo))
             {
+                MessageBox.Show("No se encontraron reservas.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
                 try
                 {
-                    foreach (var linea in dataHandler.ReadAllLines(rutaArchivo))
+                string formatoFecha = "dd/MM/yyyy";
+                foreach (var linea in dataHandler.ReadAllLines(rutaArchivo))
                     {
                         string[] datos = linea.Split(',');
-                        string formatoFecha = "dd/MM/yyyy";
+                        
 
-                        if (datos.Length > 2 && datos[0] == clase &&
-                            DateTime.TryParseExact(datos[1], formatoFecha, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaArchivo) &&
+                        if (datos.Length > 2 && datos[0].Trim() == clase &&
+                            DateTime.TryParseExact(datos[1].Trim(), formatoFecha, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaArchivo) &&
                             fechaArchivo.Date == fecha.Date)
                         {
-                            DgvReservas.Rows.Add(datos[2], datos[1]); 
+                            DgvReservas.Rows.Add(datos[2].Trim(), datos[1].Trim()); 
                         }
                     }
                 }
@@ -63,42 +77,39 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                     MessageBox.Show($"Error al cargar las reservas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            else
-            {
-                MessageBox.Show("No se encontraron reservas.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
 
-        private void ConsultarReservasEntrenadoresForm_Load(object sender, EventArgs e)
+        private void CargarClasesDelEntrenador()
         {
-            string entrenadorActual = "Entrenador";
+            string entrenadorActual = "Entrenador"; // Reemplaza con el nombre del entrenador actual
             string rutaArchivo = "Assets/ClasesEntrenadores.csv";
 
-            if (dataHandler.FileExists(rutaArchivo))
-            {
-                try
-                {
-                    foreach (var linea in dataHandler.ReadAllLines(rutaArchivo))
-                    {
-                        string[] datos = linea.Split(',');
-                        if (datos.Length > 1 && datos[1] == entrenadorActual)
-                        {
-                            CmbClases.Items.Add(datos[0]); // Añadir la clase asociada al entrenador
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error al cargar las clases: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
+            if (!dataHandler.FileExists(rutaArchivo))
             {
                 MessageBox.Show("No se encontraron clases para el entrenador.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                foreach (var linea in dataHandler.ReadAllLines(rutaArchivo))
+                {
+                    string[] datos = linea.Split(',');
+
+                    // Valida que la línea tenga al menos dos columnas y coincida con el entrenador actual
+                    if (datos.Length > 1 && datos[1].Trim() == entrenadorActual)
+                    {
+                        CmbClases.Items.Add(datos[0].Trim());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar las clases: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
 }
+
 
 
 

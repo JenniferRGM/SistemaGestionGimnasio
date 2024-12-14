@@ -62,7 +62,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private static void GuardarFacturaEnArchivo(Factura factura, IDataHandler dataHandler)
         {
-            string rutaArchivo = "facturas.csv";
+            string rutaArchivo = "Assets/facturas.csv";
 
             try
             {
@@ -94,7 +94,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                 return;
             }
 
-            string rutaArchivo = "facturas.csv";
+            string rutaArchivo = "Assets/facturas.csv";
 
             if (!dataHandler.FileExists(rutaArchivo))
             {
@@ -112,12 +112,18 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                     if (datos.Length >= 5)
                     {
                         int numeroFactura = int.Parse(datos[0]);
-                        DateTime fechaEmision = DateTime.Parse(datos[1], System.Globalization.CultureInfo.InvariantCulture);
-                        string cliente = datos[2];
-                        double monto = double.Parse(datos[3]);
-                        string estado = datos[4];
+                        if (DateTime.TryParseExact(datos[1], "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime fechaEmision))
+                        {
+                            string cliente = datos[2];
+                            double monto = double.Parse(datos[3]);
+                            string estado = datos[4];
 
-                        listaFacturas.Add(new Factura(numeroFactura, fechaEmision, cliente, monto, estado));
+                            listaFacturas.Add(new Factura(numeroFactura, fechaEmision, cliente, monto, estado));
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Fecha inválida en la línea: {linea}", "Error de Datos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                     }
                 }
             }

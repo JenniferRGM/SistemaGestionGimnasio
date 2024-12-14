@@ -93,8 +93,9 @@
             this.Column2});
             this.DgvReservas.Location = new System.Drawing.Point(12, 215);
             this.DgvReservas.Name = "DgvReservas";
+            this.DgvReservas.ReadOnly = true;
             this.DgvReservas.RowHeadersWidth = 51;
-            this.DgvReservas.Size = new System.Drawing.Size(386, 150);
+            this.DgvReservas.Size = new System.Drawing.Size(557, 150);
             this.DgvReservas.TabIndex = 5;
             // 
             // Column1
@@ -102,6 +103,7 @@
             this.Column1.HeaderText = "Cliente";
             this.Column1.MinimumWidth = 6;
             this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
             this.Column1.Width = 125;
             // 
             // Column2
@@ -109,6 +111,7 @@
             this.Column2.HeaderText = "Fecha";
             this.Column2.MinimumWidth = 6;
             this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
             this.Column2.Width = 125;
             // 
             // BtnConsultar

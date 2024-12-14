@@ -64,26 +64,35 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void BtnBuscar_Click(object sender, EventArgs e)
         {
-            string idBuscado = txtBuscarID.Text;
+            string idBuscado = txtBuscarID.Text.Trim();
             bool usuarioEncontrado = false;
 
            
+
+            // Verificar si el archivo existe
             if (!dataHandler.FileExists("Assets/usuarios.csv"))
             {
                 MessageBox.Show("El archivo de usuarios no existe.");
                 return;
             }
 
-            foreach (var linea in dataHandler.ReadAllLines("Assets/usuarios.csv"))
+            var lineas = dataHandler.ReadAllLines("Assets/usuarios.csv");
+
+            foreach (var linea in lineas)
             {
+                
                 string[] datos = linea.Split(',');
 
-                if (datos[0] == idBuscado)
+                if (datos.Length < 5)
+                    { continue; }
+
+                // Compara el ID buscado con el ID en el archivo (ignorando espacios y mayúsculas/minúsculas)
+                if (datos[4].Trim().Equals(idBuscado, StringComparison.OrdinalIgnoreCase))
                 {
-                    txtID.Text = datos[0];
-                    txtNombre.Text = datos[1];
-                    txtCorreo.Text = datos[2];
-                    cmbTipo.SelectedItem = datos[3];
+                    txtID.Text = datos[0].Trim(); 
+                    txtNombre.Text = datos[1].Trim();
+                    txtCorreo.Text = datos[2].Trim();
+                    cmbTipo.SelectedItem = datos[3].Trim();
 
                     usuarioEncontrado = true;
                     break;
@@ -139,7 +148,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
             if (usuarioEncontrado)
             {
-                dataHandler.WriteAllLines("usuarios.csv", lineas);
+                dataHandler.WriteAllLines("Assets/usuarios.csv", lineas);
             }
 
             return usuarioEncontrado;
@@ -152,8 +161,8 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void ModificarUsuarioToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IDataHandler dataHandler = new FileDataHandler();
-            ModificarUsuarioForm modificarForm = new ModificarUsuarioForm(dataHandler);
+            IDataHandler handler = new FileDataHandler();
+            ModificarUsuarioForm modificarForm = new ModificarUsuarioForm(handler);
             modificarForm.ShowDialog();
         }
 

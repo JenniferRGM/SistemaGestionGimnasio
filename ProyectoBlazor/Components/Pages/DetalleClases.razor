@@ -1,0 +1,125 @@
+﻿@page "/detalle-clase/{id}"
+@inject NavigationManager NavigationManager
+
+@rendermode InteractiveServer
+@using ProyectoBlazor.Models
+@using ProyectoBlazor.Service
+@using SistemaGestionGimnasio.Modelos
+@inject ClaseService ClaseService
+@inject EspacioService EspacioService
+@inject ReservaService ReservaService
+@inject AppState AppState
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Detalle de Clase</PageTitle>
+
+<h1>Detalles de la Clase</h1>
+
+@if (clase != null)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@clase.Nombre</h5>
+            <p><strong>Entrenador:</strong> @clase.EntrenadorNombre</p>
+            <a href="@("/clases")" class="btn btn-secondary">Volver a Clases</a>
+        </div>
+    </div>
+
+    <h3>Espacios Disponibles</h3>
+    @if (espacios != null && espacios.Count > 0)
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Clase</th>
+                    <th>Fecha</th>
+                    <th>Cupos</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var espacio in espacios)
+                {
+                    <tr>
+                        <td>@espacio.id</td>
+                        <td>@espacio.claseNombre</td>
+                        <td>@espacio.fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@espacio.Cupos</td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="() => ReservarEspacio(espacio)" data-id="@espacio.id" data-nombre="@espacio.claseNombre">Reservar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No hay espacios disponibles para esta clase.</p>
+    }
+}
+else
+{
+    <p>Clase no encontrada.</p>
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private ClasesModel clase;
+    private List<EspacioModel> espacios;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (int.TryParse(Id, out var claseId))
+            {
+                // Llamamos al servicio para obtener la clase por su Id
+                clase = await ClaseService.ObtenerClasePorId(claseId);
+                espacios = await EspacioService.ListarEspaciosPorClaseId(claseId);
+            }
+            else
+            {
+                // Si el Id no es válido, redirigimos o mostramos un mensaje.
+                NavigationManager.NavigateTo("/clases");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar los detalles de la clase: {ex.Message}");
+            // Manejo de errores, como redirigir a la lista de clases en caso de fallo
+            NavigationManager.NavigateTo("/clases");
+        }
+    }
+
+    // Cambiar async void a async Task
+    private async Task ReservarEspacio(EspacioModel espacio)
+    {
+        Console.WriteLine($"Espacio reservado: {espacio.claseNombre} (ID: {espacio.id})");
+
+        // Llama al servicio para registrar la reserva
+        await ReservaService.RegistrarReserva(espacio.id, AppState.CurrentUser.Id);
+
+        // Vuelve a obtener los datos de la clase y los espacios
+        if (int.TryParse(Id, out var claseId))
+        {
+            clase = await ClaseService.ObtenerClasePorId(claseId);
+            espacios = await EspacioService.ListarEspaciosPorClaseId(claseId);
+
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "¡Algo salio mal, intenta mas tarde!");
+
+            NavigationManager.NavigateTo("/clases");
+        }
+
+        await JSRuntime.InvokeVoidAsync("alert", "¡Reserva realizada con éxito!");
+
+        // Redirige al usuario a la página de la reserva
+        NavigationManager.NavigateTo($"/clientes/mis-reservas");
+    }
+}

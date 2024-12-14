@@ -19,8 +19,23 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
         public ConsultarMembresiasForm(IDataHandler dataHandler)
         {
             InitializeComponent();
-            CargarMembresias();
             this.dataHandler = dataHandler;
+           
+            
+        }
+
+        private void ConsultarMembresiasForm_Load(object sender, EventArgs e)
+        {
+            ConfigurarDataGridView();
+            CargarMembresias();
+        }
+
+        private void ConfigurarDataGridView()
+        {
+            DgvMembresias.Columns.Clear();
+            DgvMembresias.Columns.Add("Usuario", "Usuario");
+            DgvMembresias.Columns.Add("FechaInicio", "Fecha de Inicio");
+            DgvMembresias.Columns.Add("FechaVencimiento", "Fecha de Vencimiento");
         }
 
         private void CargarMembresias()
@@ -41,13 +56,29 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
             try
             {
-                var datos = dataHandler.ReadLines(rutaArchivo); 
+                var lineas = dataHandler.ReadAllLines(rutaArchivo);
+                bool esPrimeraLinea = true;
                 DgvMembresias.Rows.Clear(); 
 
-                foreach (var linea in datos)
+                foreach (var linea in lineas)
                 {
-                    var valores = linea.Split(','); 
-                    DgvMembresias.Rows.Add(valores);
+                    if (esPrimeraLinea)
+                    {
+                        esPrimeraLinea = false; // Ignorar el encabezado
+                        continue;
+                    }
+                    string[] datos = linea.Split(',');
+
+                    if (datos.Length < 3)
+                    {
+                        continue;
+                    }
+
+                    string usuario = datos[0].Trim();
+                    string fechaInicio = datos[1].Trim();
+                    string fechaVencimiento = datos[2].Trim();
+
+                    DgvMembresias.Rows.Add(usuario, fechaInicio, fechaVencimiento);
                 }
             }
             catch (Exception ex)

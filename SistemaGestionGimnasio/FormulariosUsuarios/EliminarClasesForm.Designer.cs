@@ -34,6 +34,8 @@
             this.BtnEliminar = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.DgvClasesMatriculadas = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.DgvClasesMatriculadas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -90,12 +92,31 @@
             // DgvClasesMatriculadas
             // 
             this.DgvClasesMatriculadas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DgvClasesMatriculadas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2});
             this.DgvClasesMatriculadas.Location = new System.Drawing.Point(38, 282);
             this.DgvClasesMatriculadas.Name = "DgvClasesMatriculadas";
             this.DgvClasesMatriculadas.RowHeadersWidth = 51;
             this.DgvClasesMatriculadas.RowTemplate.Height = 24;
             this.DgvClasesMatriculadas.Size = new System.Drawing.Size(422, 150);
             this.DgvClasesMatriculadas.TabIndex = 5;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Usuario";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 125;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Actividad";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 125;
             // 
             // EliminarClasesForm
             // 
@@ -126,5 +147,7 @@
         private System.Windows.Forms.Button BtnEliminar;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView DgvClasesMatriculadas;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }
 }

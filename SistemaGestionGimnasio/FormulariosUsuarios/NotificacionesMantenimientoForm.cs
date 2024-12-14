@@ -36,7 +36,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void CargarNotificaciones()
         {
-            string rutaArchivo = "inventario.csv";
+            string rutaArchivo = "Assets/inventario.csv";
 
             if (!dataHandler.FileExists(rutaArchivo))
             {
@@ -94,7 +94,7 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
                     }
                 }
 
-                // Asignar los datos al DataGridView
+                // Asigna los datos al DataGridView
                 DgvMantenimiento.DataSource = null;
                 DgvMantenimiento.DataSource = equiposPorMantener;
 

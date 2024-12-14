@@ -22,29 +22,9 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             InitializeComponent();
             this.usuarioActual = usuario;
             this.dataHandler = dataHandler;
-            CargarClases();
+            
         }
 
-        private void CargarClases()
-        {
-            string rutaArchivo = "Assets/actividades.csv";
-
-            if (!dataHandler.FileExists(rutaArchivo))
-            {
-                MessageBox.Show("No se encontró el archivo de actividades.");
-                return;
-            }
-
-            var lineas = dataHandler.ReadAllLines(rutaArchivo);
-            foreach (var linea in lineas)
-            {
-                string[] datos = linea.Split(',');
-                if (datos[0] == usuarioActual.Nombre)
-                {
-                    CmbClases.Items.Add(datos[1]);
-                }
-            }
-        }
         private void EliminarClasesForm_Load(object sender, EventArgs e)
         {
             CargarClasesPorUsuario();
@@ -63,17 +43,39 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
             CmbClases.Items.Clear();
             DgvClasesMatriculadas.Rows.Clear();
 
-            var lineas = dataHandler.ReadAllLines(rutaMatriculas);
-            foreach (var linea in lineas)
+            try
             {
-                string[] datos = linea.Split(',');
 
-                // Filtrar solo las clases del usuario actual
-                if (datos.Length > 1 && datos[0] == usuarioActual.Nombre)
+                var lineas = dataHandler.ReadAllLines(rutaMatriculas);
+                bool esPrimeraLinea = true;
+
+
+                foreach (var linea in lineas)
                 {
-                    CmbClases.Items.Add(datos[1]);
-                    DgvClasesMatriculadas.Rows.Add(datos[1]);
+                    if (esPrimeraLinea)
+                    {
+                        esPrimeraLinea = false; // Ignora la primera línea
+                        continue;
+                    }
+
+                    string[] datos = linea.Split(',');
+
+                    if (datos.Length < 2)
+                    {
+                        continue;
+                    }
+
+                    // Filtra solo las clases del usuario actual
+                    if (datos[0].Trim().Equals(usuarioActual.Nombre.Trim(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        CmbClases.Items.Add(datos[1]);
+                        DgvClasesMatriculadas.Rows.Add(datos[0].Trim(), datos[1]);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar las clases matriculadas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void BtnEliminar_Click(object sender, EventArgs e)
@@ -90,30 +92,24 @@ namespace SistemaGestionGimnasio.FormulariosUsuarios
 
         private void EliminarClase(string clase)
         {
-            string rutaActividades = "Assets/actividades.csv";
+           
             string rutaMatriculas = "Assets/matriculas.csv";
 
             // Eliminar la clase del archivo actividades.csv
-            if (dataHandler.FileExists(rutaActividades))
-            {
-                var lineas = dataHandler.ReadAllLines(rutaActividades)
-                    .Where(linea => !linea.StartsWith(clase + ","))
-                    .ToArray();
-                dataHandler.WriteAllLines(rutaActividades, lineas);
-            }
-
-            // Eliminar la clase del archivo matriculas.csv
             if (dataHandler.FileExists(rutaMatriculas))
             {
                 var lineas = dataHandler.ReadAllLines(rutaMatriculas)
                     .Where(linea =>
                     {
                         string[] datos = linea.Split(',');
-                        return !(datos.Length > 1 && datos[0] == usuarioActual.Nombre && datos[1] == clase);
+                        return !(datos.Length > 1 && datos[0].Trim().Equals(usuarioActual.Nombre.Trim(), StringComparison.OrdinalIgnoreCase) && datos[1].Trim().Equals(clase.Trim(), StringComparison.OrdinalIgnoreCase));
                     })
                     .ToArray();
                 dataHandler.WriteAllLines(rutaMatriculas, lineas);
             }
+
+           
+            
 
             MessageBox.Show($"La clase '{clase}' ha sido eliminada correctamente.");
             CargarClasesPorUsuario();

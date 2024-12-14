@@ -1,0 +1,127 @@
+﻿@page "/crear-espacio"
+@using ProyectoBlazor.Models
+@using ProyectoBlazor.Service
+@using SistemaGestionGimnasio.Modelos
+@inject ClaseService ClaseService
+@inject EspacioService EspacioService
+@inject IJSRuntime JSRuntime
+@inject AppState AppState
+@rendermode InteractiveServer
+
+<PageTitle>Crear Espacio</PageTitle>
+
+<h1>Crear Espacio</h1>
+
+<div class="form-container">
+    <EditForm Model="nuevoEspacio" OnValidSubmit="CrearEspacio" FormName="formCrearEspacio">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="claseSelect">Selecciona una clase</label>
+            <select id="claseSelect" class="form-control" @bind="nuevoEspacio.ClaseId" required>
+                <option value="">-- Seleccionar Clase --</option>
+                @if (clases != null && clases.Count > 0)
+                {
+                    @foreach (var clase in clases)
+                    {
+                        <option value="@clase.Id">@clase.Nombre</option>
+                    }
+                }
+                else
+                {
+                    <option value="" disabled>No hay clases disponibles</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="fecha">Selecciona una fecha</label>
+            <input id="fecha" type="datetime-local" class="form-control" @bind="nuevoEspacio.Fecha" required />
+        </div>
+
+        <div class="form-group">
+            <label for="cupos">Ingrese la cantidad de cupos</label>
+            <input id="cupos" type="number" class="form-control" @bind="nuevoEspacio.Cupos" required />
+        </div>
+
+
+        <button type="submit" class="btn btn-success">Crear Espacio</button>
+    </EditForm>
+</div>
+
+<h2>Espacios Disponibles</h2>
+
+@if (espacios != null && espacios.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Clase</th>
+                <th>Fecha</th>
+                <th>Cupos</th>
+                <th>Acciones</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var espacio in espacios)
+            {
+                <tr>
+                    <td>@espacio.id</td>
+                    <td>@espacio.claseNombre</td>
+                    <td>@espacio.fecha.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@espacio.Cupos</td>
+                    <td><a href="@("/entrenadores/espacios/" + espacio.id)" class="btn btn-primary">Ver detalles</a></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay espacios disponibles.</p>
+}
+
+@code {
+    private List<ClasesModel> clases = new List<ClasesModel>();
+    private List<EspacioModel> espacios = new List<EspacioModel>();
+
+    private Espacio nuevoEspacio = new Espacio();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            clases = await ClaseService.listarClasesPorEntrenador(AppState.CurrentUser.Id);
+            espacios = await EspacioService.ListarEspaciosEntrenador(AppState.CurrentUser.Id);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar las clases o los espacios: {ex.Message}");
+        }
+    }
+
+    private async Task CrearEspacio()
+    {
+        try
+        {
+            await EspacioService.CrearEspacio(nuevoEspacio.ClaseId, nuevoEspacio.Fecha, nuevoEspacio.Cupos);
+            await JSRuntime.InvokeVoidAsync("alert", "¡Se ha creado el espacio correctamente!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al crear el espacio: {ex.Message}");
+        }
+    }
+
+    public class Espacio
+    {
+        public int ClaseId { get; set; }
+        public DateTime Fecha { get; set; }
+        public int Cupos { get; set; }
+
+    }
+}
