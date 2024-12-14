@@ -1,0 +1,55 @@
+﻿@page "/clientes/mis-reservas"
+@rendermode InteractiveServer
+@inject AppState AppState
+@inject NavigationManager NavigationManager
+
+@using ProyectoBlazor.Models
+@using ProyectoBlazor.Service
+@using SistemaGestionGimnasio.Modelos
+@inject ClaseService ClaseService
+@inject ReservaService ReservaService
+
+<PageTitle>Mis Reservas</PageTitle>
+
+<h1>Mis Reservas</h1>
+
+<div class="row">
+    @if (reservas != null && reservas.Count > 0)
+    {
+        @foreach (var reserva in reservas)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@reserva.espacio.claseNombre</h5>
+                        <p><strong>Clase:</strong> @reserva.espacio.claseNombre</p>
+                        <p><strong>Fecha:</strong> @reserva.espacio.fecha.ToString("dd/MM/yyyy HH:mm")</p>
+                        <a href="@("/detalle-clase/" + reserva.espacio.id)" class="btn btn-primary">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No tienes reservas.</p>
+    }
+</div>
+
+@code {
+    private List<Reservas> reservas = new List<Reservas>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            reservas = await ReservaService.ListarReservasCliente(AppState.CurrentUser.Id);
+            Console.WriteLine("Reservas");
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar las reservas: {ex.Message}");
+        }
+    }
+}

@@ -1,0 +1,82 @@
+﻿@page "/entrenadores/espacios/{id}"
+@using ProyectoBlazor.Modelos
+@using ProyectoBlazor.Models
+@using ProyectoBlazor.Service
+@inject EspacioService EspacioService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Detalles del Espacio</PageTitle>
+
+<h1>Detalles del Espacio</h1>
+
+@if (espacio != null)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@espacio.claseNombre</h5>
+            <p class="card-text"><strong>Fecha:</strong> @espacio.fecha.ToShortDateString()</p>
+            <p class="card-text"><strong>Cupos disponibles:</strong> @espacio.Cupos</p>
+
+            <h6>Clase asociada</h6>
+            <p><strong>Nombre de la Clase:</strong> @espacio.claseNombre</p>
+        </div>
+    </div>
+
+    <h3>Personas en este Espacio</h3>
+    @if (usuarios != null && usuarios.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var usuario in usuarios)
+                {
+                    <tr>
+                        <td>@usuario.Nombre</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No hay personas inscritas en este espacio.</p>
+    }
+}
+else
+{
+    <p>Cargando los detalles del espacio...</p>
+}
+
+@code {
+    [Parameter] public string id { get; set; }
+    private EspacioModel espacio;
+    private List<Usuario> usuarios;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (int.TryParse(id, out var espacioId))
+        {
+            await ObtenerEspacioDetalle(espacioId);
+            await ObtenerUsuariosEnEspacio(espacioId);
+        }
+        else
+        {
+            // Manejo de error si la conversión falla
+            NavigationManager.NavigateTo("/error"); // O mostrar un mensaje de error
+        }
+    }
+
+    private async Task ObtenerEspacioDetalle(int espacioId)
+    {
+        espacio = await EspacioService.ObtenerEspacioPorId(espacioId);
+    }
+
+    private async Task ObtenerUsuariosEnEspacio(int espacioId)
+    {
+        usuarios = await EspacioService.ObtenerPersonasEnEspacioPorEspacioId(espacioId);
+    }
+}
