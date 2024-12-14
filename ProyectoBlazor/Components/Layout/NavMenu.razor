@@ -1,0 +1,104 @@
+﻿@inject AppState appState;
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">ProyectoBlazor</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-user-door-fill-nav-menu" aria-hidden="true"></span> Login
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            @if (appState.CurrentUser != null && (appState.CurrentUser.Tipo == "Admin"))
+            {
+                <NavLink class="nav-link" href="usuarios">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Usuarios
+                </NavLink>
+            }
+
+        </div>
+
+        <div class="nav-item px-3">
+            @if (appState.CurrentUser != null && (appState.CurrentUser.Tipo == "Cliente"))
+            {
+                <NavLink class="nav-link" href="clases">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Clases
+                </NavLink>
+            }
+        </div>
+
+        <div class="nav-item px-3">
+            @if (appState.CurrentUser != null && appState.CurrentUser.Tipo == "Entrenador")
+            {
+                <NavLink class="nav-link" href="crear-espacio">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Crear Espacios
+                </NavLink>
+            }
+        </div>
+
+
+        <div class="nav-item px-3">
+            @if (appState.CurrentUser != null && appState.CurrentUser.Tipo == "Cliente")
+            {
+                <NavLink class="nav-link" href="clientes/mis-reservas">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Mis Reservas
+                </NavLink>
+            }
+        </div>
+
+        <div class="nav-item px-3">
+            @if (appState.CurrentUser != null && appState.CurrentUser.Tipo == "Administrador")
+            {
+                <NavLink class="nav-link" href="administradores/reportes">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Reportes
+                </NavLink>
+            }
+        </div>
+
+
+
+        @*  <div class="nav-item px-3"> *@
+        @*     @if (appState.GetUser() != null && (appState.GetUser().Tipo == "Admin")){ *@
+        @*     <NavLink class="nav-link" href="membresias"> *@
+        @*         <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Membresias *@
+        @*     </NavLink> *@
+
+        @*     } *@
+
+        @* </div> *@
+
+        @*  <div class="nav-item px-3"> *@
+        @*     @if (appState.GetUser() != null && (appState.GetUser().Tipo == "Admin")){ *@
+        @*     <NavLink class="nav-link" href="inventario"> *@
+        @*         <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Inventario *@
+        @*     </NavLink> *@
+        @*      } *@
+        @* </div> *@
+
+        @* <div class="nav-item px-3"> *@
+        @*     @if (appState.GetUser() != null && (appState.GetUser().Tipo == "Admin")){ *@
+
+        @*     <NavLink class="nav-link" href="reportes"> *@
+        @*         <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Reportes *@
+        @*     </NavLink> *@
+        @*     } *@
+        @* </div> *@
+
+        @* <div class="nav-item px-3"> *@
+        @*     <NavLink class="nav-link" href="facturacion"> *@
+        @*         <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Facturacion *@
+        @*     </NavLink> *@
+        @* </div> *@
+
+
+    </nav>
+</div>
+
