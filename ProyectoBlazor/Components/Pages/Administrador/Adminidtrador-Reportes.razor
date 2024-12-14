@@ -1,0 +1,175 @@
+﻿@page "/administradores/reportes"
+@rendermode InteractiveServer
+@inject AppState AppState
+@inject NavigationManager NavigationManager
+
+@using ProyectoBlazor.Models
+@using ProyectoBlazor.Service
+@using SistemaGestionGimnasio.Modelos
+@inject ReporteService ReporteService
+
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Reportes</PageTitle>
+
+<h1>Reportes</h1>
+
+<h2>Crecimiento de Matrículas</h2>
+<p>Visualiza el crecimiento o reducción de las matrículas.</p>
+<button class="btn btn-primary" @onclick="ObtenerCrecimientoMatriculas">Generar Reporte</button>
+
+@if (matriculasCrecimiento != null && matriculasCrecimiento.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Nuevas Matrículas</th>
+                <th>Total Matrículas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var registro in matriculasCrecimiento)
+            {
+                <tr>
+                    <td>@registro.Fecha.ToShortDateString()</td>
+                    <td>@registro.NuevasMatriculas</td>
+                    <td>@registro.TotalMatriculas</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay datos para mostrar.</p>
+}
+
+<hr />
+
+<h2>Informe Contable</h2>
+<p>Visualiza ingresos y gastos por un rango de fechas.</p>
+
+<div class="mb-3">
+    <label for="inicio" class="form-label">Fecha Inicio:</label>
+    <input type="date" id="inicio" @bind="fechaInicio" class="form-control" />
+</div>
+<div class="mb-3">
+    <label for="fin" class="form-label">Fecha Fin:</label>
+    <input type="date" id="fin" @bind="fechaFin" class="form-control" />
+</div>
+<button class="btn btn-primary" @onclick="ObtenerInformeContable">Generar Reporte</button>
+
+@if (informeContable != null && informeContable.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Ingreso</th>
+                <th>Gasto</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var registro in informeContable)
+            {
+                <tr>
+                    <td>@registro.Fecha.ToShortDateString()</td>
+                    <td>@registro.Ingreso</td>
+                    <td>@registro.Gasto</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay datos para mostrar.</p>
+}
+
+<hr />
+
+<h2>Clases Más Atractivas</h2>
+<p>Consulta cuáles clases y horarios son los más populares.</p>
+<button class="btn btn-primary" @onclick="ObtenerClasesMasAtractivas">Generar Reporte</button>
+<button class="btn btn-primary" @onclick="() => GenerarReporteClasesAtractivasPDF()">Generar Reporte En PDF</button>
+
+@if (clasesAtractivas != null && clasesAtractivas.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Clase</th>
+                <th>Horario</th>
+                <th>Cantidad Reservas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var clase in clasesAtractivas)
+            {
+                <tr>
+                    <td>@clase.Clase</td>
+                    <td>@clase.Horario</td>
+                    <td>@clase.Cupos</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay datos para mostrar.</p>
+}
+
+@code {
+    private List<(DateTime Fecha, int NuevasMatriculas, int TotalMatriculas)> matriculasCrecimiento;
+    private List<(DateTime Fecha, Decimal Ingreso, Decimal Gasto)> informeContable;
+    private List<(string Clase, string Horario, int Cupos)> clasesAtractivas;
+
+    private DateTime fechaInicio = DateTime.Today.AddMonths(-1);
+    private DateTime fechaFin = DateTime.Today;
+
+    private async Task GenerarReporteClasesAtractivasPDF()
+    {
+        var response = await Http.GetAsync("http://localhost:5171/api/reporte/generar-pdf-clases");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+
+            var base64Pdf = Convert.ToBase64String(pdfBytes);
+            var pdfUrl = $"data:application/pdf;base64,{base64Pdf}";
+
+            await JSRuntime.InvokeVoidAsync("open", pdfUrl, "_blank");
+        }
+        else
+        {
+            Console.WriteLine("Error al generar el reporte PDF");
+        }
+    }
+
+
+    private async Task ObtenerCrecimientoMatriculas()
+    {
+        matriculasCrecimiento = await ReporteService.ObtenerCrecimientoMatriculasAsync();
+    }
+
+    private async Task ObtenerInformeContable()
+    {
+        if (fechaInicio > fechaFin)
+        {
+            // Aquí podrías mostrar una alerta o manejar la validación
+            return;
+        }
+
+        informeContable = await ReporteService.ObtenerInformeContableAsync(fechaInicio, fechaFin);
+    }
+
+    private async Task ObtenerClasesMasAtractivas()
+    {
+        clasesAtractivas = await ReporteService.ObtenerClasesMasAtractivasAsync();
+    }
+
+
+}

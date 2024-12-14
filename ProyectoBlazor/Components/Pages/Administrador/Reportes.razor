@@ -1,0 +1,33 @@
+﻿@page "/reporte"
+@rendermode InteractiveServer
+
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+
+<h3>Generar Reporte PDF</h3>
+
+<button class="btn btn-primary" @onclick="() => GenerarReporte()">Generar Reporte PDF</button>
+
+@code {
+    private async Task GenerarReporte()
+    {
+        var response = await Http.GetAsync("http://localhost:5171/api/reporte/generar-pdf-clases");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+
+            // Crear un enlace para descargar el archivo PDF
+            var base64Pdf = Convert.ToBase64String(pdfBytes);
+            var pdfUrl = $"data:application/pdf;base64,{base64Pdf}";
+
+            // Invocar JavaScript para abrir el archivo PDF en una nueva pestaña
+            await JSRuntime.InvokeVoidAsync("open", pdfUrl, "_blank");
+        }
+        else
+        {
+            // Manejar error
+            Console.WriteLine("Error al generar el reporte PDF");
+        }
+    }
+}
