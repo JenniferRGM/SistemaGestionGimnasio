@@ -1,5 +1,8 @@
 ﻿namespace ProyectoBlazor.Models
 {
+    /// <summary>
+    /// Representa un ítem individual asociado a una factura en el sistema.
+    /// </summary>
     public class FacturaItem
     {
         public int Id { get; set; }  // Identificador único del ítem

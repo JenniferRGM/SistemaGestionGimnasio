@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ProyectoBlazor.Modelos
 {
+    /// <summary>
+    /// Representa un usuario dentro del sistema.
+    /// </summary>
     public class Usuario
     {
         public int Id { get; set; }
@@ -15,16 +18,33 @@ namespace ProyectoBlazor.Modelos
         public string Tipo { get; set; }
         public string NombreUsuario { get; set; }
 
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="Usuario"/>.
+        /// </summary>
         public Usuario()
         {
         }
 
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="Usuario"/> con correo y contraseña.
+        /// </summary>
+        /// <param name="correo">Correo electrónico del usuario.</param>
+        /// <param name="contraseña">Contraseña del usuario.</param>
         public Usuario(string correo, string contraseña)
         {
             Correo = correo;
             Contraseña = contraseña;
         }
 
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="Usuario"/> con todos los parámetros.
+        /// </summary>
+        /// <param name="id">Identificador único del usuario.</param>
+        /// <param name="nombre">Nombre completo del usuario.</param>
+        /// <param name="correo">Correo electrónico del usuario.</param>
+        /// <param name="tipo">Tipo de usuario.</param>
+        /// <param name="nombreUsuario">Nombre de usuario para inicio de sesión.</param>
+        /// <param name="contraseña">Contraseña del usuario.</param>
         public Usuario(int id, string nombre, string correo, string tipo, string nombreUsuario, string contraseña)
         {
             Id = id;

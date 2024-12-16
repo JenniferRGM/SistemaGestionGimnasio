@@ -7,6 +7,9 @@ using ProyectoBlazor.Models;
 
 namespace SistemaGestionGimnasio.Modelos
 {
+    /// <summary>
+    /// Representa una reserva realizada por un cliente para un espacio asociado a una clase.
+    /// </summary>
     public class Reservas
     {
         public Int32 Id { get; set; }
@@ -16,7 +19,12 @@ namespace SistemaGestionGimnasio.Modelos
 
         public EspacioModel espacio { get; set; }
 
-
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="Reservas"/>.
+        /// </summary>
+        /// <param name="id">Identificador único de la reserva.</param>
+        /// <param name="claseEspacioId">Identificador del espacio asignado a la clase.</param>
+        /// <param name="clienteId">Identificador del cliente.</param>
 
         public Reservas(int id, int claseEspacioId, int clienteId)
         {

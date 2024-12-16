@@ -5,8 +5,18 @@ using ProyectoBlazor.Components;
 using ProyectoBlazor.Repository;
 using ProyectoBlazor.Service;
 using SistemaGimnasio.Repository;
+using Microsoft.EntityFrameworkCore;
+using ProyectoBlazor.DataHandler;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configuración del DbContext con MySQL
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"), // Usa la cadena de conexión
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection")) // Detecta automáticamente la versión de MySQL
+    ));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

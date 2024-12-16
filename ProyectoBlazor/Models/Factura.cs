@@ -7,6 +7,9 @@ using ProyectoBlazor.Models;
 
 namespace SistemaGestionGimnasio.Modelos
 {
+    /// <summary>
+    /// Representa una factura en el sistema de gestión del gimnasio.
+    /// </summary>
     public class Factura
     {
         public int Id { get; set; }  // Identificador único de la factura
@@ -19,6 +22,9 @@ namespace SistemaGestionGimnasio.Modelos
         public DateTime CreatedAt { get; set; }  // Fecha de creación
         public DateTime UpdatedAt { get; set; }  // Fecha de actualización
 
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="Factura"/>.
+        /// </summary>
         // Constructor por defecto
         public Factura()
         {

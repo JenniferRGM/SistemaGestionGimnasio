@@ -6,17 +6,31 @@ using SistemaGestionGimnasio.Modelos;
 
 namespace ProyectoBlazor.Repository
 {
+    /// <summary>
+    /// Repositorio para gestionar operaciones relacionadas con los espacios en la base de datos.
+    /// </summary>
     public class EspacioRepository
     {
+        /// <summary>
+        /// Cadena de conexión a la base de datos.
+        /// </summary>
         private readonly string _connectionString;
 
-
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="EspacioRepository"/>.
+        /// </summary>
+        /// <param name="connectionString">Cadena de conexión a la base de datos.</param>
         public EspacioRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-
+        /// <summary>
+        /// Crea un nuevo espacio asociado a una clase en la base de datos.
+        /// </summary>
+        /// <param name="claseId">Identificador de la clase asociada.</param>
+        /// <param name="fecha">Fecha del espacio.</param>
+        /// <param name="cupos">Cantidad de cupos disponibles.</param>
 
         public async Task CrearEspacio(int claseId, DateTime fecha, int cupos)
         {
@@ -36,6 +50,12 @@ namespace ProyectoBlazor.Repository
                 }
             }
         }
+
+        /// <summary>
+        /// Obtiene una lista de espacios asociados a una clase específica.
+        /// </summary>
+        /// <param name="claseId">Identificador de la clase.</param>
+        /// <returns>Lista de espacios asociados a la clase.</returns>
 
         public async Task<List<EspacioModel>> ListarEspaciosPorClaseId(int ClaseId)
         {
@@ -71,6 +91,11 @@ namespace ProyectoBlazor.Repository
             return espacios;
         }
 
+        /// <summary>
+        /// Obtiene un espacio específico por su identificador.
+        /// </summary>
+        /// <param name="espacioId">Identificador único del espacio.</param>
+        /// <returns>Instancia de <see cref="EspacioModel"/> con la información del espacio o null si no existe.</returns>
         public async Task<EspacioModel> ObtenerEspacioPorId(Int32 EspacioId)
         {
             EspacioModel espacio = null;
@@ -104,7 +129,11 @@ namespace ProyectoBlazor.Repository
             return espacio;
         }
 
-
+        /// <summary>
+        /// Obtiene una lista de usuarios que tienen reservas en un espacio específico.
+        /// </summary>
+        /// <param name="espacioId">Identificador único del espacio.</param>
+        /// <returns>Lista de usuarios con reservas en el espacio.</returns>
         public async Task<List<Usuario>> ConsultarPersonasEnEspacioPorEspacioId(int EspacioId)
         {
             var usuarios = new List<Usuario>();

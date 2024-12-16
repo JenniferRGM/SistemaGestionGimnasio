@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace SistemaGestionGimnasio.Modelos
 {
+    /// <summary>
+    /// Representa una clase dentro del sistema de gestión del gimnasio.
+    /// </summary>
     public class ClasesModel
     {
         public Int32 Id { get; set; }
@@ -15,6 +18,13 @@ namespace SistemaGestionGimnasio.Modelos
         public Int32 EntrenadorId { get; set; }
         public String EntrenadorNombre { get; set; }
 
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="ClasesModel"/>.
+        /// </summary>
+        /// <param name="id">Identificador único de la clase.</param>
+        /// <param name="nombre">Nombre de la clase.</param>
+        /// <param name="entrenadorId">Identificador del entrenador asignado.</param>
+        /// <param name="entrenadorNombre">Nombre del entrenador asignado.</param>
 
         public ClasesModel(int Id, string Nombre, int EntrenadorId, string EntrenadorNombre)
         {

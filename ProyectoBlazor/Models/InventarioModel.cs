@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ProyectoBlazor.Modelos
 {
+    /// <summary>
+    /// Representa un elemento del inventario dentro del sistema de gestión del gimnasio.
+    /// </summary>
     public class InventarioModel
     {
         public string NombreEquipo { get; set; }
@@ -16,6 +19,14 @@ namespace ProyectoBlazor.Modelos
 
         public InventarioModel() { }
 
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="InventarioModel"/> con valores específicos.
+        /// </summary>
+        /// <param name="nombreEquipo">Nombre del equipo.</param>
+        /// <param name="categoria">Categoría del equipo.</param>
+        /// <param name="fechaAdquisicion">Fecha en la que se adquirió el equipo.</param>
+        /// <param name="vidaUtilDias">Vida útil en días.</param>
+        /// <param name="estado">Estado actual del equipo.</param>
         public InventarioModel(string nombreEquipo, string categoria, DateTime fechaAdquisicion, int VidaUtilDias, string estado)
         {
             NombreEquipo = nombreEquipo;
