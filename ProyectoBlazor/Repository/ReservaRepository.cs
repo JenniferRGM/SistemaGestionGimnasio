@@ -6,17 +6,38 @@ using SistemaGestionGimnasio.Modelos;
 
 namespace SistemaGimnasio.Repository
 {
+    /// <summary>
+    /// Repositorio que gestiona las reservas de espacios y clases en la base de datos.
+    /// </summary>
     public class ReservaRepository
     {
+        /// <summary>
+        /// Cadena de conexión a la base de datos MySQL.
+        /// </summary>
         private readonly string _connectionString;
+
+        /// <summary>
+        /// Servicio para obtener detalles de los espacios.
+        /// </summary>
         private EspacioService espacioService;
 
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="ReservaRepository"/>.
+        /// </summary>
+        /// <param name="connectionString">Cadena de conexión a la base de datos.</param>
+        /// <param name="espacioService">Instancia del servicio para obtener información de espacios.</param>
         public ReservaRepository(string connectionString, EspacioService espacioService)
         {
             _connectionString = connectionString;
             this.espacioService = espacioService;
         }
 
+        /// <summary>
+        /// Crea una reserva si hay cupos disponibles.
+        /// </summary>
+        /// <param name="claseEspacioId">Identificador del espacio de clase.</param>
+        /// <param name="clienteId">Identificador del cliente.</param>
+        /// <returns>True si la reserva fue exitosa, de lo contrario False.</returns>
         public async Task<bool> CrearReserva(int ClaseEspacioId, int ClienteId)
         {
             // Primero verificamos si hay cupos disponibles
@@ -47,7 +68,11 @@ namespace SistemaGimnasio.Repository
             return false;
         }
 
-
+        /// <summary>
+        /// Verifica la disponibilidad de cupos en un espacio de clase y actualiza el cupo si hay disponibilidad.
+        /// </summary>
+        /// <param name="claseEspacioId">Identificador del espacio de clase.</param>
+        /// <returns>True si hay disponibilidad, de lo contrario False.</returns>
         public async Task<bool> ComprobarDisponibilidad(int ClaseEspacioId)
         {
             bool hayDisponibilidad = false;
@@ -84,7 +109,11 @@ namespace SistemaGimnasio.Repository
             return hayDisponibilidad;
         }
 
-
+        /// <summary>
+        /// Obtiene una lista de reservas asociadas a un cliente específico.
+        /// </summary>
+        /// <param name="clienteId">Identificador del cliente.</param>
+        /// <returns>Lista de reservas del cliente.</returns>
         public async Task<bool> RestarCupo(int ClaseEspacioId)
         {
             bool exito = false;

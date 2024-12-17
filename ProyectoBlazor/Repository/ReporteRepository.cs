@@ -3,17 +3,29 @@ using MySql.Data.MySqlClient;
 
 namespace SistemaGimnasio.Repository
 {
+    /// <summary>
+    /// Repositorio que proporciona métodos para generar reportes de crecimiento de matrículas, informes contables y clases más reservadas.
+    /// </summary>
     public class ReporteRepository
     {
-
+        /// <summary>
+        /// Cadena de conexión a la base de datos MySQL.
+        /// </summary>
         private readonly string _connectionString;
 
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="ReporteRepository"/>.
+        /// </summary>
+        /// <param name="connectionString">Cadena de conexión a la base de datos.</param>
         public ReporteRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-
+        /// <summary>
+        /// Obtiene el crecimiento de matrículas agrupado por mes, incluyendo el total acumulado.
+        /// </summary>
+        /// <returns>Una lista de tuplas con Fecha, Nuevas Matrículas y Total de Matrículas acumuladas.</returns>
         public async Task<List<(DateTime Fecha, int NuevasMatriculas, int TotalMatriculas)>> ObtenerCrecimientoMatriculasAsync()
         {
             var resultados = new List<(DateTime Fecha, int NuevasMatriculas, int TotalMatriculas)>();
@@ -53,6 +65,12 @@ namespace SistemaGimnasio.Repository
             return resultados;
         }
 
+        /// <summary>
+        /// Obtiene un informe contable que agrupa ingresos y gastos por fecha dentro de un rango específico.
+        /// </summary>
+        /// <param name="inicio">Fecha de inicio del rango.</param>
+        /// <param name="fin">Fecha de fin del rango.</param>
+        /// <returns>Una lista de tuplas con Fecha, Ingreso y Gasto.</returns>
         public async Task<List<(DateTime Fecha, decimal Ingreso, decimal Gasto)>> ObtenerInformeContableAsync(DateTime inicio, DateTime fin)
         {
             var resultados = new List<(DateTime Fecha, decimal Ingreso, decimal Gasto)>();
@@ -95,7 +113,10 @@ namespace SistemaGimnasio.Repository
             return resultados;
         }
 
-
+        /// <summary>
+        /// Obtiene una lista de las clases más reservadas, limitando a las 8 principales.
+        /// </summary>
+        /// <returns>Una lista de tuplas con el nombre de la clase, horario y número total de reservas.</returns>
         public async Task<List<(string Clase, string Horario, int Reservas)>> ObtenerClasesMasReservadasAsync()
         {
             var resultados = new List<(string Clase, string Horario, int Reservas)>();
@@ -131,9 +152,6 @@ namespace SistemaGimnasio.Repository
 
             return resultados;
         }
-
-
-
 
     }
 }

@@ -1,5 +1,4 @@
 ﻿using SistemaGimnasio.Repository;
-
 using System.IO;
 using System.Threading.Tasks;
 using iText.Kernel.Pdf;
@@ -8,15 +7,29 @@ using iText.Layout.Element;
 
 namespace ProyectoBlazor.Service
 {
+    /// <summary>
+    /// Servicio responsable de generar reportes en formato PDF relacionados con matrículas, finanzas y clases.
+    /// </summary>
     public class ReporteService
     {
+        /// <summary>
+        /// Repositorio que proporciona los datos necesarios para los reportes.
+        /// </summary>
         private readonly ReporteRepository reporteRepository;
 
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="ReporteService"/>.
+        /// </summary>
+        /// <param name="reporteRepository">Instancia del repositorio de reportes.</param>
         public ReporteService(ReporteRepository reporteRepository)
         {
             this.reporteRepository = reporteRepository;
         }
 
+        /// <summary>
+        /// Genera un reporte PDF básico con contenido predefinido.
+        /// </summary>
+        /// <returns>Array de bytes que representa el PDF generado.</returns>
         public async Task<byte[]> GenerarReportePdf()
         {
             using (var memoryStream = new MemoryStream())
@@ -25,22 +38,26 @@ namespace ProyectoBlazor.Service
                 var pdf = new PdfDocument(writer);
                 var document = new Document(pdf);
 
-                // Agregar contenido al PDF
+                // Agrega contenido al PDF
                 document.Add(new Paragraph("Reporte Clases Más Atractivas"));
                 document.Add(new Paragraph("Fecha: " + DateTime.Now.ToString("yyyy-MM-dd")));
                 document.Add(new Paragraph("Aquí va el contenido de tu reporte..."));
 
-                // Finalizar el documento
+                // Finaliza el documento
                 document.Close();
 
-                // Retornar los bytes del PDF
+                // Retorna los bytes del PDF
                 return memoryStream.ToArray();
             }
         }
 
+        /// <summary>
+        /// Genera un reporte PDF sobre el crecimiento de matrículas.
+        /// </summary>
+        /// <returns>Array de bytes que representa el PDF generado.</returns>
         public async Task<byte[]> GenerarReporteCrecimientoMatriculasPdf()
         {
-            // Obtener los datos del reporte de crecimiento de matrículas
+            // Obtiene los datos del reporte de crecimiento de matrículas
             List<(DateTime Fecha, int NuevasMatriculas, int TotalMatriculas)> reporteCrecimiento = await reporteRepository.ObtenerCrecimientoMatriculasAsync();
 
             using (var memoryStream = new MemoryStream())
@@ -54,21 +71,27 @@ namespace ProyectoBlazor.Service
                     .SetFontSize(18));
                 document.Add(new Paragraph("Fecha: " + DateTime.Now.ToString("yyyy-MM-dd")));
 
-                // Agregar los datos al documento desde la lista 'reporteCrecimiento'
+                // Agrega los datos al documento desde la lista 'reporteCrecimiento'
                 foreach (var item in reporteCrecimiento)
                 {
                     var paragraph = new Paragraph($"Fecha: {item.Fecha.ToShortDateString()} - Nuevas Matrículas: {item.NuevasMatriculas} - Total Matrículas: {item.TotalMatriculas}");
                     document.Add(paragraph);
                 }
 
-                // Finalizar el documento
+                // Finaliza el documento
                 document.Close();
 
-                // Retornar los bytes del PDF
+                // Retorna los bytes del PDF
                 return memoryStream.ToArray();
             }
         }
 
+        /// <summary>
+        /// Genera un reporte PDF sobre el informe contable en un rango de fechas.
+        /// </summary>
+        /// <param name="inicio">Fecha de inicio del rango.</param>
+        /// <param name="fin">Fecha de fin del rango.</param>
+        /// <returns>Array de bytes que representa el PDF generado.</returns>
         public async Task<byte[]> GenerarReporteInformeContablePdf(DateTime inicio, DateTime fin)
         {
             using (var memoryStream = new MemoryStream())
@@ -82,25 +105,28 @@ namespace ProyectoBlazor.Service
                     .SetFontSize(18));
                 document.Add(new Paragraph($"Fecha de inicio: {inicio.ToShortDateString()} - Fecha de fin: {fin.ToShortDateString()}"));
 
-                // Obtener los datos del reporte
+                // Obtiene los datos del reporte
                 var informeContable = await ObtenerInformeContableAsync(inicio, fin);
 
-                // Agregar los datos al documento
+                // Agregaa los datos al documento
                 foreach (var item in informeContable)
                 {
                     var paragraph = new Paragraph($"Fecha: {item.Fecha.ToShortDateString()} - Ingreso: {item.Ingreso:C} - Gasto: {item.Gasto:C}");
                     document.Add(paragraph);
                 }
 
-                // Finalizar el documento
+                // Finalizaa el documento
                 document.Close();
 
-                // Retornar los bytes del PDF
+                // Retorna los bytes del PDF
                 return memoryStream.ToArray();
             }
         }
 
-
+        /// <summary>
+        /// Genera un reporte PDF sobre las clases más atractivas.
+        /// </summary>
+        /// <returns>Array de bytes que representa el PDF generado.</returns>
         public async Task<byte[]> GenerarReporteClasesMasAtractivasPdf()
         {
             using (var memoryStream = new MemoryStream())
@@ -114,39 +140,45 @@ namespace ProyectoBlazor.Service
                     .SetFontSize(18));
                 document.Add(new Paragraph("Fecha: " + DateTime.Now.ToString("yyyy-MM-dd")));
 
-                // Obtener los datos del reporte
+                // Obtiene los datos del reporte
                 var clasesAtractivas = await ObtenerClasesMasAtractivasAsync();
 
-                // Agregar los datos al documento
+                // Agregae los datos al documento
                 foreach (var item in clasesAtractivas)
                 {
                     var paragraph = new Paragraph($"Clase: {item.Clase} - Horario: {item.Horario} - Cupos disponibles: {item.Cupos}");
                     document.Add(paragraph);
                 }
 
-                // Finalizar el documento
+                // Finaliza el documento
                 document.Close();
 
-                // Retornar los bytes del PDF
+                // Retorna los bytes del PDF
                 return memoryStream.ToArray();
             }
         }
 
 
 
-        // Método para obtener el crecimiento de matrículas
+        /// <summary>
+        /// Obtiene los datos del crecimiento de matrículas.
+        /// </summary>
         public async Task<List<(DateTime Fecha, int NuevasMatriculas, int TotalMatriculas)>> ObtenerCrecimientoMatriculasAsync()
         {
             return await reporteRepository.ObtenerCrecimientoMatriculasAsync();
         }
 
-        // Método para obtener el informe contable por rango de fechas
+        /// <summary>
+        /// Obtiene el informe contable en un rango de fechas.
+        /// </summary>
         public async Task<List<(DateTime Fecha, Decimal Ingreso, Decimal Gasto)>> ObtenerInformeContableAsync(DateTime inicio, DateTime fin)
         {
             return await reporteRepository.ObtenerInformeContableAsync(inicio, fin);
         }
 
-        // Método para obtener las clases más atractivas
+        /// <summary>
+        /// Obtiene las clases más atractivas en función de las reservas.
+        /// </summary>
         public async Task<List<(string Clase, string Horario, int Cupos)>> ObtenerClasesMasAtractivasAsync()
         {
             return await reporteRepository.ObtenerClasesMasReservadasAsync();
