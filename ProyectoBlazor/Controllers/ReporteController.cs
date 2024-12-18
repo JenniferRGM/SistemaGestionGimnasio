@@ -62,5 +62,12 @@ namespace ProyectoBlazor.Controllers
             // Devuelve el archivo PDF con el nombre "clases_atractivas.pdf"
             return File(pdfBytes, "application/pdf", "clases_atractivas.pdf");
         }
+
+        [HttpGet("generar-pdf-factura")]
+        public async Task<IActionResult> GenerarReporteInformeContable([FromQuery] string facturaId)
+        {
+            var pdfBytes = await _reporteService.GenerarReporteFactura(int.Parse(facturaId));
+            return File(pdfBytes, "application/pdf", "factura_pdf_" + facturaId + ".pdf");
+        }
     }
 }
