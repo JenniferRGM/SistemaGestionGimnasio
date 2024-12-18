@@ -1,168 +1,251 @@
 ﻿using MySql.Data.MySqlClient;
 using ProyectoBlazor.Models;
-using SistemaGestionGimnasio.Modelos;
+using ProyectoBlazor.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
+using SistemaGestionGimnasio.Modelos;
 
-namespace ProyectoBlazor.Repository
+public class FacturaRepository
 {
-    /// <summary>
-    /// Repositorio que gestiona las operaciones CRUD de facturas y sus ítems en la base de datos.
-    /// </summary>
-    public class FacturaRepository
+    private readonly string _connectionString;
+
+    // Constructor
+    public FacturaRepository(string connectionString)
     {
-        /// <summary>
-        /// Cadena de conexión a la base de datos MySQL.
-        /// </summary>
-        private readonly string _connectionString;
+        _connectionString = connectionString;
+    }
 
+    public async Task<List<Factura>> ObtenerFacturasPorRangoFechasAsync()
+    {
+        var facturas = new List<Factura>();
 
-        /// <summary>
-        /// Inicializa una nueva instancia de la clase <see cref="FacturaRepository"/>.
-        /// </summary>
-        /// <param name="connectionString">Cadena de conexión a la base de datos.</param>
-        public FacturaRepository(string connectionString)
+        using (var connection = new MySqlConnection(_connectionString))
         {
-            _connectionString = connectionString;
-        }
+            await connection.OpenAsync();
+            var query = "SELECT * FROM facturas";
 
-        /// <summary>
-        /// Obtiene una factura por su identificador único, incluyendo los ítems relacionados.
-        /// </summary>
-        /// <param name="id">Identificador único de la factura.</param>
-        /// <returns>Objeto <see cref="Factura"/> con los datos de la factura.</returns>
-        public async Task<Factura> ObtenerFacturaPorIdAsync(int id)
-        {
-            using (var connection = new MySqlConnection(_connectionString))
+            using (var command = new MySqlCommand(query, connection))
             {
-                await connection.OpenAsync();
-                var query = "SELECT * FROM facturas WHERE Id = @Id";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Id", id);
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            var factura = new Factura
-                            {
-                                Id = reader.GetInt32("Id"),
-                                NumeroFactura = reader.GetString("NumeroFactura"),
-                                FechaEmision = reader.GetDateTime("FechaEmision"),
-                                FechaVencimiento = reader.GetDateTime("FechaVencimiento"),
-                                Total = reader.GetDecimal("Total"),
-                                MatriculaId = reader.GetInt32("MatriculaId"),
-                                CreatedAt = reader.GetDateTime("CreatedAt"),
-                                UpdatedAt = reader.GetDateTime("UpdatedAt")
-                            };
 
-                            // Obtener los ítems de la factura
-                            factura.FacturaItems = await ObtenerFacturaItemsAsync(factura.Id);
-                            return factura;
-                        }
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        var factura = new Factura
+                        {
+                            Id = reader.GetInt32("id"),
+                            NumeroFactura = reader.GetString("numero_factura"),
+                            FechaEmision = reader.GetDateTime("fecha_emision"),
+                            FechaVencimiento = reader.GetDateTime("fecha_vencimiento"),
+                            Total = reader.GetDecimal("total"),
+                            MatriculaId = reader.GetInt32("matricula_id"),
+                            CreatedAt = reader.GetDateTime("created_at"),
+                            UpdatedAt = reader.GetDateTime("updated_at")
+                        };
+
+                        // Obtener los ítems de la factura
+                        factura.FacturaItems = await ObtenerFacturaItemsAsync(factura.Id);
+                        facturas.Add(factura);
                     }
                 }
             }
-
-            return null;
         }
 
-        /// <summary>
-        /// Obtiene los ítems asociados a una factura específica.
-        /// </summary>
-        /// <param name="facturaId">Identificador único de la factura.</param>
-        /// <returns>Lista de <see cref="FacturaItem"/> asociados a la factura.</returns>
-        private async Task<List<FacturaItem>> ObtenerFacturaItemsAsync(int facturaId)
-        {
-            var facturaItems = new List<FacturaItem>();
+        return facturas;
+    }
 
-            using (var connection = new MySqlConnection(_connectionString))
+
+    // Obtener una factura por su ID
+    public async Task<Factura> ObtenerFacturaPorIdAsync(int id)
+    {
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+            var query = "SELECT * FROM facturas WHERE id = @Id";
+            using (var command = new MySqlCommand(query, connection))
             {
-                await connection.OpenAsync();
-                var query = "SELECT * FROM facturas_items WHERE FacturaId = @FacturaId";
-                using (var command = new MySqlCommand(query, connection))
+                command.Parameters.AddWithValue("@Id", id);
+                using (var reader = await command.ExecuteReaderAsync())
                 {
-                    command.Parameters.AddWithValue("@FacturaId", facturaId);
-                    using (var reader = await command.ExecuteReaderAsync())
+                    if (await reader.ReadAsync())
                     {
-                        while (await reader.ReadAsync())
+                        var factura = new Factura
                         {
-                            facturaItems.Add(new FacturaItem
-                            {
-                                Id = reader.GetInt32("Id"),
-                                FacturaId = reader.GetInt32("FacturaId"),
-                                Descripcion = reader.GetString("Descripcion"),
-                                Cantidad = reader.GetInt32("Cantidad"),
-                                PrecioUnitario = reader.GetDecimal("PrecioUnitario"),
-                                TotalItem = reader.GetDecimal("TotalItem"),
-                                CreatedAt = reader.GetDateTime("CreatedAt"),
-                                UpdatedAt = reader.GetDateTime("UpdatedAt")
-                            });
-                        }
+                            Id = reader.GetInt32("id"),
+                            NumeroFactura = reader.GetString("numero_factura"),
+                            FechaEmision = reader.GetDateTime("fecha_emision"),
+                            FechaVencimiento = reader.GetDateTime("fecha_vencimiento"),
+                            Total = reader.GetDecimal("total"),
+                            MatriculaId = reader.GetInt32("matricula_id"),
+                            CreatedAt = reader.GetDateTime("created_at"),
+                            UpdatedAt = reader.GetDateTime("updated_at")
+                        };
+
+                        // Obtener los ítems de la factura
+                        factura.FacturaItems = await ObtenerFacturaItemsAsync(factura.Id);
+                        return factura;
                     }
                 }
             }
-
-            return facturaItems;
         }
 
-        /// <summary>
-        /// Crea una nueva factura en la base de datos.
-        /// </summary>
-        /// <param name="factura">Objeto <see cref="Factura"/> con los datos de la factura a crear.</param>
-       
-        public async Task CrearFacturaAsync(Factura factura)
+        return null;
+    }
+
+    // Obtener los ítems de una factura
+    private async Task<List<FacturaItem>> ObtenerFacturaItemsAsync(int facturaId)
+    {
+        var facturaItems = new List<FacturaItem>();
+
+        using (var connection = new MySqlConnection(_connectionString))
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            await connection.OpenAsync();
+            var query = "SELECT * FROM facturas_items WHERE factura_id = @FacturaId";
+            using (var command = new MySqlCommand(query, connection))
             {
-                await connection.OpenAsync();
-                var query = @"INSERT INTO facturas (NumeroFactura, FechaEmision, FechaVencimiento, Total, MatriculaId, CreatedAt, UpdatedAt)
-                          VALUES (@NumeroFactura, @FechaEmision, @FechaVencimiento, @Total, @MatriculaId, @CreatedAt, @UpdatedAt)";
+                command.Parameters.AddWithValue("@FacturaId", facturaId);
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        facturaItems.Add(new FacturaItem
+                        {
+                            Id = reader.GetInt32("id"),
+                            FacturaId = reader.GetInt32("factura_id"),
+                            Descripcion = reader.GetString("descripcion"),
+                            Cantidad = reader.GetInt32("cantidad"),
+                            PrecioUnitario = reader.GetDecimal("precio_unitario"),
+                            TotalItem = reader.GetDecimal("total_item"),
+                            CreatedAt = reader.GetDateTime("created_at"),
+                            UpdatedAt = reader.GetDateTime("updated_at")
+                        });
+                    }
+                }
+            }
+        }
+
+        return facturaItems;
+    }
+
+    // Crear una nueva factura
+    public async Task<int> CrearFacturaAsync(Factura factura)
+    {
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+
+            var query = @"
+            INSERT INTO facturas (NumeroFactura, FechaEmision, FechaVencimiento, Total, MatriculaId, CreatedAt, UpdatedAt)
+            VALUES (@NumeroFactura, @FechaEmision, @FechaVencimiento, @Total, @MatriculaId, @CreatedAt, @UpdatedAt);
+            SELECT LAST_INSERT_ID();";  // Esto devuelve el último ID insertado
+
+            using (var command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@NumeroFactura", factura.NumeroFactura);
+                command.Parameters.AddWithValue("@FechaEmision", factura.FechaEmision);
+                command.Parameters.AddWithValue("@FechaVencimiento", factura.FechaVencimiento);
+                command.Parameters.AddWithValue("@Total", factura.Total);
+                command.Parameters.AddWithValue("@MatriculaId", factura.MatriculaId);
+                command.Parameters.AddWithValue("@CreatedAt", factura.CreatedAt);
+                command.Parameters.AddWithValue("@UpdatedAt", factura.UpdatedAt);
+
+                // Ejecutar la consulta y obtener el último ID insertado
+                int facturaId = Convert.ToInt32(await command.ExecuteScalarAsync());
+
+                // Retornar el ID de la factura recién creada
+                return facturaId;
+            }
+        }
+    }
+
+    public int CrearFactura(Factura factura)
+    {
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            connection.Open();  // Abre la conexión de forma sincrónica
+
+            var query = @"
+        INSERT INTO facturas (numero_factura, fecha_emision, fecha_vencimiento, total, matricula_id, created_at, updated_at)
+        VALUES (@NumeroFactura, @FechaEmision, @FechaVencimiento, @Total, @MatriculaId, @CreatedAt, @UpdatedAt);
+        SELECT LAST_INSERT_ID();";  // Esto devuelve el último ID insertado
+
+            using (var command = new MySqlCommand(query, connection))
+            {
+                // Agregar parámetros a la consulta
+                command.Parameters.AddWithValue("@NumeroFactura", factura.NumeroFactura);
+                command.Parameters.AddWithValue("@FechaEmision", factura.FechaEmision);
+                command.Parameters.AddWithValue("@FechaVencimiento", factura.FechaVencimiento);
+                command.Parameters.AddWithValue("@Total", factura.Total);
+                command.Parameters.AddWithValue("@MatriculaId", factura.MatriculaId);
+                command.Parameters.AddWithValue("@CreatedAt", factura.CreatedAt);
+                command.Parameters.AddWithValue("@UpdatedAt", factura.UpdatedAt);
+
+                // Ejecutar la consulta y obtener el último ID insertado de forma sincrónica
+                int facturaId = Convert.ToInt32(command.ExecuteScalar());  // Ejecuta sincrónicamente
+
+                // Retornar el ID de la factura recién creada
+                return facturaId;
+            }
+        }
+    }
+
+
+    // Crear los ítems de la factura
+    public async Task CrearFacturaItemsAsync(List<FacturaItem> facturaItems)
+    {
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+
+            foreach (var item in facturaItems)
+            {
+                var query = @"INSERT INTO facturas_items (FacturaId, Descripcion, Cantidad, PrecioUnitario, TotalItem, CreatedAt, UpdatedAt)
+                              VALUES (@FacturaId, @Descripcion, @Cantidad, @PrecioUnitario, @TotalItem, @CreatedAt, @UpdatedAt)";
                 using (var command = new MySqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@NumeroFactura", factura.NumeroFactura);
-                    command.Parameters.AddWithValue("@FechaEmision", factura.FechaEmision);
-                    command.Parameters.AddWithValue("@FechaVencimiento", factura.FechaVencimiento);
-                    command.Parameters.AddWithValue("@Total", factura.Total);
-                    command.Parameters.AddWithValue("@MatriculaId", factura.MatriculaId);
-                    command.Parameters.AddWithValue("@CreatedAt", factura.CreatedAt);
-                    command.Parameters.AddWithValue("@UpdatedAt", factura.UpdatedAt);
+                    command.Parameters.AddWithValue("@FacturaId", item.FacturaId);
+                    command.Parameters.AddWithValue("@Descripcion", item.Descripcion);
+                    command.Parameters.AddWithValue("@Cantidad", item.Cantidad);
+                    command.Parameters.AddWithValue("@PrecioUnitario", item.PrecioUnitario);
+                    command.Parameters.AddWithValue("@TotalItem", item.TotalItem);
+                    command.Parameters.AddWithValue("@CreatedAt", item.CreatedAt);
+                    command.Parameters.AddWithValue("@UpdatedAt", item.UpdatedAt);
 
                     await command.ExecuteNonQueryAsync();
                 }
             }
         }
+    }
 
-        /// <summary>
-        /// Crea una lista de ítems asociados a una factura específica.
-        /// </summary>
-        /// <param name="facturaItems">Lista de <see cref="FacturaItem"/> a insertar.</param>
-        public async Task CrearFacturaItemsAsync(List<FacturaItem> facturaItems)
+    public void CrearFacturaItemsSync(List<FacturaItem> facturaItems)
+    {
+        using (var connection = new MySqlConnection(_connectionString))
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            connection.Open();  // Abre la conexión de forma sincrónica
+
+            foreach (var item in facturaItems)
             {
-                await connection.OpenAsync();
+                var query = @"INSERT INTO facturas_items (factura_id, descripcion, cantidad, Precio_Unitario, Total_Item, Created_At, Updated_At)
+                          VALUES (@FacturaId, @Descripcion, @Cantidad, @PrecioUnitario, @TotalItem, @CreatedAt, @UpdatedAt)";
 
-                foreach (var item in facturaItems)
+                using (var command = new MySqlCommand(query, connection))
                 {
-                    var query = @"INSERT INTO facturas_items (FacturaId, Descripcion, Cantidad, PrecioUnitario, TotalItem, CreatedAt, UpdatedAt)
-                              VALUES (@FacturaId, @Descripcion, @Cantidad, @PrecioUnitario, @TotalItem, @CreatedAt, @UpdatedAt)";
-                    using (var command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@FacturaId", item.FacturaId);
-                        command.Parameters.AddWithValue("@Descripcion", item.Descripcion);
-                        command.Parameters.AddWithValue("@Cantidad", item.Cantidad);
-                        command.Parameters.AddWithValue("@PrecioUnitario", item.PrecioUnitario);
-                        command.Parameters.AddWithValue("@TotalItem", item.TotalItem);
-                        command.Parameters.AddWithValue("@CreatedAt", item.CreatedAt);
-                        command.Parameters.AddWithValue("@UpdatedAt", item.UpdatedAt);
+                    command.Parameters.AddWithValue("@FacturaId", item.FacturaId);
+                    command.Parameters.AddWithValue("@Descripcion", item.Descripcion);
+                    command.Parameters.AddWithValue("@Cantidad", item.Cantidad);
+                    command.Parameters.AddWithValue("@PrecioUnitario", item.PrecioUnitario);
+                    command.Parameters.AddWithValue("@TotalItem", item.TotalItem);
+                    command.Parameters.AddWithValue("@CreatedAt", item.CreatedAt);
+                    command.Parameters.AddWithValue("@UpdatedAt", item.UpdatedAt);
 
-                        await command.ExecuteNonQueryAsync();
-                    }
+                    command.ExecuteNonQuery();  // Ejecuta la consulta de forma sincrónica
                 }
             }
         }
     }
+
+
 }

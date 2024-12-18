@@ -120,5 +120,39 @@ namespace ProyectoBlazor.Repository
                 }
             }
         }
+
+        public async Task<List<Usuario>> ObtenerTodosLosClientes()
+        {
+            List<Usuario> usuarios = new List<Usuario>();
+
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                string query = "SELECT * FROM Usuarios WHERE Tipo = @Tipo";
+
+                using (var command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Tipo", "Cliente");
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var usuario = new Usuario
+                            {
+                                Id = reader.GetInt32("Id"),
+                                Nombre = reader.GetString("Nombre"),
+                                Tipo = reader.GetString("Tipo"),
+                                // Agregar otros campos según sea necesario
+                            };
+
+                            usuarios.Add(usuario);
+                        }
+                    }
+                }
+            }
+
+            return usuarios;
+        }
     }
 }

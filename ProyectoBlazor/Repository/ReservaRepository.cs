@@ -182,11 +182,6 @@ namespace SistemaGimnasio.Repository
 
             return reservas;
         }
-
-
-
-
-
     }
 }
 
