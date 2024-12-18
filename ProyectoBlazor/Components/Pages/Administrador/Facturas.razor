@@ -1,0 +1,63 @@
+﻿@page "/administradores/facturas"
+@using ProyectoBlazor.Models
+@using ProyectoBlazor.Service
+@using ProyectoBlazor.Modelos
+@inject FacturacionService FacturacionService
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<PageTitle>Visualizar Facturas</PageTitle>
+
+<h1>Visualizar Facturas</h1>
+
+<div class="form-container">
+    <h2>Facturas Creadas</h2>
+
+    @if (facturas != null && facturas.Count > 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Numero de Factura</th>
+                    <th>Fecha de Emisión</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var factura in facturas)
+                {
+                    <tr>
+                        <td>@factura.Id</td>
+                        <td>@factura.NumeroFactura</td>
+                        <td>@factura.FechaEmision.ToString("yyyy-MM-dd")</td>
+                        <td>@factura.Total.ToString("C")</td>
+                        <td><a href="@("/administradores/facturas/detalles/" + factura.Id)" class="btn btn-primary">Ver detalles</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No hay facturas disponibles.</p>
+    }
+</div>
+
+@code {
+    private List<Factura> facturas = new List<Factura>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Llamada a la función para cargar todas las facturas
+            facturas = await FacturacionService.ObtenerFacturasPorRangoFechasAsync();  // se cambia el método a uno que no requiera fechas
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar las facturas: {ex.Message}");
+        }
+    }
+}

@@ -11,22 +11,22 @@
 @code {
     private async Task GenerarReporte()
     {
-        var response = await Http.GetAsync("http://localhost:5171/api/reporte/generar-pdf-clases");
+        var response = await Http.GetAsync("generar-pdf-factura");
 
         if (response.IsSuccessStatusCode)
         {
             var pdfBytes = await response.Content.ReadAsByteArrayAsync();
 
-            // Crear un enlace para descargar el archivo PDF
+            // Crea un enlace para descargar el archivo PDF
             var base64Pdf = Convert.ToBase64String(pdfBytes);
             var pdfUrl = $"data:application/pdf;base64,{base64Pdf}";
 
-            // Invocar JavaScript para abrir el archivo PDF en una nueva pestaña
+            // Invoca JavaScript para abrir el archivo PDF en una nueva pestaña
             await JSRuntime.InvokeVoidAsync("open", pdfUrl, "_blank");
         }
         else
         {
-            // Manejar error
+            // Maneja error
             Console.WriteLine("Error al generar el reporte PDF");
         }
     }

@@ -45,8 +45,8 @@
     {
         if (firstRender)
         {
-            // Inicializar el estado de la aplicación una vez que se haya renderizado el componente
-            //await AppState.InitializeAsync();
+            // Inicializa el estado de la aplicación una vez que se haya renderizado el componente
+            
         }
     }
 
@@ -62,17 +62,27 @@
                 // Verificar los días restantes de la membresía
                 var diasRestantes = await MembresiaService.ObtenerDiasRestantesMembresia(user.Id);
 
+                if (diasRestantes.Value < 0)
+                {
+                    AppState.SetCurrentUser(null);
+                    await JSRuntime.InvokeVoidAsync("alert", $"Tu membresía está vencida.");
+                    return;
+
+                }
+
                 if (diasRestantes.HasValue && diasRestantes.Value <= 5)
                 {
                     // Mostrar alerta con JavaScript
                     await JSRuntime.InvokeVoidAsync("alert", $"Tu membresía está por vencer. Te quedan {diasRestantes.Value} días.");
 
                 }
+
+
             }
 
             if (user.Tipo == "Entrenador")
             {
-                // Verificar los días restantes de la membresía
+                // Verifica los días restantes de la membresía
                 List<InventarioModel> equiposPorVencerse = await InventarioService.ObtenerEquiposCercaDeVencer();
 
                 var equiposList = string.Join(", ", equiposPorVencerse.Select(e => e.NombreEquipo));

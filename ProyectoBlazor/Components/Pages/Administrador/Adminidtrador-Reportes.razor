@@ -3,9 +3,10 @@
 @inject AppState AppState
 @inject NavigationManager NavigationManager
 
+@using ProyectoBlazor.Configuration
 @using ProyectoBlazor.Models
 @using ProyectoBlazor.Service
-@using SistemaGestionGimnasio.Modelos
+@using ProyectoBlazor.Modelos
 @inject ReporteService ReporteService
 
 @inject HttpClient Http
@@ -132,7 +133,7 @@ else
 
     private async Task GenerarReporteClasesAtractivasPDF()
     {
-        var response = await Http.GetAsync("http://localhost:5171/api/reporte/generar-pdf-clases");
+        var response = await Http.GetAsync(Constantes.API_BASE_URL + "/api/reporte/generar-pdf-clases");
 
         if (response.IsSuccessStatusCode)
         {

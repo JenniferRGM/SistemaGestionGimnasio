@@ -1,0 +1,110 @@
+﻿@page "/clientes/mis-metricas"
+@rendermode InteractiveServer
+@inject AppState AppState
+@inject NavigationManager NavigationManager
+
+@using ProyectoBlazor.Models
+@using ProyectoBlazor.Service
+@using ProyectoBlazor.Modelos
+@inject MetricasProgresoService MetricasProgresoService
+
+<PageTitle>Mis Métricas</PageTitle>
+
+<h1>Mis Métricas</h1>
+
+<!-- Muestra el formulario de creación -->
+<h3>Crear Nueva Métrica de Progreso</h3>
+<EditForm Model="nuevaMetrica" OnValidSubmit="CrearMetricaProgreso">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="parte">Parte:</label>
+        <InputText id="parte" class="form-control" @bind-Value="nuevaMetrica.parte" />
+    </div>
+
+    <div class="form-group">
+        <label for="cantidad">Cantidad:</label>
+        <InputNumber id="cantidad" class="form-control" @bind-Value="nuevaMetrica.cantidad" />
+    </div>
+
+    <div class="form-group">
+        <label for="fecha">Fecha:</label>
+        <InputDate id="fecha" class="form-control" @bind-Value="nuevaMetrica.fecha" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Crear Métrica</button>
+</EditForm>
+
+<div class="row mt-4">
+    @foreach (var grupo in groupedMetricasProgreso)
+    {
+        <div class="col-12 mb-4">
+            <h3>@grupo.Key</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in grupo.Value.OrderBy(m => m.fecha))
+                    {
+                        <tr>
+                            <td>@item.fecha.ToString("dd/MM/yyyy")</td>
+                            <td>@item.cantidad</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@code {
+    private List<MetricasProgreso> metricasProgreso = new List<MetricasProgreso>();
+    private Dictionary<string, List<MetricasProgreso>> groupedMetricasProgreso = new Dictionary<string, List<MetricasProgreso>>();
+
+    private MetricasProgreso nuevaMetrica = new MetricasProgreso(0, 0, DateTime.Now, "", 0); // Inicializamos un objeto vacío
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Obtiene las métricas del progreso
+            metricasProgreso = await MetricasProgresoService.ObtenerMetricasProgresoPorUsuarioId(AppState.CurrentUser.Id);
+
+            // Agrupa las métricas por "parte" y ordena por "fecha"
+            groupedMetricasProgreso = metricasProgreso
+                .GroupBy(m => m.parte)
+                .ToDictionary(g => g.Key, g => g.OrderBy(m => m.fecha).ToList());
+
+            Console.WriteLine("Métricas cargadas exitosamente");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar las métricas del progreso: {ex.Message}");
+        }
+    }
+
+    private async Task CrearMetricaProgreso()
+    {
+        try
+        {
+            nuevaMetrica.usuario_id = AppState.CurrentUser.Id;
+            MetricasProgresoService.CrearMetricaProgreso(nuevaMetrica.usuario_id, nuevaMetrica.parte, nuevaMetrica.cantidad, nuevaMetrica.fecha);
+
+            metricasProgreso = await MetricasProgresoService.ObtenerMetricasProgresoPorUsuarioId(AppState.CurrentUser.Id);
+            groupedMetricasProgreso = metricasProgreso
+                .GroupBy(m => m.parte)
+                .ToDictionary(g => g.Key, g => g.OrderBy(m => m.fecha).ToList());
+
+            Console.WriteLine("Métrica creada y lista actualizada");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al crear la métrica de progreso: {ex.Message}");
+        }
+    }
+}

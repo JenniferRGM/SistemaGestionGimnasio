@@ -1,0 +1,117 @@
+﻿@page "/administradores/facturas/detalles/{id:int}"
+@using ProyectoBlazor.Configuration
+@using ProyectoBlazor.Modelos
+@using ProyectoBlazor.Service
+@inject FacturacionService FacturacionService
+@inject NavigationManager NavigationManager
+
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<PageTitle>Detalles de la factura</PageTitle>
+
+<h1>Detalles de la factura</h1>
+
+@if (factura != null)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Factura N°: @factura.NumeroFactura</h5>
+            <p class="card-text"><strong>Fecha de Emisión:</strong> @factura.FechaEmision.ToString("yyyy-MM-dd")</p>
+            <p class="card-text"><strong>Total:</strong> @factura.Total.ToString("C")</p>
+        </div>
+    </div>
+
+    <h3>Items de la Factura</h3>
+    @if (factura.FacturaItems != null && factura.FacturaItems.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in factura.FacturaItems)
+                {
+                    <tr>
+                        <td>@item.Descripcion</td>
+                        <td>@item.Cantidad</td>
+                        <td>@item.PrecioUnitario.ToString("C")</td>
+                        <td>@item.TotalItem.ToString("C")</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <button class="btn btn-primary" @onclick="() => GenerarReporte(id)">Generar Factura PDF</button>
+
+    }
+    else
+    {
+        <p>No hay ítems registrados para esta factura.</p>
+    }
+}
+else
+{
+    <p>Cargando los detalles de la factura...</p>
+}
+
+@code {
+    [Parameter] public int id { get; set; } // Parámetro ID de la factura
+    private Factura factura;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Obtiene los detalles de la factura por ID
+            factura = await FacturacionService.ObtenerFacturaPorIdAsync(id);
+
+            if (factura == null)
+            {
+                NavigationManager.NavigateTo("/error");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar la factura: {ex.Message}");
+            NavigationManager.NavigateTo("/error");
+        }
+    }
+
+
+    private async Task GenerarReporte(int id)
+    {
+        var apiUrl = Constantes.API_BASE_URL;
+        // Construye la URL con el parámetro 'id' como query parameter
+        var url = $"{apiUrl}/api/reporte/generar-pdf-factura?facturaId={id}";
+
+        // Realiza la solicitud HTTP GET con la URL que contiene el parámetro 'id'
+        var response = await Http.GetAsync(url);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+
+            // Crea un enlace para descargar el archivo PDF
+            var base64Pdf = Convert.ToBase64String(pdfBytes);
+            var pdfUrl = $"data:application/pdf;base64,{base64Pdf}";
+
+            // Invoca JavaScript para abrir el archivo PDF en una nueva pestaña
+            await JSRuntime.InvokeVoidAsync("open", pdfUrl, "_blank");
+        }
+        else
+        {
+            // Maneja error
+            Console.WriteLine("Error al generar el reporte PDF");
+        }
+    }
+
+
+}

@@ -31,7 +31,7 @@
             {
                 <NavLink class="nav-link" href="clases">
                     <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Clases
-                </NavLink>
+            </NavLink>
             }
         </div>
 
@@ -63,42 +63,32 @@
             }
         </div>
 
+        <div class="nav-item px-3">
+            @if (appState.CurrentUser != null && appState.CurrentUser.Tipo == "Administrador")
+            {
+                <NavLink class="nav-link" href="administradores/facturas">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Facturas
+                </NavLink>
+            }
+        </div>
 
+        <div class="nav-item px-3">
+            @if (appState.CurrentUser != null && appState.CurrentUser.Tipo == "Cliente")
+            {
+                <NavLink class="nav-link" href="clientes/mis-metricas">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Mis Metricas
+                </NavLink>
+            }
+        </div>
 
-        @*  <div class="nav-item px-3"> *@
-        @*     @if (appState.GetUser() != null && (appState.GetUser().Tipo == "Admin")){ *@
-        @*     <NavLink class="nav-link" href="membresias"> *@
-        @*         <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Membresias *@
-        @*     </NavLink> *@
-
-        @*     } *@
-
-        @* </div> *@
-
-        @*  <div class="nav-item px-3"> *@
-        @*     @if (appState.GetUser() != null && (appState.GetUser().Tipo == "Admin")){ *@
-        @*     <NavLink class="nav-link" href="inventario"> *@
-        @*         <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Inventario *@
-        @*     </NavLink> *@
-        @*      } *@
-        @* </div> *@
-
-        @* <div class="nav-item px-3"> *@
-        @*     @if (appState.GetUser() != null && (appState.GetUser().Tipo == "Admin")){ *@
-
-        @*     <NavLink class="nav-link" href="reportes"> *@
-        @*         <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Reportes *@
-        @*     </NavLink> *@
-        @*     } *@
-        @* </div> *@
-
-        @* <div class="nav-item px-3"> *@
-        @*     <NavLink class="nav-link" href="facturacion"> *@
-        @*         <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Facturacion *@
-        @*     </NavLink> *@
-        @* </div> *@
-
-
+        <div class="nav-item px-3">
+            @if (appState.CurrentUser != null && (appState.CurrentUser.Tipo == "Administrador" || appState.CurrentUser.Tipo == "Entrenador"))
+            {
+                <NavLink class="nav-link" href="administradorentrenador/matricula">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Matricular
+                </NavLink>
+            }
+        </div>
     </nav>
 </div>
 

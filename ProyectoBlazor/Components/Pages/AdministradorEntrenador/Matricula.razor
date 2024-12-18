@@ -1,0 +1,134 @@
+﻿@page "/administradorentrenador/matricula"
+@using ProyectoBlazor.Modelos
+@using ProyectoBlazor.Models
+@using ProyectoBlazor.Service
+@inject EspacioService EspacioService
+@inject UsuarioService UsuarioService
+@inject MatriculaService MatriculaService
+@inject NavigationManager NavigationManager
+@inject MembresiaService MembresiaService
+@inject PlanService PlanService
+@rendermode InteractiveServer
+
+<PageTitle>Matricular a una persona</PageTitle>
+<h1 class="text-center my-4">Matricular a una Persona</h1>
+
+<div class="container">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Usuarios disponibles para matrícula</h4>
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="mb-3">
+                    <label for="usuarioId" class="form-label">Seleccione el usuario:</label>
+                    <select id="usuarioId" class="form-select" @bind="usuarioId">
+                        <option value="">Seleccione un usuario</option>
+                        @foreach (var usuario in usuarios)
+                        {
+                            <option value="@usuario.Id">@usuario.Nombre</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="planId" class="form-label">Seleccione el plan:</label>
+                    <select id="planId" class="form-select" @bind="planId">
+                        <option value="">Seleccione un plan</option>
+                        @foreach (var plan in planes)
+                        {
+                            <option value="@plan.Id">@plan.Nombre</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="montoMatricula" class="form-label">Monto de la matrícula:</label>
+                    <input type="number" id="montoMatricula" class="form-control" @bind="montoMatricula" placeholder="Ingrese el monto" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="metodoPago" class="form-label">Método de pago:</label>
+                    <input type="text" id="metodoPago" class="form-control" @bind="metodoPago" placeholder="Ingrese el método de pago" />
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-success" @onclick="() => MatricularUsuario()">
+                        <i class="bi bi-person-plus"></i> Matricular
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    private EspacioModel espacio;
+    private List<Usuario> usuarios = new List<Usuario>();
+    private List<Plan> planes = new List<Plan>();
+
+
+    private int usuarioId;
+    private double montoMatricula;
+    private string metodoPago;
+    private int planId; // Variable para el ID del plan seleccionado
+
+    protected override async Task OnInitializedAsync()
+    {
+        List<Usuario> usuarios1 = await UsuarioService.ObtenerTodosLosClientes();
+        usuarios = usuarios1;
+
+        List<Plan> planes1 = await PlanService.ObtenerTodosLosPlanes();
+        this.planes = planes1;
+        usuarios = usuarios1;
+
+    }
+
+    private async Task ObtenerEspacioDetalle(int espacioId)
+    {
+        espacio = await EspacioService.ObtenerEspacioPorId(espacioId);
+    }
+
+    private async Task ObtenerUsuariosEnEspacio(int espacioId)
+    {
+        usuarios = await UsuarioService.ObtenerTodosLosClientes();
+    }
+
+    private void MatricularUsuario()
+    {
+        Console.WriteLine("Matriculando");
+        Console.WriteLine("Matriculando");
+
+        if (usuarioId > 0 && montoMatricula > 0 && !string.IsNullOrEmpty(metodoPago))
+        {
+            try
+            {
+                var usuario = usuarios.FirstOrDefault(u => u.Id == usuarioId);
+                var plan = planes.FirstOrDefault(p => p.Id == planId);
+
+                if (usuario != null && plan != null)
+                {
+                    var membresiaId = 1;
+                    var clienteNombre = usuario.Nombre;
+                    var fechaMatricula = DateOnly.FromDateTime(DateTime.Now);
+
+                    int facturaId = MatriculaService.RegistrarMatricula(membresiaId, usuarioId, clienteNombre, montoMatricula, fechaMatricula, metodoPago);
+                    NavigationManager.NavigateTo("/administradores/facturas/detalles/" + facturaId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al matricular usuario: {ex.Message}");
+                
+            }
+        }
+        else
+        {
+            // Mostrar mensaje de validación si faltan datos
+        }
+    }
+}
+
