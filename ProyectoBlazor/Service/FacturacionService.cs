@@ -6,13 +6,14 @@ namespace ProyectoBlazor.Service
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using ProyectoBlazor.Models;
+    using ProyectoBlazor.Modelos;
     using SistemaGestionGimnasio.Modelos;
 
     public class FacturacionService
     {
         private readonly FacturaRepository _facturaRepository;
 
-        public FacturacionService(FacturaRepository facturaRepository)
+        public FacturacionService(FacturaRepository facturaRepository, MembresiaService membresiaService)
         {
             _facturaRepository = facturaRepository;
         }
@@ -33,19 +34,50 @@ namespace ProyectoBlazor.Service
             }
         }
 
-        public async Task CrearFacturaAsync(Factura factura, List<FacturaItem> facturaItems)
+        public async Task<int> CrearFacturaAsync(Factura factura, List<FacturaItem> facturaItems)
         {
             try
             {
-                await _facturaRepository.CrearFacturaAsync(factura);
+                int idFactura = await _facturaRepository.CrearFacturaAsync(factura);
+
+                foreach (var item in facturaItems)
+                {
+                    item.FacturaId = idFactura;
+                }
+
                 await _facturaRepository.CrearFacturaItemsAsync(facturaItems);
+
+                return idFactura;
             }
             catch (Exception ex)
             {
-                // Manejo de excepciones o logging
                 throw new Exception("Error al crear la factura", ex);
             }
         }
+
+        public int CrearFacturaSync(Factura factura, List<FacturaItem> facturaItems)
+        {
+            try
+            {
+                int idFactura = _facturaRepository.CrearFactura(factura);
+
+                foreach (var item in facturaItems)
+                {
+                    item.FacturaId = idFactura;
+                }
+
+                _facturaRepository.CrearFacturaItemsSync(facturaItems);
+
+                return idFactura;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al crear la factura", ex);
+            }
+        }
+
+
+
 
         public async Task CrearFacturaMatriculaAsync(int matriculaId, DateTime fechaRegistro, decimal monto)
         {
@@ -81,21 +113,22 @@ namespace ProyectoBlazor.Service
             }
         }
 
-        //// Obtener todas las facturas en un rango de fechas
-        //public async Task<List<Factura>> ObtenerFacturasPorRangoFechasAsync(DateTime fechaInicio, DateTime fechaFin)
-        //{
-        //    try
-        //    {
-        //        var facturas = new List<Factura>();
-        //        facturas = await _facturaRepository.ObtenerFacturasPorRangoFechasAsync(fechaInicio, fechaFin);
-        //        return facturas;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Manejo de excepciones o logging
-        //        throw new Exception("Error al obtener las facturas por rango de fechas", ex);
-        //    }
-        //}
+        // Obtener todas las facturas en un rango de fechas
+        public async Task<List<Factura>> ObtenerFacturasPorRangoFechasAsync()
+        {
+            try
+            {
+                var facturas = new List<Factura>();
+                facturas = await _facturaRepository.ObtenerFacturasPorRangoFechasAsync();
+                return facturas;
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones o logging
+                throw new Exception("Error al obtener las facturas por rango de fechas", ex);
+            }
+        }
     }
 
 }
+

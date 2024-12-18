@@ -5,18 +5,8 @@ using ProyectoBlazor.Components;
 using ProyectoBlazor.Repository;
 using ProyectoBlazor.Service;
 using SistemaGimnasio.Repository;
-using Microsoft.EntityFrameworkCore;
-using ProyectoBlazor.DataHandler;
-
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Configuración del DbContext con MySQL
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"), // Usa la cadena de conexión
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection")) // Detecta automáticamente la versión de MySQL
-    ));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -36,6 +26,9 @@ builder.Services.AddScoped<EspacioRepository>(provider => new EspacioRepository(
 builder.Services.AddScoped<InventarioRepository>(provider => new InventarioRepository(connectionString));
 builder.Services.AddScoped<ReporteRepository>(provider => new ReporteRepository(connectionString));
 builder.Services.AddScoped<FacturaRepository>(provider => new FacturaRepository(connectionString));
+builder.Services.AddScoped<MetricasProgresoRepository>(provider => new MetricasProgresoRepository(connectionString)); builder.Services.AddScoped<MetricasProgresoRepository>(provider => new MetricasProgresoRepository(connectionString));
+builder.Services.AddScoped<MatriculaRepository>(provider => new MatriculaRepository(connectionString));
+builder.Services.AddScoped<PlanRepository>(provider => new PlanRepository(connectionString));
 
 builder.Services.AddScoped<ReservaRepository>(provider =>
     new ReservaRepository(
@@ -51,6 +44,10 @@ builder.Services.AddScoped<ReservaService>();
 builder.Services.AddScoped<InventarioService>();
 builder.Services.AddScoped<ReporteService>();
 builder.Services.AddScoped<FacturacionService>();
+builder.Services.AddScoped<MetricasProgresoService>();
+builder.Services.AddScoped<UsuarioService>();
+builder.Services.AddScoped<MatriculaService>();
+builder.Services.AddScoped<PlanService>();
 
 
 
@@ -86,4 +83,3 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
-

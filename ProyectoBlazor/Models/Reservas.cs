@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ProyectoBlazor.Models;
 
-namespace SistemaGestionGimnasio.Modelos
+namespace ProyectoBlazor.Modelos
 {
     /// <summary>
     /// Representa una reserva realizada por un cliente para un espacio asociado a una clase.
