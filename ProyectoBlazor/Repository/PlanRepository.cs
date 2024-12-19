@@ -5,25 +5,37 @@ using ProyectoBlazor.Models;
 
 namespace ProyectoBlazor.Repository
 {
+    /// <summary>
+    /// Repositorio para gestionar las operaciones relacionadas con los planes en la base de datos.
+    /// </summary>
     public class PlanRepository
     {
-
+        /// <summary>
+        /// Cadena de conexión a la base de datos MySQL.
+        /// </summary>
         private readonly string _connectionString;
 
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="PlanRepository"/>.
+        /// </summary>
+        /// <param name="connectionString">Cadena de conexión a la base de datos.</param>
         public PlanRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-
-        public async Task<List<Plan>> ObtenerTodosLosPlanes()
+        /// <summary>
+        /// Obtiene todos los planes registrados en la base de datos.
+        /// </summary>
+        /// <returns>Lista de <see cref="Plan"/> con los datos de todos los planes.</returns>
+        public virtual async Task<List<Plan>> ObtenerTodosLosPlanes()
         {
             var planes = new List<Plan>();
 
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                string query = "SELECT id, nombre FROM plan"; // Especificar columnas para optimizar
+                string query = "SELECT id, nombre FROM plan"; // Se debe especificar las columnas para optimizar
 
                 using (var command = new MySqlCommand(query, connection))
                 {

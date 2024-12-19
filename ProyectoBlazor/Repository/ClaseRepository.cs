@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using MySql.Data.MySqlClient;
-using SistemaGestionGimnasio.Modelos;
+using ProyectoBlazor.Modelos;
+
 
 namespace ProyectoBlazor.Repository
 {
@@ -28,7 +29,7 @@ namespace ProyectoBlazor.Repository
         /// </summary>
         /// <param name="entrenadorId">Identificador del entrenador.</param>
         /// <returns>Lista de clases asociadas al entrenador.</returns>
-        public async Task<List<ClasesModel>> ObtenerTodasLasClasesPorEntrenador(Int32 EntrenadorId)
+        public virtual async Task<List<ClasesModel>> ObtenerTodasLasClasesPorEntrenador(Int32 EntrenadorId)
         {
             List<ClasesModel> clases = new List<ClasesModel>();
 
@@ -132,9 +133,6 @@ namespace ProyectoBlazor.Repository
 
             return clase;
         }
-
-
-
 
     }
 

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 
-namespace SistemaGestionGimnasio.Modelos
+namespace ProyectoBlazor.Modelos
 {
     /// <summary>
     /// Representa una membresía asignada a un usuario dentro del sistema de gestión del gimnasio.

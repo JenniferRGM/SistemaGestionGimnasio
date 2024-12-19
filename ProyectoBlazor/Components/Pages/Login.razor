@@ -80,9 +80,9 @@
 
             }
 
-            if (user.Tipo == "Entrenador")
+            if (user.Tipo == "Administrador")
             {
-                // Verifica los días restantes de la membresía
+                // Verifica el vencimiento del inventario
                 List<InventarioModel> equiposPorVencerse = await InventarioService.ObtenerEquiposCercaDeVencer();
 
                 var equiposList = string.Join(", ", equiposPorVencerse.Select(e => e.NombreEquipo));

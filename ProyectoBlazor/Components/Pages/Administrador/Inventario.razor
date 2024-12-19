@@ -1,0 +1,146 @@
+﻿@page "/administradores/inventario"
+@inject InventarioService InventarioService
+@using ProyectoBlazor.Modelos
+@using ProyectoBlazor.Models
+@using ProyectoBlazor.Service
+@rendermode InteractiveServer
+
+<PageTitle>Gestión de Inventario</PageTitle>
+
+<h1 class="text-center my-4">Gestión de Inventario</h1>
+
+<div class="container">
+    <!-- Listado de Equipos -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Lista de Equipos</h4>
+        </div>
+        <div class="card-body">
+            <button class="btn btn-success mb-3" @onclick="MostrarFormularioNuevo">Agregar Nuevo Equipo</button>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Fecha de Adquisición</th>
+                        <th>Vida Útil (días)</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var equipo in equipos)
+                    {
+                        <tr>
+                            <td>@equipo.Id</td>
+                            <td>@equipo.NombreEquipo</td>
+                            <td>@equipo.Categoria</td>
+                            <td>@equipo.FechaAdquisicion.ToShortDateString()</td>
+                            <td>@equipo.VidaUtilDias</td>
+                            <td>@equipo.Estado</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" @onclick="() => EditarEquipo(equipo)">Editar</button>
+                                <button class="btn btn-danger btn-sm" @onclick="() => EliminarEquipo(equipo.Id)">Eliminar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    @if (mostrarFormulario)
+    {
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h4 class="mb-0">@((equipoActual.Id > 0) ? "Editar Equipo" : "Nuevo Equipo")</h4>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="nombreEquipo" class="form-label">Nombre del Equipo</label>
+                        <input id="nombreEquipo" type="text" class="form-control" @bind="equipoActual.NombreEquipo" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoria" class="form-label">Categoría</label>
+                        <input id="categoria" type="text" class="form-control" @bind="equipoActual.Categoria" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaAdquisicion" class="form-label">Fecha de Adquisición</label>
+                        <input id="fechaAdquisicion" type="date" class="form-control" @bind="equipoActual.FechaAdquisicion" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="vidaUtil" class="form-label">Vida Útil (días)</label>
+                        <input id="vidaUtil" type="number" class="form-control" @bind="equipoActual.VidaUtilDias" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <input id="estado" type="text" class="form-control" @bind="equipoActual.Estado" />
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary" @onclick="GuardarEquipo">Guardar</button>
+                        <button type="button" class="btn btn-secondary" @onclick="CancelarFormulario">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private List<InventarioModel> equipos = new List<InventarioModel>();
+    private InventarioModel equipoActual = new InventarioModel();
+    private bool mostrarFormulario = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarEquipos();
+    }
+
+    private async Task CargarEquipos()
+    {
+        equipos = await InventarioService.ObtenerTodosLosEquipos();
+    }
+
+    private void MostrarFormularioNuevo()
+    {
+        equipoActual = new InventarioModel();
+        mostrarFormulario = true;
+    }
+
+    private void EditarEquipo(InventarioModel equipo)
+    {
+        equipoActual = equipo;
+        mostrarFormulario = true;
+    }
+
+    private async Task GuardarEquipo()
+    {
+        if (equipoActual.Id > 0)
+        {
+            // Actualiza equipo existente
+            await InventarioService.ActualizarEquipo(equipoActual.Id, equipoActual);
+        }
+        else
+        {
+            // Crea nuevo equipo
+            await InventarioService.CrearEquipo(equipoActual);
+        }
+
+        mostrarFormulario = false;
+        await CargarEquipos();
+    }
+
+    private async Task EliminarEquipo(int id)
+    {
+        await InventarioService.EliminarEquipo(id);
+        await CargarEquipos();
+    }
+
+    private void CancelarFormulario()
+    {
+        mostrarFormulario = false;
+    }
+}

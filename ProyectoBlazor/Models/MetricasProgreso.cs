@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace ProyectoBlazor.Models
+namespace ProyectoBlazor.Modelos
 {
     /// <summary>
     /// Representa las métricas de progreso registradas por un usuario.

@@ -6,18 +6,40 @@ using ProyectoBlazor.Modelos;
 
 namespace SistemaGimnasio.Repository
 {
+    /// <summary>
+    /// Repositorio para gestionar las reservas de clases en el sistema.
+    /// </summary>
     public class ReservaRepository
     {
+        /// <summary>
+        /// Cadena de conexión a la base de datos MySQL.
+        /// </summary>
         private readonly string _connectionString;
+
+        /// <summary>
+        /// Servicio para gestionar espacios relacionados con reservas.
+        /// </summary>
         private EspacioService espacioService;
 
+
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="ReservaRepository"/>.
+        /// </summary>
+        /// <param name="connectionString">Cadena de conexión a la base de datos.</param>
+        /// <param name="espacioService">Servicio para gestionar espacios.</param>
         public ReservaRepository(string connectionString, EspacioService espacioService)
         {
             _connectionString = connectionString;
             this.espacioService = espacioService;
         }
 
-        public async Task<bool> CrearReserva(int ClaseEspacioId, int ClienteId)
+        /// <summary>
+        /// Crea una nueva reserva para un cliente en un espacio de clase.
+        /// </summary>
+        /// <param name="ClaseEspacioId">Identificador del espacio de clase.</param>
+        /// <param name="ClienteId">Identificador del cliente.</param>
+        /// <returns>Indica si la reserva fue creada exitosamente.</returns>
+        public virtual async Task<bool> CrearReserva(int ClaseEspacioId, int ClienteId)
         {
             // Primero verificamos si hay cupos disponibles
             bool hayDisponibilidad = await ComprobarDisponibilidad(ClaseEspacioId);
@@ -47,7 +69,11 @@ namespace SistemaGimnasio.Repository
             return false;
         }
 
-
+        /// <summary>
+        /// Verifica la disponibilidad de cupos en un espacio de clase.
+        /// </summary>
+        /// <param name="ClaseEspacioId">Identificador del espacio de clase.</param>
+        /// <returns>Indica si hay disponibilidad de cupos.</returns>
         public async Task<bool> ComprobarDisponibilidad(int ClaseEspacioId)
         {
             bool hayDisponibilidad = false;
@@ -84,8 +110,12 @@ namespace SistemaGimnasio.Repository
             return hayDisponibilidad;
         }
 
-
-        public async Task<bool> RestarCupo(int ClaseEspacioId)
+        /// <summary>
+        /// Resta un cupo disponible en un espacio de clase.
+        /// </summary>
+        /// <param name="ClaseEspacioId">Identificador del espacio de clase.</param>
+        /// <returns>Indica si la operación fue exitosa.</returns>
+        public virtual async Task<bool> RestarCupo(int ClaseEspacioId)
         {
             bool exito = false;
 
@@ -120,6 +150,11 @@ namespace SistemaGimnasio.Repository
             return exito;
         }
 
+        /// <summary>
+        /// Obtiene todas las reservas realizadas por un cliente.
+        /// </summary>
+        /// <param name="ClienteId">Identificador del cliente.</param>
+        /// <returns>Lista de reservas realizadas por el cliente.</returns>
         public async Task<List<Reservas>> ObtenerReservasPorClienteId(Int32 ClienteId)
         {
             List<Reservas> reservas = new List<Reservas>();
@@ -139,8 +174,8 @@ namespace SistemaGimnasio.Repository
                         while (await reader.ReadAsync())
                         {
                             var reserva = new Reservas(reader.GetInt32("id"),
-    reader.GetInt32("clase_espacio_id"),
-    reader.GetInt32("cliente_id")
+                            reader.GetInt32("clase_espacio_id"),
+                            reader.GetInt32("cliente_id")
 );
 
                             reserva.espacio = await espacioService.ObtenerEspacioPorId(reserva.ClaseEspacioId);
@@ -153,10 +188,6 @@ namespace SistemaGimnasio.Repository
 
             return reservas;
         }
-
-
-
-
 
     }
 }

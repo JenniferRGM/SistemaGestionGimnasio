@@ -11,6 +11,7 @@ namespace ProyectoBlazor.Modelos
     /// </summary>
     public class InventarioModel
     {
+        public Int32 Id { get; set; }
         public string NombreEquipo { get; set; }
         public string Categoria { get; set; }
         public DateTime FechaAdquisicion { get; set; }

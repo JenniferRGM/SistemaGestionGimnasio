@@ -31,7 +31,7 @@
             {
                 <NavLink class="nav-link" href="clases">
                     <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Clases
-            </NavLink>
+                </NavLink>
             }
         </div>
 
@@ -63,14 +63,6 @@
             }
         </div>
 
-        <div class="nav-item px-3">
-            @if (appState.CurrentUser != null && appState.CurrentUser.Tipo == "Administrador")
-            {
-                <NavLink class="nav-link" href="administradores/facturas">
-                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Facturas
-                </NavLink>
-            }
-        </div>
 
         <div class="nav-item px-3">
             @if (appState.CurrentUser != null && appState.CurrentUser.Tipo == "Cliente")
@@ -86,6 +78,25 @@
             {
                 <NavLink class="nav-link" href="administradorentrenador/matricula">
                     <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Matricular
+                </NavLink>
+            }
+        </div>
+
+        <div class="nav-item px-3">
+            @if (appState.CurrentUser != null && (appState.CurrentUser.Tipo == "Administrador" || appState.CurrentUser.Tipo == "Entrenador"))
+            {
+                <NavLink class="nav-link" href="administradores/facturas">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Facturas
+                </NavLink>
+            }
+        </div>
+
+
+        <div class="nav-item px-3">
+            @if (appState.CurrentUser != null && (appState.CurrentUser.Tipo == "Administrador"))
+            {
+                <NavLink class="nav-link" href="administradores/inventario">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Inventario
                 </NavLink>
             }
         </div>

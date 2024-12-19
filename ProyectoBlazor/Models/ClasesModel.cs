@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SistemaGestionGimnasio.Modelos
+namespace ProyectoBlazor.Modelos
 {
     /// <summary>
     /// Representa una clase dentro del sistema de gestión del gimnasio.

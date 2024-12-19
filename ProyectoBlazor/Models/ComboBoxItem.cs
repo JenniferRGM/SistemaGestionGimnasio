@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SistemaGestionGimnasio.Modelos
+namespace ProyectoBlazor.Modelos
 {
     /// <summary>
     /// Representa un elemento que se utiliza en un ComboBox, asociando un texto de visualización con una clase.

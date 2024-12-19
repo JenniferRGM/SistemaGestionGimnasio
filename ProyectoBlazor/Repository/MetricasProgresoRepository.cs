@@ -1,22 +1,37 @@
 ﻿using System.Data;
 using MySql.Data.MySqlClient;
 using ProyectoBlazor.Modelos;
-using ProyectoBlazor.Models;
+
 
 namespace ProyectoBlazor.Repository
 {
+    /// <summary>
+    /// Repositorio para gestionar las operaciones relacionadas con las métricas de progreso en la base de datos.
+    /// </summary>
     public class MetricasProgresoRepository
     {
-
+        
+        /// <summary>
+        /// Cadena de conexión a la base de datos MySQL.
+        /// </summary>
         private readonly string _connectionString;
 
 
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="MetricasProgresoRepository"/>.
+        /// </summary>
+        /// <param name="connectionString">Cadena de conexión a la base de datos.</param>
         public MetricasProgresoRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-        public async Task<List<MetricasProgreso>> ObtenerMetricasPorUsuarioId(int usuarioId)
+        /// <summary>
+        /// Obtiene las métricas de progreso para un usuario específico.
+        /// </summary>
+        /// <param name="usuarioId">Identificador del usuario.</param>
+        /// <returns>Lista de <see cref="MetricasProgreso"/> asociadas al usuario.</returns>
+        public virtual async Task<List<MetricasProgreso>> ObtenerMetricasPorUsuarioId(int usuarioId)
         {
             List<MetricasProgreso> metricasProgresoList = new List<MetricasProgreso>();
 
@@ -31,7 +46,7 @@ namespace ProyectoBlazor.Repository
 
                     using (var reader = await command.ExecuteReaderAsync())
                     {
-                        // Iterar sobre todas las filas
+                        // Itera sobre todas las filas
                         while (await reader.ReadAsync())
                         {
                             var metricasProgreso = new MetricasProgreso(
@@ -51,7 +66,14 @@ namespace ProyectoBlazor.Repository
             return metricasProgresoList;
         }
 
-        public void CrearMetricaProgreso(int usuarioId, string parte, int cantidad, DateTime fecha)
+        /// <summary>
+        /// Crea una nueva métrica de progreso para un usuario.
+        /// </summary>
+        /// <param name="usuarioId">Identificador del usuario.</param>
+        /// <param name="parte">Parte del cuerpo o sección asociada a la métrica.</param>
+        /// <param name="cantidad">Cantidad registrada en la métrica.</param>
+        /// <param name="fecha">Fecha en que se registra la métrica.</param>
+        public virtual void CrearMetricaProgreso(int usuarioId, string parte, int cantidad, DateTime fecha)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -66,13 +88,10 @@ namespace ProyectoBlazor.Repository
                     command.Parameters.AddWithValue("@Cantidad", cantidad);
                     command.Parameters.AddWithValue("@Fecha", fecha);
 
-                    command.ExecuteNonQuery(); // Ejecutar el comando sincrónicamente
+                    command.ExecuteNonQuery(); // Ejecuta el comando sincrónicamente
                 }
             }
         }
-
-
-
 
     }
 

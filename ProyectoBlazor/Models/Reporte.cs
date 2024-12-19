@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SistemaGestionGimnasio.Modelos
+namespace ProyectoBlazor.Modelos
 {
     /// <summary>
     /// Representa un reporte que contiene información sobre las membresías en una fecha específica.

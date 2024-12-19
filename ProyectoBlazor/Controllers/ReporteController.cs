@@ -63,6 +63,12 @@ namespace ProyectoBlazor.Controllers
             return File(pdfBytes, "application/pdf", "clases_atractivas.pdf");
         }
 
+        /// <summary>
+        /// Genera un reporte en PDF de una factura específica.
+        /// </summary>
+        /// <param name="facturaId">Identificador único de la factura.</param>
+        /// <returns>Un archivo PDF con el detalle de la factura.</returns>
+
         [HttpGet("generar-pdf-factura")]
         public async Task<IActionResult> GenerarReporteInformeContable([FromQuery] string facturaId)
         {

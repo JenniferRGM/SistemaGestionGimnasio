@@ -1,4 +1,4 @@
-﻿using SistemaGestionGimnasio.Modelos;
+﻿using ProyectoBlazor.Modelos;
 
 namespace ProyectoBlazor.Models
 {

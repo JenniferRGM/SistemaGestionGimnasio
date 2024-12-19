@@ -2,7 +2,7 @@
 using MySql.Data.MySqlClient;
 using ProyectoBlazor.Modelos;
 using ProyectoBlazor.Models;
-using SistemaGestionGimnasio.Modelos;
+
 
 namespace ProyectoBlazor.Repository
 {
@@ -57,7 +57,7 @@ namespace ProyectoBlazor.Repository
         /// <param name="claseId">Identificador de la clase.</param>
         /// <returns>Lista de espacios asociados a la clase.</returns>
 
-        public async Task<List<EspacioModel>> ListarEspaciosPorClaseId(int ClaseId)
+        public virtual async Task<List<EspacioModel>> ListarEspaciosPorClaseId(int ClaseId)
         {
             List<EspacioModel> espacios = new List<EspacioModel>();
 

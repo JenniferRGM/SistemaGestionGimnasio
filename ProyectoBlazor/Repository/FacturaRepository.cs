@@ -6,17 +6,28 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
-using SistemaGestionGimnasio.Modelos;
+
 
 public class FacturaRepository
 {
+    /// <summary>
+    /// Repositorio para gestionar operaciones relacionadas con facturas en la base de datos.
+    /// </summary>
     private readonly string _connectionString;
 
-    // Constructor
+    /// <summary>
+    /// Inicializa una nueva instancia de la clase <see cref="FacturaRepository"/>.
+    /// </summary>
+    /// <param name="connectionString">Cadena de conexión a la base de datos.</param>
     public FacturaRepository(string connectionString)
     {
         _connectionString = connectionString;
     }
+
+    /// <summary>
+    /// Obtiene una lista de facturas dentro de un rango de fechas.
+    /// </summary>
+    /// <returns>Lista de <see cref="Factura"/>.</returns>
 
     public async Task<List<Factura>> ObtenerFacturasPorRangoFechasAsync()
     {
@@ -46,7 +57,7 @@ public class FacturaRepository
                             UpdatedAt = reader.GetDateTime("updated_at")
                         };
 
-                        // Obtener los ítems de la factura
+                        // Obtiene los ítems de la factura
                         factura.FacturaItems = await ObtenerFacturaItemsAsync(factura.Id);
                         facturas.Add(factura);
                     }
@@ -58,7 +69,11 @@ public class FacturaRepository
     }
 
 
-    // Obtener una factura por su ID
+    /// <summary>
+    /// Obtiene una factura por su identificador.
+    /// </summary>
+    /// <param name="id">Identificador único de la factura.</param>
+    /// <returns>Instancia de <see cref="Factura"/> o <c>null</c> si no existe.</returns>
     public async Task<Factura> ObtenerFacturaPorIdAsync(int id)
     {
         using (var connection = new MySqlConnection(_connectionString))
@@ -84,7 +99,7 @@ public class FacturaRepository
                             UpdatedAt = reader.GetDateTime("updated_at")
                         };
 
-                        // Obtener los ítems de la factura
+                        // Obtiene los ítems de la factura
                         factura.FacturaItems = await ObtenerFacturaItemsAsync(factura.Id);
                         return factura;
                     }
@@ -95,7 +110,11 @@ public class FacturaRepository
         return null;
     }
 
-    // Obtener los ítems de una factura
+    /// <summary>
+    /// Obtiene los ítems de una factura específica.
+    /// </summary>
+    /// <param name="facturaId">Identificador de la factura.</param>
+    /// <returns>Lista de <see cref="FacturaItem"/>.</returns>
     private async Task<List<FacturaItem>> ObtenerFacturaItemsAsync(int facturaId)
     {
         var facturaItems = new List<FacturaItem>();
@@ -130,8 +149,12 @@ public class FacturaRepository
         return facturaItems;
     }
 
-    // Crear una nueva factura
-    public async Task<int> CrearFacturaAsync(Factura factura)
+    /// <summary>
+    /// Crea una nueva factura en la base de datos.
+    /// </summary>
+    /// <param name="factura">Instancia de <see cref="Factura"/> a insertar.</param>
+    /// <returns>Identificador único de la factura recién creada.</returns>
+    public virtual async Task<int> CrearFacturaAsync(Factura factura)
     {
         using (var connection = new MySqlConnection(_connectionString))
         {
@@ -152,10 +175,10 @@ public class FacturaRepository
                 command.Parameters.AddWithValue("@CreatedAt", factura.CreatedAt);
                 command.Parameters.AddWithValue("@UpdatedAt", factura.UpdatedAt);
 
-                // Ejecutar la consulta y obtener el último ID insertado
+                // Ejecuta la consulta y obtener el último ID insertado
                 int facturaId = Convert.ToInt32(await command.ExecuteScalarAsync());
 
-                // Retornar el ID de la factura recién creada
+                // Retorna el ID de la factura recién creada
                 return facturaId;
             }
         }
@@ -174,7 +197,7 @@ public class FacturaRepository
 
             using (var command = new MySqlCommand(query, connection))
             {
-                // Agregar parámetros a la consulta
+                // Agrega parámetros a la consulta
                 command.Parameters.AddWithValue("@NumeroFactura", factura.NumeroFactura);
                 command.Parameters.AddWithValue("@FechaEmision", factura.FechaEmision);
                 command.Parameters.AddWithValue("@FechaVencimiento", factura.FechaVencimiento);
@@ -183,18 +206,21 @@ public class FacturaRepository
                 command.Parameters.AddWithValue("@CreatedAt", factura.CreatedAt);
                 command.Parameters.AddWithValue("@UpdatedAt", factura.UpdatedAt);
 
-                // Ejecutar la consulta y obtener el último ID insertado de forma sincrónica
+                // Ejecuta la consulta y obtener el último ID insertado de forma sincrónica
                 int facturaId = Convert.ToInt32(command.ExecuteScalar());  // Ejecuta sincrónicamente
 
-                // Retornar el ID de la factura recién creada
+                // Retorna el ID de la factura recién creada
                 return facturaId;
             }
         }
     }
 
 
-    // Crear los ítems de la factura
-    public async Task CrearFacturaItemsAsync(List<FacturaItem> facturaItems)
+    /// <summary>
+    /// Crea los ítems de una factura en la base de datos.
+    /// </summary>
+    /// <param name="facturaItems">Lista de <see cref="FacturaItem"/> a insertar.</param>
+    public virtual async Task CrearFacturaItemsAsync(List<FacturaItem> facturaItems)
     {
         using (var connection = new MySqlConnection(_connectionString))
         {

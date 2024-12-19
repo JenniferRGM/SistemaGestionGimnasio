@@ -2,7 +2,7 @@
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using ProyectoBlazor.Modelos;
-using SistemaGestionGimnasio.Modelos;
+
 
 namespace ProyectoBlazor.Repository
 {
@@ -68,7 +68,7 @@ namespace ProyectoBlazor.Repository
         /// </summary>
         /// <param name="nombreUsuario">Nombre del usuario a buscar.</param>
         /// <returns>Instancia de <see cref="Usuario"/> si se encuentra, de lo contrario null.</returns>
-        public async Task<Usuario> obtenerUsuarioPorNombreUsuario(String nombreUsuario)
+        public virtual async Task<Usuario> obtenerUsuarioPorNombreUsuario(String nombreUsuario)
         {
             Usuario usuario = null;
 
@@ -121,7 +121,12 @@ namespace ProyectoBlazor.Repository
             }
         }
 
-        public async Task<List<Usuario>> ObtenerTodosLosClientes()
+
+        /// <summary>
+        /// Obtiene todos los usuarios de tipo "Cliente".
+        /// </summary>
+        /// <returns>Lista de <see cref="Usuario"/> que son clientes.</returns>
+        public virtual async Task<List<Usuario>> ObtenerTodosLosClientes()
         {
             List<Usuario> usuarios = new List<Usuario>();
 
@@ -143,7 +148,7 @@ namespace ProyectoBlazor.Repository
                                 Id = reader.GetInt32("Id"),
                                 Nombre = reader.GetString("Nombre"),
                                 Tipo = reader.GetString("Tipo"),
-                                // Agregar otros campos según sea necesario
+                                // Agrega otros campos según sea necesario
                             };
 
                             usuarios.Add(usuario);
