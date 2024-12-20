@@ -38,28 +38,44 @@
 }
 
 @code {
+    /// <summary>
+    /// Modelo para gestionar el login.
+    /// </summary>
     private LoginModel loginModel = new();
+
+    /// <summary>
+    /// Mensaje de error que se muestra si las credenciales no son válidas.
+    /// </summary>
     private string? errorMessage;
 
+    /// <summary>
+    /// Método que se ejecuta después de renderizar el componente.
+    /// </summary>
+    /// <param name="firstRender">Indica si es la primera vez que se renderiza el componente.</param>
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            // Inicializa el estado de la aplicación una vez que se haya renderizado el componente
+            // Inicializa el estado de la aplicación si es necesario
             
         }
     }
 
+    /// <summary>
+    /// Maneja la acción de login del usuario.
+    /// </summary>
     private async Task HandleLogin()
     {
+        // Autentica al usuario
         var user = await AuthService.Authenticate(loginModel.Username, loginModel.Password);
         if (user != null)
         {
+            // Establece el usuario actual en el estado de la aplicación
             AppState.SetCurrentUser(user);
 
             if (user.Tipo == "Cliente")
             {
-                // Verificar los días restantes de la membresía
+                // Verifica los días restantes de la membresía
                 var diasRestantes = await MembresiaService.ObtenerDiasRestantesMembresia(user.Id);
 
                 if (diasRestantes.Value < 0)
@@ -72,7 +88,7 @@
 
                 if (diasRestantes.HasValue && diasRestantes.Value <= 5)
                 {
-                    // Mostrar alerta con JavaScript
+                   
                     await JSRuntime.InvokeVoidAsync("alert", $"Tu membresía está por vencer. Te quedan {diasRestantes.Value} días.");
 
                 }
@@ -82,7 +98,7 @@
 
             if (user.Tipo == "Administrador")
             {
-                // Verifica el vencimiento del inventario
+                // Obtiene los equipos que están cerca de vencer
                 List<InventarioModel> equiposPorVencerse = await InventarioService.ObtenerEquiposCercaDeVencer();
 
                 var equiposList = string.Join(", ", equiposPorVencerse.Select(e => e.NombreEquipo));
@@ -98,6 +114,9 @@
         }
     }
 
+    /// <summary>
+    /// Modelo que representa los datos de login.
+    /// </summary>
     private class LoginModel
     {
         public string Username { get; set; } = string.Empty;

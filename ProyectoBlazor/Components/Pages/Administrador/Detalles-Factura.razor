@@ -63,52 +63,64 @@ else
 }
 
 @code {
-    [Parameter] public int id { get; set; } // Parámetro ID de la factura
+    /// <summary>
+    /// Componente para manejar la vista y generación de reportes de una factura específica.
+    /// </summary>
+    [Parameter] public int id { get; set; } 
     private Factura factura;
 
+    /// <summary>
+    /// Método de inicialización que se ejecuta al cargar el componente.
+    /// Carga la factura asociada al ID proporcionado y redirige a una página de error si no se encuentra.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            // Obtiene los detalles de la factura por ID
+            // Intenta obtener la factura utilizando el servicio de facturación.
             factura = await FacturacionService.ObtenerFacturaPorIdAsync(id);
 
             if (factura == null)
             {
+                // Redirige a la página de error si no se encuentra la factura.
                 NavigationManager.NavigateTo("/error");
             }
         }
         catch (Exception ex)
         {
+            // Manejo de errores en la carga de la factura.
             Console.WriteLine($"Error al cargar la factura: {ex.Message}");
             NavigationManager.NavigateTo("/error");
         }
     }
 
-
+    /// <summary>
+    /// Genera y abre un reporte PDF de la factura con el ID proporcionado.
+    /// </summary>
+    /// <param name="id">Identificador de la factura.</param>
+    /// <returns>Una tarea asíncrona.</returns>
     private async Task GenerarReporte(int id)
     {
+        // Construye la URL para la API que genera el reporte.
         var apiUrl = Constantes.API_BASE_URL;
-        // Construye la URL con el parámetro 'id' como query parameter
         var url = $"{apiUrl}/api/reporte/generar-pdf-factura?facturaId={id}";
 
-        // Realiza la solicitud HTTP GET con la URL que contiene el parámetro 'id'
+        // Realiza la solicitud HTTP para generar el reporte.
         var response = await Http.GetAsync(url);
 
         if (response.IsSuccessStatusCode)
         {
+            // Convierte el contenido del PDF a Base64 y construye la URL para abrirlo.
             var pdfBytes = await response.Content.ReadAsByteArrayAsync();
-
-            // Crea un enlace para descargar el archivo PDF
             var base64Pdf = Convert.ToBase64String(pdfBytes);
             var pdfUrl = $"data:application/pdf;base64,{base64Pdf}";
 
-            // Invoca JavaScript para abrir el archivo PDF en una nueva pestaña
+            // Abre el PDF en una nueva ventana del navegador.
             await JSRuntime.InvokeVoidAsync("open", pdfUrl, "_blank");
         }
         else
         {
-            // Maneja error
+            // Error si no se pudo generar el PDF.
             Console.WriteLine("Error al generar el reporte PDF");
         }
     }

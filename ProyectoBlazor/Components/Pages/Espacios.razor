@@ -86,15 +86,29 @@ else
 }
 
 @code {
+    /// <summary>
+    /// Lista de clases asociadas al entrenador actual.
+    /// </summary>
     private List<ClasesModel> clases = new List<ClasesModel>();
+
+    /// <summary>
+    /// Lista de espacios asociados a las clases del entrenador actual.
+    /// </summary>
     private List<EspacioModel> espacios = new List<EspacioModel>();
 
+    /// <summary>
+    /// Modelo para la creación de un nuevo espacio.
+    /// </summary>
     private Espacio nuevoEspacio = new Espacio();
 
+    /// <summary>
+    /// Método que se ejecuta al inicializar el componente.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         try
         {
+            // Carga las clases y espacios asociados al entrenador actual
             clases = await ClaseService.listarClasesPorEntrenador(AppState.CurrentUser.Id);
             espacios = await EspacioService.ListarEspaciosEntrenador(AppState.CurrentUser.Id);
         }
@@ -104,12 +118,24 @@ else
         }
     }
 
+    /// <summary>
+    /// Crea un nuevo espacio asociado a una clase.
+    /// </summary>
     private async Task CrearEspacio()
     {
         try
         {
+            // Llama al servicio para crear el espacio
             await EspacioService.CrearEspacio(nuevoEspacio.ClaseId, nuevoEspacio.Fecha, nuevoEspacio.Cupos);
+
+            // Muestra una alerta confirmando la creación del espacio
             await JSRuntime.InvokeVoidAsync("alert", "¡Se ha creado el espacio correctamente!");
+
+            // Limpia el formulario de creación de espacio
+            nuevoEspacio = new Espacio();
+
+            // Actualiza la lista de espacios
+            espacios = await EspacioService.ListarEspaciosEntrenador(AppState.CurrentUser.Id);
         }
         catch (Exception ex)
         {
@@ -117,6 +143,9 @@ else
         }
     }
 
+    /// <summary>
+    /// Clase modelo que representa un espacio asociado a una clase.
+    /// </summary>
     public class Espacio
     {
         public int ClaseId { get; set; }

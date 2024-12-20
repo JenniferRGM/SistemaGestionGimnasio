@@ -65,25 +65,38 @@ else
 }
 
 @code {
+    /// <summary>
+    /// Identificador de la clase, proporcionado como parámetro.
+    /// </summary>
     [Parameter]
     public string Id { get; set; }
 
+    /// <summary>
+    /// Modelo de la clase seleccionada.
+    /// </summary>
     private ClasesModel clase;
+
+    /// <summary>
+    /// Lista de espacios disponibles para la clase.
+    /// </summary>
     private List<EspacioModel> espacios;
 
+    /// <summary>
+    /// Método que se ejecuta al inicializar el componente.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         try
         {
             if (int.TryParse(Id, out var claseId))
             {
-                // Llamamos al servicio para obtener la clase por su Id
+                // Obtiene los detalles de la clase y sus espacios asociados
                 clase = await ClaseService.ObtenerClasePorId(claseId);
                 espacios = await EspacioService.ListarEspaciosPorClaseId(claseId);
             }
             else
             {
-                // Si el Id no es válido, redirigimos o mostramos un mensaje.
+                // Si el Id no es válido, redirige a la lista de clases
                 NavigationManager.NavigateTo("/clases");
             }
         }
@@ -95,7 +108,10 @@ else
         }
     }
 
-    // Cambia async void a async Task
+    /// <summary>
+    /// Reserva un espacio en la clase seleccionada.
+    /// </summary>
+    /// <param name="espacio">Espacio a reservar.</param>
     private async Task ReservarEspacio(EspacioModel espacio)
     {
         Console.WriteLine($"Espacio reservado: {espacio.claseNombre} (ID: {espacio.id})");
@@ -103,7 +119,7 @@ else
         // Llama al servicio para registrar la reserva
         await ReservaService.RegistrarReserva(espacio.id, AppState.CurrentUser.Id);
 
-        // Vuelve a obtener los datos de la clase y los espacios
+        // Actualiza los datos de la clase y los espacios
         if (int.TryParse(Id, out var claseId))
         {
             clase = await ClaseService.ObtenerClasePorId(claseId);
@@ -117,9 +133,8 @@ else
             NavigationManager.NavigateTo("/clases");
         }
 
+        // Muestra un mensaje de éxito y redirige a la página de reservas del cliente
         await JSRuntime.InvokeVoidAsync("alert", "¡Reserva realizada con éxito!");
-
-        // Redirige al usuario a la página de la reserva
         NavigationManager.NavigateTo($"/clientes/mis-reservas");
     }
 }

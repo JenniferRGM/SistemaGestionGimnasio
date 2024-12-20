@@ -90,32 +90,55 @@
 </div>
 
 @code {
+    /// <summary>
+    /// Componente para gestionar el inventario de equipos.
+    /// Permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre los equipos.
+    /// </summary>
     private List<InventarioModel> equipos = new List<InventarioModel>();
     private InventarioModel equipoActual = new InventarioModel();
     private bool mostrarFormulario = false;
 
+    /// <summary>
+    /// Método de inicialización que se ejecuta al cargar el componente.
+    /// Carga todos los equipos del inventario al inicio.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         await CargarEquipos();
     }
 
+    /// <summary>
+    /// Carga todos los equipos desde el servicio de inventario.
+    /// </summary>
     private async Task CargarEquipos()
     {
         equipos = await InventarioService.ObtenerTodosLosEquipos();
     }
 
+    /// <summary>
+    /// Muestra el formulario para agregar un nuevo equipo.
+    /// </summary>
     private void MostrarFormularioNuevo()
     {
         equipoActual = new InventarioModel();
         mostrarFormulario = true;
     }
 
+    /// <summary>
+    /// Muestra el formulario para editar un equipo existente.
+    /// </summary>
+    /// <param name="equipo">El equipo a editar.</param>
     private void EditarEquipo(InventarioModel equipo)
     {
         equipoActual = equipo;
         mostrarFormulario = true;
     }
 
+    /// <summary>
+    /// Guarda el equipo actual, ya sea creando uno nuevo o actualizando uno existente.
+    /// </summary>/// <summary>
+    /// Guarda el equipo actual, ya sea creando uno nuevo o actualizando uno existente.
+    /// </summary>
     private async Task GuardarEquipo()
     {
         if (equipoActual.Id > 0)
@@ -129,16 +152,23 @@
             await InventarioService.CrearEquipo(equipoActual);
         }
 
-        mostrarFormulario = false;
-        await CargarEquipos();
+        mostrarFormulario = false;// Oculta el formulario al guardar.
+        await CargarEquipos();// Recarga la lista de equipos.
     }
 
+    /// <summary>
+    /// Elimina un equipo del inventario.
+    /// </summary>
+    /// <param name="id">El identificador del equipo a eliminar.</param>
     private async Task EliminarEquipo(int id)
     {
-        await InventarioService.EliminarEquipo(id);
-        await CargarEquipos();
+        await InventarioService.EliminarEquipo(id);// Llama al servicio para eliminar el equipo.
+        await CargarEquipos();// Recarga la lista de equipos al realizar la eliminación.
     }
 
+    /// <summary>
+    /// Cancela la operación de creación o edición y oculta el formulario.
+    /// </summary>
     private void CancelarFormulario()
     {
         mostrarFormulario = false;

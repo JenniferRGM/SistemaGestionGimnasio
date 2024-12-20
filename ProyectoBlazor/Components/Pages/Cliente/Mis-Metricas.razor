@@ -12,7 +12,7 @@
 
 <h1>Mis Métricas</h1>
 
-<!-- Muestra el formulario de creación -->
+
 <h3>Crear Nueva Métrica de Progreso</h3>
 <EditForm Model="nuevaMetrica" OnValidSubmit="CrearMetricaProgreso">
     <DataAnnotationsValidator />
@@ -63,16 +63,23 @@
 </div>
 
 @code {
+    /// <summary>
+    /// Componente para gestionar las métricas de progreso de los usuarios.
+    /// </summary>
     private List<MetricasProgreso> metricasProgreso = new List<MetricasProgreso>();
     private Dictionary<string, List<MetricasProgreso>> groupedMetricasProgreso = new Dictionary<string, List<MetricasProgreso>>();
 
+    // Inicializa un objeto vacío para la nueva métrica
     private MetricasProgreso nuevaMetrica = new MetricasProgreso(0, 0, DateTime.Now, "", 0); // Inicializamos un objeto vacío
 
+    /// <summary>
+    /// Método que se ejecuta al inicializar el componente.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            // Obtiene las métricas del progreso
+            // Obtiene las métricas del progreso para el usuario actual
             metricasProgreso = await MetricasProgresoService.ObtenerMetricasProgresoPorUsuarioId(AppState.CurrentUser.Id);
 
             // Agrupa las métricas por "parte" y ordena por "fecha"
@@ -88,13 +95,20 @@
         }
     }
 
+    /// <summary>
+    /// Crea una nueva métrica de progreso para el usuario actual.
+    /// </summary>
     private async Task CrearMetricaProgreso()
     {
         try
         {
+            // Asigna el ID del usuario actual a la nueva métrica
             nuevaMetrica.usuario_id = AppState.CurrentUser.Id;
+
+            // Llama al servicio para crear la métrica
             MetricasProgresoService.CrearMetricaProgreso(nuevaMetrica.usuario_id, nuevaMetrica.parte, nuevaMetrica.cantidad, nuevaMetrica.fecha);
 
+            // Agrupa las métricas por "parte" y las ordena por "fecha"
             metricasProgreso = await MetricasProgresoService.ObtenerMetricasProgresoPorUsuarioId(AppState.CurrentUser.Id);
             groupedMetricasProgreso = metricasProgreso
                 .GroupBy(m => m.parte)

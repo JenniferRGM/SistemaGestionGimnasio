@@ -124,13 +124,44 @@ else
 }
 
 @code {
+    // Representa un componente que genera reportes relacionados con crecimiento de matrículas, clases atractivas e informe contable.
     private List<(DateTime Fecha, int NuevasMatriculas, int TotalMatriculas)> matriculasCrecimiento;
     private List<(DateTime Fecha, Decimal Ingreso, Decimal Gasto)> informeContable;
     private List<(string Clase, string Horario, int Cupos)> clasesAtractivas;
 
+    // Periodo de tiempo por defecto: desde hace un mes hasta hoy.
     private DateTime fechaInicio = DateTime.Today.AddMonths(-1);
     private DateTime fechaFin = DateTime.Today;
 
+    /// <summary>
+    /// Obtiene y abre un reporte PDF sobre el crecimiento de matrículas desde la API.
+    /// </summary>
+    /// <returns>Una tarea asíncrona.</returns>
+    private async Task ObtenerCrecimientoMatriculas()
+    {
+        // Realiza una solicitud HTTP para obtener el reporte de matrículas.
+        var response = await Http.GetAsync(Constantes.API_BASE_URL + "/api/reporte/generar-pdf-matriculas");
+
+        // Verifica si la respuesta fue exitosa.
+        if (response.IsSuccessStatusCode)
+        {
+            // Convierte el contenido del PDF en Base64 y lo abre en una nueva ventana.
+            var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+            var base64Pdf = Convert.ToBase64String(pdfBytes);
+            var pdfUrl = $"data:application/pdf;base64,{base64Pdf}";
+
+            await JSRuntime.InvokeVoidAsync("open", pdfUrl, "_blank");
+        }
+        else
+        {
+            Console.WriteLine("Error al generar el reporte PDF");
+        }
+    }
+
+    /// <summary>
+    /// Genera y abre un reporte PDF sobre las clases más atractivas desde la API.
+    /// </summary>
+    /// <returns>Una tarea asíncrona.</returns>
     private async Task GenerarReporteClasesAtractivasPDF()
     {
         var response = await Http.GetAsync(Constantes.API_BASE_URL + "/api/reporte/generar-pdf-clases");
@@ -150,23 +181,44 @@ else
         }
     }
 
-
-    private async Task ObtenerCrecimientoMatriculas()
-    {
-        matriculasCrecimiento = await ReporteService.ObtenerCrecimientoMatriculasAsync();
-    }
-
+    /// <summary>
+    /// Obtiene y abre un informe contable en formato PDF desde la API, basado en las fechas seleccionadas.
+    /// </summary>
+    /// <returns>Una tarea asíncrona.</returns>
     private async Task ObtenerInformeContable()
     {
-        if (fechaInicio > fechaFin)
+        // Verifica si las fechas de inicio y fin son válidas.
+        if (fechaInicio == null || fechaFin == null)
         {
-            // Aquí se puede mostrar una alerta o manejar la validación
+            Console.WriteLine("Debes seleccionar ambas fechas.");
             return;
         }
 
-        informeContable = await ReporteService.ObtenerInformeContableAsync(fechaInicio, fechaFin);
+       // Se construye la URL con la fecha
+        var url = $"{Constantes.API_BASE_URL}/api/reporte/generar-pdf-contable?inicio={fechaInicio:yyyy-MM-dd}&fin={fechaFin:yyyy-MM-dd}";
+        
+        // Realiza la solicitud HTTP para obtener el informe contable.
+        var response = await Http.GetAsync(url);
+
+        if (response.IsSuccessStatusCode)
+        {
+            // Convierte el contenido del PDF en Base64 y lo abre en una nueva ventana.
+            var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+            var base64Pdf = Convert.ToBase64String(pdfBytes);
+            var pdfUrl = $"data:application/pdf;base64,{base64Pdf}";
+
+            await JSRuntime.InvokeVoidAsync("open", pdfUrl, "_blank");
+        }
+        else
+        {
+            Console.WriteLine("Error al generar el reporte PDF");
+        }
     }
 
+    /// <summary>
+    /// Obtiene una lista de las clases más atractivas desde el servicio de reportes.
+    /// </summary>
+    /// <returns>Una tarea asíncrona.</returns>
     private async Task ObtenerClasesMasAtractivas()
     {
         clasesAtractivas = await ReporteService.ObtenerClasesMasAtractivasAsync();

@@ -9,24 +9,29 @@
 <button class="btn btn-primary" @onclick="() => GenerarReporte()">Generar Reporte PDF</button>
 
 @code {
+    /// <summary>
+    /// Genera un reporte en formato PDF y lo abre en una nueva pestaña del navegador.
+    /// </summary>
     private async Task GenerarReporte()
     {
+        // Realiza la solicitud al servidor para generar el archivo PDF
         var response = await Http.GetAsync("generar-pdf-factura");
 
         if (response.IsSuccessStatusCode)
         {
+            // Lee los bytes del contenido PDF desde la respuesta
             var pdfBytes = await response.Content.ReadAsByteArrayAsync();
 
             // Crea un enlace para descargar el archivo PDF
             var base64Pdf = Convert.ToBase64String(pdfBytes);
             var pdfUrl = $"data:application/pdf;base64,{base64Pdf}";
 
-            // Invoca JavaScript para abrir el archivo PDF en una nueva pestaña
+            // Se utiliza JavaScript para abrir el PDF en una nueva pestaña del navegador
             await JSRuntime.InvokeVoidAsync("open", pdfUrl, "_blank");
         }
         else
         {
-            // Maneja error
+            // Manejo de error
             Console.WriteLine("Error al generar el reporte PDF");
         }
     }

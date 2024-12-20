@@ -46,8 +46,15 @@
 </div>
 
 @code {
+    /// <summary>
+    /// Componente para cargar y gestionar una lista de facturas.
+    /// </summary>
     private List<Factura> facturas = new List<Factura>();
 
+    /// <summary>
+    /// Método de inicialización que se ejecuta al cargar el componente.
+    /// Carga las facturas disponibles utilizando el servicio de facturación.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         try
@@ -57,6 +64,7 @@
         }
         catch (Exception ex)
         {
+            // Error en caso de fallos al cargar las facturas.
             Console.WriteLine($"Error al cargar las facturas: {ex.Message}");
         }
     }

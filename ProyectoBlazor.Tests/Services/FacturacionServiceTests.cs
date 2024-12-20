@@ -13,8 +13,8 @@ namespace ProyectoBlazor.Tests.Services
     public class FacturacionServiceTests
     {
         private Mock<FacturaRepository> mockFacturaRepository;
-        private Mock<MembresiaRepository> mockMembresiaRepository; // Nuevo mock
-        private MembresiaService membresiaService; // Instancia válida de MembresiaService
+        private Mock<MembresiaRepository> mockMembresiaRepository; 
+        private MembresiaService membresiaService; 
         private FacturacionService facturacionService;
 
         [TestInitialize]
@@ -62,10 +62,10 @@ namespace ProyectoBlazor.Tests.Services
 
             // Configura el comportamiento del mock
             mockFacturaRepository.Setup(repo => repo.CrearFacturaAsync(It.IsAny<Factura>()))
-                                 .ReturnsAsync(1); // Retorna un ID ficticio de factura
+                                 .ReturnsAsync(1); 
 
             mockFacturaRepository.Setup(repo => repo.CrearFacturaItemsAsync(It.IsAny<List<FacturaItem>>()))
-                                 .Returns(Task.CompletedTask); // Simula que no hace nada
+                                 .Returns(Task.CompletedTask); 
 
             // Act
             var result = await facturacionService.CrearFacturaAsync(factura, facturaItems);

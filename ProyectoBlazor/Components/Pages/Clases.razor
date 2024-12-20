@@ -35,19 +35,30 @@
 </div>
 
 @code {
+    /// <summary>
+    /// Lista de clases disponibles.
+    /// </summary>
     private List<ClasesModel> clases = new List<ClasesModel>();
+
+    /// <summary>
+    /// Lista de espacios relacionados con las clases.
+    /// </summary>
     private List<EspacioModel> espacios = new List<EspacioModel>();
 
-
+    /// <summary>
+    /// Método que se ejecuta al inicializar el componente.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         try
         {
+            // Carga la lista de clases desde el servicio correspondiente
             clases = await ClaseService.listarClases();
-            //espacios = await EspacioService.ListarEspaciosEntrenador(AppState.CurrentUser.Id);
+            
         }
         catch (Exception ex)
         {
+            // Manejo de errores: registra el error en la consola
             Console.WriteLine($"Error al cargar las clases o los espacios: {ex.Message}");
         }
     }

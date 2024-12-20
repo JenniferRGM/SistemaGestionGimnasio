@@ -19,10 +19,10 @@ namespace ProyectoBlazor.Tests.Services
         [TestInitialize]
         public void Setup()
         {
-            // Crear el mock del repositorio
+            
             mockMetricasRepository = new Mock<MetricasProgresoRepository>();
 
-            // Instanciar el servicio bajo prueba
+            
             metricasProgresoService = new MetricasProgresoService(mockMetricasRepository.Object);
         }
 

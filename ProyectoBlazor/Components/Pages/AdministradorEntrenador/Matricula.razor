@@ -66,6 +66,9 @@
 
 
 @code {
+    /// <summary>
+    /// Componente para gestionar la matriculación de usuarios en un espacio.
+    /// </summary>
     private EspacioModel espacio;
     private List<Usuario> usuarios = new List<Usuario>();
     private List<Plan> planes = new List<Plan>();
@@ -74,10 +77,14 @@
     private int usuarioId;
     private double montoMatricula;
     private string metodoPago;
-    private int planId; // Variable para el ID del plan seleccionado
+    private int planId; 
 
+    /// <summary>
+    /// Método que se ejecuta al inicializar el componente.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
+        // Carga todos los clientes y planes disponibles
         List<Usuario> usuarios1 = await UsuarioService.ObtenerTodosLosClientes();
         usuarios = usuarios1;
 
@@ -87,18 +94,30 @@
 
     }
 
+    /// <summary>
+    /// Obtiene los detalles de un espacio específico.
+    /// </summary>
+    /// <param name="espacioId">ID del espacio a obtener.</param>
     private async Task ObtenerEspacioDetalle(int espacioId)
     {
         espacio = await EspacioService.ObtenerEspacioPorId(espacioId);
     }
 
+    /// <summary>
+    /// Obtiene la lista de usuarios en un espacio específico.
+    /// </summary>
+    /// <param name="espacioId">ID del espacio.</param>
     private async Task ObtenerUsuariosEnEspacio(int espacioId)
     {
         usuarios = await UsuarioService.ObtenerTodosLosClientes();
     }
 
+    /// <summary>
+    /// Matricula un usuario en el espacio con un plan y método de pago seleccionados.
+    /// </summary>
     private void MatricularUsuario()
     {
+        // Valida que todos los campos requeridos estén llenos
         Console.WriteLine("Matriculando");
         Console.WriteLine("Matriculando");
 
@@ -106,16 +125,21 @@
         {
             try
             {
+                // Busca el usuario y el plan seleccionados
                 var usuario = usuarios.FirstOrDefault(u => u.Id == usuarioId);
                 var plan = planes.FirstOrDefault(p => p.Id == planId);
 
                 if (usuario != null && plan != null)
                 {
+                    // Datos necesarios para registrar la matrícula
                     var membresiaId = 1;
                     var clienteNombre = usuario.Nombre;
                     var fechaMatricula = DateOnly.FromDateTime(DateTime.Now);
 
+                    // Registra la matrícula y obtener el ID de la factura generada
                     int facturaId = MatriculaService.RegistrarMatricula(membresiaId, usuarioId, clienteNombre, montoMatricula, fechaMatricula, metodoPago);
+                    
+                    // Navega a los detalles de la factura generada
                     NavigationManager.NavigateTo("/administradores/facturas/detalles/" + facturaId);
                 }
             }
@@ -127,7 +151,7 @@
         }
         else
         {
-            // Mostrar mensaje de validación si faltan datos
+            Console.WriteLine("Por favor, completa todos los campos antes de matricular.");
         }
     }
 }

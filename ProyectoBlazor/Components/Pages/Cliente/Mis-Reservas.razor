@@ -37,18 +37,26 @@
 </div>
 
 @code {
+    /// <summary>
+    /// Componente para gestionar las reservas del cliente actual.
+    /// </summary>
     private List<Reservas> reservas = new List<Reservas>();
 
+    /// <summary>
+    /// Método que se ejecuta al inicializar el componente.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         try
         {
+            // Carga las reservas del cliente actual
             reservas = await ReservaService.ListarReservasCliente(AppState.CurrentUser.Id);
             Console.WriteLine("Reservas");
 
         }
         catch (Exception ex)
         {
+            // Manejo de excepciones en caso de error al cargar las reservas
             Console.WriteLine($"Error al cargar las reservas: {ex.Message}");
         }
     }

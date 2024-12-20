@@ -9,8 +9,8 @@ namespace ProyectoBlazor.Tests.Services
     [TestClass]
     public class ReservaServiceTests
     {
-        private Mock<ReservaRepository> mockReservaRepository; // Declaración de la variable de clase
-        private Mock<EspacioService> mockEspacioService;       // Mock de EspacioService
+        private Mock<ReservaRepository> mockReservaRepository; 
+        private Mock<EspacioService> mockEspacioService;       
         private ReservaService reservaService;
 
         [TestInitialize]

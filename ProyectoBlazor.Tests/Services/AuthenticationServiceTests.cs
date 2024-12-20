@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using ProyectoBlazor.Repository;
 using ProyectoBlazor.Service;
-using ProyectoBlazor.Modelos; // Importa correctamente la clase Usuario
+using ProyectoBlazor.Modelos; 
 
 namespace ProyectoBlazor.Tests.Services
 {
