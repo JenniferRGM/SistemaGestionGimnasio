@@ -25,6 +25,8 @@
                         <p><strong>Clase:</strong> @reserva.espacio.claseNombre</p>
                         <p><strong>Fecha:</strong> @reserva.espacio.fecha.ToString("dd/MM/yyyy HH:mm")</p>
                         <a href="@("/detalle-clase/" + reserva.espacio.id)" class="btn btn-primary">Ver detalles</a>
+                        
+
                     </div>
                 </div>
             </div>
@@ -60,4 +62,6 @@
             Console.WriteLine($"Error al cargar las reservas: {ex.Message}");
         }
     }
+
+   
 }

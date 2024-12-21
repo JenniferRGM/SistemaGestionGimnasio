@@ -108,7 +108,6 @@ else
     {
         try
         {
-            // Carga las clases y espacios asociados al entrenador actual
             clases = await ClaseService.listarClasesPorEntrenador(AppState.CurrentUser.Id);
             espacios = await EspacioService.ListarEspaciosEntrenador(AppState.CurrentUser.Id);
         }
@@ -123,19 +122,11 @@ else
     /// </summary>
     private async Task CrearEspacio()
     {
+      
         try
         {
-            // Llama al servicio para crear el espacio
             await EspacioService.CrearEspacio(nuevoEspacio.ClaseId, nuevoEspacio.Fecha, nuevoEspacio.Cupos);
-
-            // Muestra una alerta confirmando la creación del espacio
             await JSRuntime.InvokeVoidAsync("alert", "¡Se ha creado el espacio correctamente!");
-
-            // Limpia el formulario de creación de espacio
-            nuevoEspacio = new Espacio();
-
-            // Actualiza la lista de espacios
-            espacios = await EspacioService.ListarEspaciosEntrenador(AppState.CurrentUser.Id);
         }
         catch (Exception ex)
         {

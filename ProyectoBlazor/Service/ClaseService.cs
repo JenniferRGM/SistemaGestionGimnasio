@@ -1,5 +1,10 @@
 ﻿using ProyectoBlazor.Repository;
 using ProyectoBlazor.Modelos;
+using MySql.Data.MySqlClient;
+using System.Data;
+using ProyectoBlazor.Service;
+using System.Reflection.PortableExecutable;
+
 
 
 namespace ProyectoBlazor.Service
@@ -13,6 +18,8 @@ namespace ProyectoBlazor.Service
         /// Repositorio para acceder a los datos de las clases.
         /// </summary>
         private ClaseRepository claseRepository;
+
+
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="ClaseService"/>.
@@ -32,6 +39,7 @@ namespace ProyectoBlazor.Service
         {
             return await claseRepository.ObtenerTodasLasClasesPorEntrenador(EntrenadorId);
         }
+
 
         /// <summary>
         /// Obtiene todas las clases disponibles.

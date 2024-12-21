@@ -55,11 +55,12 @@ namespace ProyectoBlazor.Service
 
             List<EspacioModel> espacios = new List<EspacioModel>();
 
-            foreach (ClasesModel clasesModel in clases)
+            foreach (ClasesModel clase in clases)
             {
-                List<EspacioModel> espacios1 = await espacioRepository.ListarEspaciosPorClaseId(clasesModel.Id);
-
-                espacios.AddRange(espacios1);
+                Console.WriteLine($"Clase: {clase.Id} - {clase.Nombre}");
+                List<EspacioModel> espaciosClase = await espacioRepository.ListarEspaciosPorClaseId(clase.Id);
+                Console.WriteLine($"Espacios encontrados para la clase {clase.Id}: {espaciosClase.Count}");
+                espacios.AddRange(espaciosClase);
             }
 
             return espacios;

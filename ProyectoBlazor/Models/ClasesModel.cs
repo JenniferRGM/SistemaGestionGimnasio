@@ -13,9 +13,9 @@ namespace ProyectoBlazor.Modelos
     /// </summary>
     public class ClasesModel
     {
-        public Int32 Id { get; set; }
+        public int Id { get; set; }
         public string Nombre { get; set; }
-        public Int32 EntrenadorId { get; set; }
+        public int EntrenadorId { get; set; }
         public String EntrenadorNombre { get; set; }
 
         /// <summary>

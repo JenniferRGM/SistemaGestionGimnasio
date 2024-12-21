@@ -1,4 +1,5 @@
-﻿using ProyectoBlazor.Modelos;
+﻿using MySql.Data.MySqlClient;
+using ProyectoBlazor.Modelos;
 using SistemaGimnasio.Repository;
 
 namespace ProyectoBlazor.Service
@@ -9,6 +10,7 @@ namespace ProyectoBlazor.Service
     public class ReservaService
     {
         private ReservaRepository reservaRepository;
+        
 
         /// <summary>
         /// Constructor para inicializar el servicio de reservas.
