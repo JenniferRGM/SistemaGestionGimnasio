@@ -3,29 +3,21 @@ using MySql.Data.MySqlClient;
 
 namespace SistemaGimnasio.Repository
 {
-    /// <summary>
-    /// Repositorio que proporciona métodos para generar reportes de crecimiento de matrículas, informes contables y clases más reservadas.
-    /// </summary>
     public class ReporteRepository
     {
-        /// <summary>
-        /// Cadena de conexión a la base de datos MySQL.
-        /// </summary>
+        // Cadena de conexión a la base de datos
         private readonly string _connectionString;
 
-        /// <summary>
-        /// Inicializa una nueva instancia de la clase <see cref="ReporteRepository"/>.
-        /// </summary>
-        /// <param name="connectionString">Cadena de conexión a la base de datos.</param>
+        // Constructor que inicializa el repositorio con la cadena de conexión
         public ReporteRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
 
         /// <summary>
-        /// Obtiene el crecimiento de matrículas agrupado por mes, incluyendo el total acumulado.
+        /// Obtiene el crecimiento de matrículas agrupadas por mes.
         /// </summary>
-        /// <returns>Una lista de tuplas con Fecha, Nuevas Matrículas y Total de Matrículas acumuladas.</returns>
+        /// <returns>Lista de tuplas con la fecha, número de nuevas matrículas y el total acumulado de matrículas.</returns>
         public async Task<List<(DateTime Fecha, int NuevasMatriculas, int TotalMatriculas)>> ObtenerCrecimientoMatriculasAsync()
         {
             var resultados = new List<(DateTime Fecha, int NuevasMatriculas, int TotalMatriculas)>();
@@ -36,12 +28,13 @@ namespace SistemaGimnasio.Repository
 
                 // Consulta SQL que obtiene el conteo de matrículas por mes/año
                 var query = @"
-            SELECT 
-                DATE_FORMAT(fecha_matricula, '%Y-%m-01') AS Fecha, 
-                COUNT(*) AS NuevasMatriculas
-            FROM matriculas
-            GROUP BY DATE_FORMAT(fecha_matricula, '%Y-%m')
-            ORDER BY Fecha";
+                       SELECT 
+                       CAST(DATE_FORMAT(fecha_matricula, '%Y-%m-01') AS DATETIME) AS Fecha, 
+                       COUNT(*) AS NuevasMatriculas
+                       FROM matriculas
+                       GROUP BY DATE_FORMAT(fecha_matricula, '%Y-%m')
+                       ORDER BY Fecha;
+                       ";
 
                 using (var command = new MySqlCommand(query, connection))
                 {
@@ -66,11 +59,11 @@ namespace SistemaGimnasio.Repository
         }
 
         /// <summary>
-        /// Obtiene un informe contable que agrupa ingresos y gastos por fecha dentro de un rango específico.
+        /// Obtiene un informe contable con ingresos y gastos en un rango de fechas.
         /// </summary>
         /// <param name="inicio">Fecha de inicio del rango.</param>
         /// <param name="fin">Fecha de fin del rango.</param>
-        /// <returns>Una lista de tuplas con Fecha, Ingreso y Gasto.</returns>
+        /// <returns>Lista de tuplas con la fecha, ingreso total y gasto total.</returns>
         public async Task<List<(DateTime Fecha, decimal Ingreso, decimal Gasto)>> ObtenerInformeContableAsync(DateTime inicio, DateTime fin)
         {
             var resultados = new List<(DateTime Fecha, decimal Ingreso, decimal Gasto)>();
@@ -114,9 +107,9 @@ namespace SistemaGimnasio.Repository
         }
 
         /// <summary>
-        /// Obtiene una lista de las clases más reservadas, limitando a las 8 principales.
+        /// Obtiene las clases más reservadas en el gimnasio.
         /// </summary>
-        /// <returns>Una lista de tuplas con el nombre de la clase, horario y número total de reservas.</returns>
+        /// <returns>Lista de tuplas con el nombre de la clase, horario y número de reservas.</returns>
         public async Task<List<(string Clase, string Horario, int Reservas)>> ObtenerClasesMasReservadasAsync()
         {
             var resultados = new List<(string Clase, string Horario, int Reservas)>();
@@ -152,6 +145,6 @@ namespace SistemaGimnasio.Repository
 
             return resultados;
         }
-
     }
 }
+

@@ -35,7 +35,7 @@ namespace ProyectoBlazor.Repository
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                string query = "SELECT id, nombre FROM plan"; // Se debe especificar las columnas para optimizar
+                string query = "SELECT id, nombre FROM plan"; 
 
                 using (var command = new MySqlCommand(query, connection))
                 {

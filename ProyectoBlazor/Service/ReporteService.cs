@@ -11,15 +11,23 @@ namespace ProyectoBlazor.Service
 {
     public class ReporteService
     {
+        // Repositorio para obtener datos del reporte
         private readonly ReporteRepository reporteRepository;
+
+        // Servicio de facturación para generar reportes relacionados con facturas
         private FacturacionService facturacionService;
 
+        // Constructor para inicializar las dependencias
         public ReporteService(ReporteRepository reporteRepository, FacturacionService facturacionService)
         {
             this.reporteRepository = reporteRepository;
             this.facturacionService = facturacionService;
         }
 
+        /// <summary>
+        /// Genera un PDF básico con contenido personalizado.
+        /// </summary>
+        /// <returns>Array de bytes del PDF generado.</returns>
         public async Task<byte[]> GenerarReportePdf()
         {
             using (var memoryStream = new MemoryStream())
@@ -41,9 +49,13 @@ namespace ProyectoBlazor.Service
             }
         }
 
+        /// <summary>
+        /// Genera un PDF con el reporte de crecimiento de matrículas.
+        /// </summary>
+        /// <returns>Array de bytes del PDF generado.</returns>
         public async Task<byte[]> GenerarReporteCrecimientoMatriculasPdf()
         {
-            // Obtener los datos del reporte de crecimiento de matrículas
+            // datos del reporte de crecimiento de matrículas
             List<(DateTime Fecha, int NuevasMatriculas, int TotalMatriculas)> reporteCrecimiento = await reporteRepository.ObtenerCrecimientoMatriculasAsync();
 
             using (var memoryStream = new MemoryStream())
@@ -57,21 +69,27 @@ namespace ProyectoBlazor.Service
                     .SetFontSize(18));
                 document.Add(new Paragraph("Fecha: " + DateTime.Now.ToString("yyyy-MM-dd")));
 
-                // Agregar los datos al documento desde la lista 'reporteCrecimiento'
+                
                 foreach (var item in reporteCrecimiento)
                 {
                     var paragraph = new Paragraph($"Fecha: {item.Fecha.ToShortDateString()} - Nuevas Matrículas: {item.NuevasMatriculas} - Total Matrículas: {item.TotalMatriculas}");
                     document.Add(paragraph);
                 }
 
-                // Finalizar el documento
+                // Finaliza el documento
                 document.Close();
 
-                // Retornar los bytes del PDF
+                
                 return memoryStream.ToArray();
             }
         }
 
+        /// <summary>
+        /// Genera un PDF con el informe contable en un rango de fechas.
+        /// </summary>
+        /// <param name="inicio">Fecha de inicio.</param>
+        /// <param name="fin">Fecha de fin.</param>
+        /// <returns>Array de bytes del PDF generado.</returns>
         public async Task<byte[]> GenerarReporteInformeContablePdf(DateTime inicio, DateTime fin)
         {
             using (var memoryStream = new MemoryStream())
@@ -85,25 +103,29 @@ namespace ProyectoBlazor.Service
                     .SetFontSize(18));
                 document.Add(new Paragraph($"Fecha de inicio: {inicio.ToShortDateString()} - Fecha de fin: {fin.ToShortDateString()}"));
 
-                // Obtener los datos del reporte
+                // datos del reporte
                 var informeContable = await ObtenerInformeContableAsync(inicio, fin);
 
-                // Agregar los datos al documento
+                // Agrega los datos al documento
                 foreach (var item in informeContable)
                 {
                     var paragraph = new Paragraph($"Fecha: {item.Fecha.ToShortDateString()} - Ingreso: {item.Ingreso:C} - Gasto: {item.Gasto:C}");
                     document.Add(paragraph);
                 }
 
-                // Finalizar el documento
+               
                 document.Close();
 
-                // Retornar los bytes del PDF
+              
                 return memoryStream.ToArray();
             }
         }
 
 
+        /// <summary>
+        /// Genera un PDF con el reporte de las clases más reservadas.
+        /// </summary>
+        /// <returns>Array de bytes del PDF generado.</returns>
         public async Task<byte[]> GenerarReporteClasesMasAtractivasPdf()
         {
             using (var memoryStream = new MemoryStream())
@@ -117,39 +139,43 @@ namespace ProyectoBlazor.Service
                     .SetFontSize(18));
                 document.Add(new Paragraph("Fecha: " + DateTime.Now.ToString("yyyy-MM-dd")));
 
-                // Obtener los datos del reporte
+                
                 var clasesAtractivas = await ObtenerClasesMasAtractivasAsync();
 
-                // Agregar los datos al documento
+              
                 foreach (var item in clasesAtractivas)
                 {
                     var paragraph = new Paragraph($"Clase: {item.Clase} - Horario: {item.Horario} - Cupos disponibles: {item.Cupos}");
                     document.Add(paragraph);
                 }
 
-                // Finalizar el documento
+               
                 document.Close();
 
-                // Retornar los bytes del PDF
+                
                 return memoryStream.ToArray();
             }
         }
 
-
+        /// <summary>
+        /// Genera un PDF con los detalles de una factura específica.
+        /// </summary>
+        /// <param name="facturaId">ID de la factura.</param>
+        /// <returns>Array de bytes del PDF generado.</returns>
         public async Task<byte[]> GenerarReporteFactura(int facturaId)
         {
-            // Obtener la factura por su ID
+            
             Factura factura = await facturacionService.ObtenerFacturaPorIdAsync(facturaId);
 
-            // Crear un MemoryStream para el reporte
+            
             using (var memoryStream = new MemoryStream())
             {
-                // Crear el escritor y el documento PDF
+                
                 var writer = new PdfWriter(memoryStream);
                 var pdf = new PdfDocument(writer);
                 var document = new Document(pdf);
 
-                // Título del reporte
+                
                 document.Add(new Paragraph("Factura No. " + factura.NumeroFactura)
                     .SetFontSize(18));
                 document.Add(new Paragraph($"Fecha de Emisión: {factura.FechaEmision:yyyy-MM-dd}"));
@@ -158,7 +184,7 @@ namespace ProyectoBlazor.Service
                 document.Add(new Paragraph($"Matrícula ID: {factura.MatriculaId}"));
                 document.Add(new Paragraph(" ")); // Espacio
 
-                // Agregar los ítems de la factura
+                
                 document.Add(new Paragraph("Detalles de la Factura")
                     .SetFontSize(14));
 
@@ -173,32 +199,32 @@ namespace ProyectoBlazor.Service
                     document.Add(new Paragraph(" ")); // Espacio
                 }
 
-                // Agregar un pie de página (si es necesario)
+                
                 document.Add(new Paragraph($"Fecha de Creación: {factura.CreatedAt:yyyy-MM-dd}"));
                 document.Add(new Paragraph($"Última Actualización: {factura.UpdatedAt:yyyy-MM-dd}"));
 
-                // Cerrar el documento para completar el PDF
+               
                 document.Close();
 
-                // Retornar los bytes del PDF generado
+                
                 return memoryStream.ToArray();
             }
         }
 
         public async Task<byte[]> GenerarReporteCrecimientoMatriculasAsync()
         {
-            // Obtener los datos de crecimiento de matrículas desde el repositorio
+            
             var crecimientoMatriculas = await reporteRepository.ObtenerCrecimientoMatriculasAsync();
 
-            // Crear un MemoryStream para el reporte
+            
             using (var memoryStream = new MemoryStream())
             {
-                // Crear el escritor y el documento PDF
+               
                 var writer = new PdfWriter(memoryStream);
                 var pdf = new PdfDocument(writer);
                 var document = new Document(pdf);
 
-                // Título del reporte
+                
                 document.Add(new Paragraph("Reporte de Crecimiento de Matrículas")
                     .SetFontSize(18)
                     .SetTextAlignment(TextAlignment.CENTER));
@@ -207,13 +233,13 @@ namespace ProyectoBlazor.Service
                     .SetTextAlignment(TextAlignment.RIGHT));
                 document.Add(new Paragraph(" "));
 
-                // Encabezados de la tabla
+                
                 var table = new Table(3, true);
                 table.AddHeaderCell(new Cell().Add(new Paragraph("Fecha")));
                 table.AddHeaderCell(new Cell().Add(new Paragraph("Nuevas Matrículas")));
                 table.AddHeaderCell(new Cell().Add(new Paragraph("Total Acumulado")));
 
-                // Agregar datos a la tabla
+                
                 foreach (var (fecha, nuevasMatriculas, totalMatriculas) in crecimientoMatriculas)
                 {
                     table.AddCell(new Cell().Add(new Paragraph(fecha.ToString("yyyy-MM-dd"))));
@@ -221,19 +247,19 @@ namespace ProyectoBlazor.Service
                     table.AddCell(new Cell().Add(new Paragraph(totalMatriculas.ToString())));
                 }
 
-                // Agregar la tabla al documento
+                
                 document.Add(table);
 
-                // Pie de página
+                
                 document.Add(new Paragraph(" "));
                 document.Add(new Paragraph("Fin del Reporte")
                     .SetTextAlignment(TextAlignment.CENTER)
                     .SetFontSize(10));
 
-                // Cerrar el documento
+                
                 document.Close();
 
-                // Retornar los bytes del PDF generado
+                
                 return memoryStream.ToArray();
             }
         }

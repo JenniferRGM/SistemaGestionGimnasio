@@ -267,11 +267,11 @@ public class FacturaRepository
                     command.Parameters.AddWithValue("@CreatedAt", item.CreatedAt);
                     command.Parameters.AddWithValue("@UpdatedAt", item.UpdatedAt);
 
-                    command.ExecuteNonQuery();  // Ejecuta la consulta de forma sincrónica
+                    command.ExecuteNonQuery();
                 }
             }
         }
+
+
     }
-
-
 }

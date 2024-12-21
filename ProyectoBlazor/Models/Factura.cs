@@ -12,15 +12,15 @@ namespace ProyectoBlazor.Modelos
     /// </summary>
     public class Factura
     {
-        public int Id { get; set; }  // Identificador único de la factura
-        public string NumeroFactura { get; set; }  // Número único de la factura
-        public DateTime FechaEmision { get; set; }  // Fecha de emisión de la factura
-        public DateTime FechaVencimiento { get; set; }  // Fecha de vencimiento de la factura
-        public decimal Total { get; set; }  // Monto total de la factura
-        public int MatriculaId { get; set; }  // Relación con la matrícula
-        public List<FacturaItem> FacturaItems { get; set; }  // Lista de ítems asociados a la factura
-        public DateTime CreatedAt { get; set; }  // Fecha de creación
-        public DateTime UpdatedAt { get; set; }  // Fecha de actualización
+        public int Id { get; set; }  
+        public string NumeroFactura { get; set; } 
+        public DateTime FechaEmision { get; set; }  
+        public DateTime FechaVencimiento { get; set; }  
+        public decimal Total { get; set; }  
+        public int MatriculaId { get; set; }  
+        public List<FacturaItem> FacturaItems { get; set; } 
+        public DateTime CreatedAt { get; set; }  
+        public DateTime UpdatedAt { get; set; }  
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="Factura"/>.
