@@ -32,36 +32,60 @@ namespace ProyectoBlazor.Repository
         /// <param name="fechaMatricula">Fecha en la que se realiza la matrícula.</param>
         /// <param name="metodoPago">Método de pago utilizado.</param>
         /// <returns>El identificador único de la matrícula recién creada.</returns>
-        public int RegistrarMatricula(int membresiaId, int usuarioId,
-            string clienteNombre, double montoMatricula, DateOnly fechaMatricula, string metodoPago)
+        public int RegistrarMatricula(int usuarioId, int membresiaId,
+      string clienteNombre, double montoMatricula, DateOnly fechaMatricula, string metodoPago)
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            try
             {
-                connection.Open();  // Abre la conexión de forma sincrónica
-
-                string query = @"
-        INSERT INTO matriculas 
-        (membresia_id, cliente_id, cliente_nombre, monto_matricula, fecha_matricula, metodo_pago) 
-        VALUES 
-        (@MembresiaId, @UsuarioId, @ClienteNombre, @MontoMatricula, @FechaMatricula, @MetodoPago);
-        SELECT LAST_INSERT_ID();"; // Obtener el último ID insertado
-
-                using (var command = new MySqlCommand(query, connection))
+                using (var connection = new MySqlConnection(_connectionString))
                 {
-                    // Agrega parámetros a la consulta
-                    command.Parameters.AddWithValue("@MembresiaId", membresiaId);
-                    command.Parameters.AddWithValue("@UsuarioId", usuarioId);
-                    command.Parameters.AddWithValue("@ClienteNombre", clienteNombre);
-                    command.Parameters.AddWithValue("@MontoMatricula", montoMatricula);
-                    command.Parameters.AddWithValue("@FechaMatricula", fechaMatricula);
-                    command.Parameters.AddWithValue("@MetodoPago", metodoPago);
+                    connection.Open(); // Abre la conexión
 
-                    // Ejecuta la consulta y obtener el ID generado de forma sincrónica
-                    var result = command.ExecuteScalar();
+                    // Consulta para insertar los datos
+                    string queryInsert = @"
+                INSERT INTO matriculas 
+                (cliente_id, membresia_id, cliente_nombre, monto_matricula, fecha_matricula, metodo_pago) 
+                VALUES 
+                (@UsuarioId, @MembresiaId, @ClienteNombre, @MontoMatricula, @FechaMatricula, @MetodoPago);";
 
-                    // Retorna el ID de la matrícula creada
-                    return Convert.ToInt32(result);
+                    using (var command = new MySqlCommand(queryInsert, connection))
+                    {
+                        // Convertir DateOnly a DateTime para compatibilidad con MySQL
+                        var fechaMatriculaDateTime = fechaMatricula.ToDateTime(TimeOnly.MinValue);
+
+                        // Agrega parámetros a la consulta
+                        command.Parameters.AddWithValue("@UsuarioId", usuarioId);
+                        command.Parameters.AddWithValue("@MembresiaId", membresiaId);
+                        command.Parameters.AddWithValue("@ClienteNombre", clienteNombre);
+                        command.Parameters.AddWithValue("@MontoMatricula", montoMatricula);
+                        command.Parameters.AddWithValue("@FechaMatricula", fechaMatriculaDateTime);
+                        command.Parameters.AddWithValue("@MetodoPago", metodoPago);
+
+                        // Ejecuta la consulta de inserción
+                        command.ExecuteNonQuery();
+                    }
+
+                    // Consulta para obtener el último ID insertado
+                    string querySelect = "SELECT LAST_INSERT_ID();";
+
+                    using (var commandSelect = new MySqlCommand(querySelect, connection))
+                    {
+                        // Devuelve el ID generado
+                        return Convert.ToInt32(commandSelect.ExecuteScalar());
+                    }
                 }
+            }
+            catch (MySqlException ex)
+            {
+                // Manejo específico de errores de MySQL
+                Console.WriteLine($"Error de MySQL: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Manejo genérico de errores
+                Console.WriteLine($"Ocurrió un error: {ex.Message}");
+                throw;
             }
         }
 

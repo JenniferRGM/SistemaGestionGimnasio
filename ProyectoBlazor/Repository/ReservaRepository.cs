@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using ProyectoBlazor.Components.Pages;
 using ProyectoBlazor.Service;
 using ProyectoBlazor.Modelos;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace SistemaGimnasio.Repository
 {
@@ -59,14 +60,35 @@ namespace SistemaGimnasio.Repository
                         command.Parameters.AddWithValue("@cliente_id", ClienteId);
 
                         await command.ExecuteNonQueryAsync();
+                        disminuirCupo(ClaseEspacioId);
+
                     }
+
+
+             
                 }
 
+          
                 return true; // Reserva exitosa
             }
 
             // Si no hay cupos disponibles, retornamos false
             return false;
+        }
+
+
+        private async Task disminuirCupo(Int32 ClaseEspacioId)
+        {
+            string updateQuery = "UPDATE clases_espacios SET cupos = cupos - 1 WHERE id = @id";
+            using (var connection = new MySqlConnection(_connectionString)) { 
+
+            using (var updateCommand = new MySqlCommand(updateQuery, connection))
+            {
+                updateCommand.Parameters.AddWithValue("@id", ClaseEspacioId);
+                await updateCommand.ExecuteNonQueryAsync();
+            }
+
+            }
         }
 
         /// <summary>
@@ -96,13 +118,7 @@ namespace SistemaGimnasio.Repository
                         // Si hay cupos disponibles, los decrementamos
                         hayDisponibilidad = true;
 
-                        string updateQuery = "UPDATE clases_espacios SET cupos = cupos - 1 WHERE id = @id";
-
-                        using (var updateCommand = new MySqlCommand(updateQuery, connection))
-                        {
-                            updateCommand.Parameters.AddWithValue("@id", ClaseEspacioId);
-                            await updateCommand.ExecuteNonQueryAsync();
-                        }
+                      
                     }
                 }
             }

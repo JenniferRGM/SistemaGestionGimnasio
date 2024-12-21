@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ProyectoBlazor.Models;
 using ProyectoBlazor.Modelos;
+using ProyectoBlazor.Repository;
 
 namespace ProyectoBlazor.Service
 {

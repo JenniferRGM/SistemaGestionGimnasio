@@ -42,7 +42,7 @@ namespace ProyectoBlazor.Controllers
         /// <param name="fin">Fecha de finalización del informe.</param>
         /// <returns>Un archivo PDF con el informe contable.</returns>
         [HttpGet("generar-pdf-contable")]
-        public async Task<IActionResult> GenerarReporteInformeContable(DateTime inicio, DateTime fin)
+        public async Task<IActionResult> GenerarReporteInformeContable([FromQuery] DateTime inicio, [FromQuery] DateTime fin)
         {
             var pdfBytes = await _reporteService.GenerarReporteInformeContablePdf(inicio, fin);
 

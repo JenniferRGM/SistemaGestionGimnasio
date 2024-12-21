@@ -29,11 +29,11 @@ namespace SistemaGimnasio.Repository
                 // Consulta SQL que obtiene el conteo de matrículas por mes/año
                 var query = @"
                        SELECT 
-                       CAST(DATE_FORMAT(fecha_matricula, '%Y-%m-01') AS DATETIME) AS Fecha, 
-                       COUNT(*) AS NuevasMatriculas
-                       FROM matriculas
-                       GROUP BY DATE_FORMAT(fecha_matricula, '%Y-%m')
-                       ORDER BY Fecha;
+                      CAST(DATE_FORMAT(fecha_matricula, '%Y-%m-01') AS DATETIME) AS Fecha, 
+                      COUNT(*) AS NuevasMatriculas
+                      FROM matriculas
+                      GROUP BY CAST(DATE_FORMAT(fecha_matricula, '%Y-%m-01') AS DATETIME)
+                      ORDER BY Fecha;
                        ";
 
                 using (var command = new MySqlCommand(query, connection))
@@ -77,7 +77,7 @@ namespace SistemaGimnasio.Repository
             SELECT 
                 i.Fecha AS Fecha,
                 IFNULL(SUM(i.Monto), 0) AS Ingreso,
-                IFNULL(SUM(e.Monto), 0) AS Gasto
+                IFNULL(e.Monto),0) AS Gasto
             FROM ingresos i
             LEFT JOIN egresos e ON i.Fecha = e.Fecha
             WHERE i.Fecha BETWEEN @Inicio AND @Fin
